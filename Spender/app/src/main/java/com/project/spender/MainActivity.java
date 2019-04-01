@@ -19,6 +19,7 @@ import android.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     private Button scan;
+    private Button statstic;
     private static TextView textResult;
 
     @Override
@@ -26,11 +27,29 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 42) {
             if (resultCode == Activity.RESULT_OK) {
                 String scanningResult = data.getStringExtra("result");
-                textResult.setText(scanningResult);
+                textResult.setText(parseNumbers(scanningResult)[0]);
             } else {
                 textResult.setText("(∩｀-´)⊃━☆ﾟ.*･｡ﾟ");
             }
         }
+    }
+
+    static private String[] parseNumbers(String content) {
+        String[] result = new String[3];
+        String[] parseResult = content.split("[&=]");
+        for (int i = 0; i < parseResult.length; i++) {
+            if (parseResult[i].equals("fn")) {
+                result[0] = parseResult[i+1];
+                i++;
+            } else if (parseResult[i].equals("i")) {
+                result[1] = parseResult[i+1];
+                i++;
+            } else if (parseResult[i].equals("fp")) {
+                result[1] = parseResult[i+1];
+                i++;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -49,10 +68,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         scan = findViewById(R.id.scan);
+        statstic = findViewById(R.id.statistic);
         textResult = findViewById(R.id.resultText);
 
         final Intent intent = new Intent(this, Scan.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        final Toast toast = Toast.makeText(this, "Kekos knchn", Toast.LENGTH_LONG);
+
+        statstic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toast.show();
+            }
+        });
+
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
