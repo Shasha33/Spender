@@ -22,7 +22,7 @@ public class ExampleUnitTest {
     public void parserTest() {
         String content = "t=20190401T2022&s=134.00&fn=9282000100051444&i=31432&fp=3311754675&n=1";
         List<String> res = parseNumbers(content);
-        assertEquals(Arrays.asList("20190401", "2022", "134.00",
+        assertEquals(Arrays.asList("20190401", "2022", "13400",
                 "9282000100051444", "31432", "3311754675", "1"), res);
     }
 

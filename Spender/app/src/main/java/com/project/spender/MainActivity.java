@@ -53,7 +53,11 @@ public class MainActivity extends AppCompatActivity {
         List<String> res = new ArrayList<>();
         for (String i : content.split("[&|=|a-zA-z| ]")) {
             if (i.length() != 0) {
-                res.add(i);
+                if (i.contains(".")) {
+                    res.add(i.replace(".", ""));
+                } else {
+                    res.add(i);
+                }
             }
         }
         return res;
