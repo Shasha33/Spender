@@ -3,6 +3,7 @@ package com.project.spender;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.net.Uri;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
@@ -84,13 +86,15 @@ public class MainActivity extends AppCompatActivity {
         textResult = findViewById(R.id.resultText);
 
         final Intent intent = new Intent(this, Scan.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        final Toast toast = Toast.makeText(this, "Kekos knchn", Toast.LENGTH_LONG);
+        final Intent intentShowList = new Intent(this, ListActivity.class);
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        final Toast toast = Toast.makeText(this, "Kekos knchn", Toast.LENGTH_LONG);
         statstic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast.show();
+                startActivity(intentShowList);
             }
         });
 

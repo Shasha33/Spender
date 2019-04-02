@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
     <TextView
         android:id="@+id/resultText"
         android:layout_width="198dp"
         android:layout_height="113dp"
         android:fontFamily="@font/bungee"
-        android:text="Hello World!"
+        android:text="Spender"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
