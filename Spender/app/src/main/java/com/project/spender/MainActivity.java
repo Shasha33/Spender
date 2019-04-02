@@ -3,6 +3,7 @@ package com.project.spender;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.net.Uri;
@@ -16,6 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button scan;
@@ -26,36 +35,38 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 42) {
             if (resultCode == Activity.RESULT_OK) {
-                String scanningResult = data.getStringExtra("result");
-                textResult.setText(parseNumbers(scanningResult)[0]);
+                List<String> scanningResult;
+                try {
+                    scanningResult = parseNumbers(data.getStringExtra("result"));
+                } catch (IllegalStateException e) {
+                    System.out.println(e.getMessage());
+                    Toast.makeText(this, "UNABLE TO PARSE CODE INFO", Toast.LENGTH_LONG).show();
+                    return;
+                }
             } else {
                 textResult.setText("(∩｀-´)⊃━☆ﾟ.*･｡ﾟ");
             }
         }
     }
 
-    static private String[] parseNumbers(String content) {
-//        TODO сумма без точки
-        String[] result = new String[3];
-        String[] parseResult = content.split("[&=]");
-        for (int i = 0; i < parseResult.length; i++) {
-            if (parseResult[i].equals("fn")) {
-                result[0] = parseResult[i+1];
-                i++;
-            } else if (parseResult[i].equals("i")) {
-                result[1] = parseResult[i+1];
-                i++;
-            } else if (parseResult[i].equals("fp")) {
-                result[1] = parseResult[i+1];
-                i++;
+    static protected List<String> parseNumbers(String content) {
+        List<String> res = new ArrayList<>();
+        for (String i : content.split("[&|=|a-zA-z| ]")) {
+            if (i.length() != 0) {
+                if (i.contains(".")) {
+                    res.add(i.replace(".", ""));
+                } else {
+                    res.add(i);
+                }
             }
         }
-        return result;
+        return res;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
@@ -73,13 +84,14 @@ public class MainActivity extends AppCompatActivity {
         textResult = findViewById(R.id.resultText);
 
         final Intent intent = new Intent(this, Scan.class);
+        final Intent intentShowList = new Intent(this, ListActivity.class);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        final Toast toast = Toast.makeText(this, "Kekos knchn", Toast.LENGTH_LONG);
 
         statstic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toast.show();
+                startActivity(intentShowList);
             }
         });
 
