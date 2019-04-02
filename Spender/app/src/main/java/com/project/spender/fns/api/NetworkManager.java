@@ -24,7 +24,7 @@ public class NetworkManager {
         private static NetworkManager instance = new NetworkManager();
     }
 
-    public NetworkManager getInstance() {
+    public static NetworkManager getInstance() {
         return NetworkManagerHolder.instance;
     }
 

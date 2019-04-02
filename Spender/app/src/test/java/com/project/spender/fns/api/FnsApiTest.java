@@ -60,7 +60,8 @@ class FnsApiTest {
         System.out.println(resExist.code());
         System.out.println(resExist.message());
 
-        Response<Check> res = fns.getCheck(loginPassword, "", "", fn, fd, fiscalSign, "no").execute();
+        Response<Check> res = fns.getCheck(loginPassword, "", "",
+                fn, fd, fiscalSign, "no").execute();
         System.out.println(res.code());
         System.out.println(res.message());
         System.out.println(res.body().getData().items.get(0).name);
