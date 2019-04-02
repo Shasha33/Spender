@@ -16,6 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button scan;
@@ -26,30 +32,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 42) {
             if (resultCode == Activity.RESULT_OK) {
-                String scanningResult = data.getStringExtra("result");
-                textResult.setText(parseNumbers(scanningResult)[0]);
+                String[] scanningResult;
+                try {
+                    scanningResult = parseNumbers(data.getStringExtra("result"));
+                } catch (IllegalStateException e) {
+                    System.out.println(e.getMessage());
+                    Toast.makeText(this, "UNABLE TO PARSE CODE INFO", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                textResult.setText(scanningResult[0] + "\n" + scanningResult[1] + "\n" + scanningResult[2]);
             } else {
                 textResult.setText("(∩｀-´)⊃━☆ﾟ.*･｡ﾟ");
             }
         }
     }
 
-    static private String[] parseNumbers(String content) {
-        String[] result = new String[3];
-        String[] parseResult = content.split("[&=]");
-        for (int i = 0; i < parseResult.length; i++) {
-            if (parseResult[i].equals("fn")) {
-                result[0] = parseResult[i+1];
-                i++;
-            } else if (parseResult[i].equals("i")) {
-                result[1] = parseResult[i+1];
-                i++;
-            } else if (parseResult[i].equals("fp")) {
-                result[1] = parseResult[i+1];
-                i++;
-            }
-        }
-        return result;
+    /**
+     * As you can see, it returns ФН, ФД and ФП in this particular order.
+     * @param content string from qr code
+     */
+    static protected String[] parseNumbers(String content) {
+        Matcher matcherFN = Pattern.compile(".*fn=([\\d]*)&.*").matcher(content);
+        Matcher matcherFD = Pattern.compile(".*i=([\\d]*)&.*").matcher(new String(content));
+        Matcher matcherFP = Pattern.compile(".*fp=([\\d]*)&.*").matcher(content);
+
+        System.out.println(matcherFN.find() + " " + matcherFD.matches() + " " + matcherFP.matches());
+        String[] res = new String[3];
+        res[0] = matcherFN.group(1);
+        res[1] = matcherFD.group(1);
+        res[2] = matcherFP.group(1);
+        return res;
     }
 
     @Override
