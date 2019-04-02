@@ -18,8 +18,10 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 42) {
             if (resultCode == Activity.RESULT_OK) {
-                String[] scanningResult;
+                List<String> scanningResult;
                 try {
                     scanningResult = parseNumbers(data.getStringExtra("result"));
                 } catch (IllegalStateException e) {
@@ -41,27 +43,19 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "UNABLE TO PARSE CODE INFO", Toast.LENGTH_LONG).show();
                     return;
                 }
-                textResult.setText(scanningResult[0] + "\n" + scanningResult[1] + "\n" + scanningResult[2]);
             } else {
                 textResult.setText("(∩｀-´)⊃━☆ﾟ.*･｡ﾟ");
             }
         }
     }
 
-    /**
-     * As you can see, it returns ФН, ФД and ФП in this particular order.
-     * @param content string from qr code
-     */
-    static protected String[] parseNumbers(String content) {
-        Matcher matcherFN = Pattern.compile(".*fn=([\\d]*)&.*").matcher(content);
-        Matcher matcherFD = Pattern.compile(".*i=([\\d]*)&.*").matcher(new String(content));
-        Matcher matcherFP = Pattern.compile(".*fp=([\\d]*)&.*").matcher(content);
-    
-        System.out.println(matcherFN.find() + " " + matcherFD.matches() + " " + matcherFP.matches());
-        String[] res = new String[3];
-        res[0] = matcherFN.group(1);
-        res[1] = matcherFD.group(1);
-        res[2] = matcherFP.group(1);
+    static protected List<String> parseNumbers(String content) {
+        List<String> res = new ArrayList<>();
+        for (String i : content.split("[&|=|a-zA-z| ]")) {
+            if (i.length() != 0) {
+                res.add(i);
+            }
+        }
         return res;
     }
 
@@ -90,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        final Toast toast = Toast.makeText(this, "Kekos knchn", Toast.LENGTH_LONG);
         statstic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
