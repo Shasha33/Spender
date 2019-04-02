@@ -15,12 +15,12 @@ public interface FnsApi {
 //    sum -- Сумма — сумма с чека в копейках
 
     @GET("/v1/ofds/*/inns/*/fss/{fnNum}/operations/1/tickets/{fdNum}?")
-    Call<Boolean> isCheckExist(@Path("fnNum") String fn, @Path("fdNum") String fd,
+    Call<Void> isCheckExist(@Path("fnNum") String fn, @Path("fdNum") String fd,
                                @Query("fiscalSign") String fiscalSign, @Query("date") String date,
                                @Query("sum") String sum);
 
     @GET("/v1/inns/*/kkts/*/fss/{fnNum}/tickets/{fdNum}?")
-    Call<Void> getCheck(@Header("Authorization") String loginPassword, @Header("Device-Id") String deviceId, @Header("Device-OS") String deviceOs, @Path("fnNum") String fn, @Path("fdNum") String fd,
+    Call<Check> getCheck(@Header("Authorization") String loginPassword, @Header("Device-Id") String deviceId, @Header("Device-OS") String deviceOs, @Path("fnNum") String fn, @Path("fdNum") String fd,
                         @Query("fiscalSign") String fiscalSign, @Query("sendToEmail") String yesOrNo);
 
     @GET("/v1/mobile/users/login")
