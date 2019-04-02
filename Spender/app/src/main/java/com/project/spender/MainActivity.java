@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static private String[] parseNumbers(String content) {
+//        TODO сумма без точки
         String[] result = new String[3];
         String[] parseResult = content.split("[&=]");
         for (int i = 0; i < parseResult.length; i++) {
