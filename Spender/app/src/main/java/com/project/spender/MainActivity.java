@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcherFN = Pattern.compile(".*fn=([\\d]*)&.*").matcher(content);
         Matcher matcherFD = Pattern.compile(".*i=([\\d]*)&.*").matcher(new String(content));
         Matcher matcherFP = Pattern.compile(".*fp=([\\d]*)&.*").matcher(content);
-
+    
         System.out.println(matcherFN.find() + " " + matcherFD.matches() + " " + matcherFP.matches());
         String[] res = new String[3];
         res[0] = matcherFN.group(1);
