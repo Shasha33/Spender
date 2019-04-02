@@ -8,33 +8,57 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NetworkManagerTest {
-    private String fn;
-    private String fd;
-    private String fiscalSign;
-    private String date;
-    private String sum;
+    private String fn1;
+    private String fd1;
+    private String fiscalSign1;
+    private String date1;
+    private String sum1;
+
+    private String fn2;
+    private String fd2;
+    private String fiscalSign2;
+    private String date2;
+    private String sum2;
+
     @BeforeEach
     void init() {
-        fn = "9286000100242530";
-        fd = "27641";
-        fiscalSign = "124643923";
-        date = "20190402T1357";
-        sum = "21700";
+        fn1 = "9286000100242530";
+        fd1 = "27641";
+        fiscalSign1 = "124643923";
+        date1 = "20190402T1357";
+        sum1 = "21700";
+
+        fn2 = "9289000100349869";
+        fd2 = "6651";
+        fiscalSign2 = "2111509816";
+        date2 = "20190402T2121";
+        sum2 = "169268";
     }
 
     @Test
-    void isCheckExistTrue() throws IOException {
-        assertTrue(NetworkManager.getInstance().isCheckExist(fn, fd, fiscalSign, date, sum));
+    void isCheckExistTrue1() throws IOException {
+        assertTrue(NetworkManager.getInstance().isCheckExist(fn1, fd1, fiscalSign1, date1, sum1));
+    }
+
+    @Test
+    void isCheckExistTrue2() throws IOException {
+        assertTrue(NetworkManager.getInstance().isCheckExist(fn2, fd2, fiscalSign2, date2, sum2));
     }
 
     @Test
     void isCheckExistFalse() throws IOException {
-        assertFalse(NetworkManager.getInstance().isCheckExist(fn, fd, fiscalSign + "0", date, sum));
+        assertFalse(NetworkManager.getInstance().isCheckExist(fn1, fd1, fiscalSign1 + "0", date1, sum1));
     }
 
     @Test
-    void getCheck() throws IOException {
-        assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО",NetworkManager.getInstance().getCheck(fn, fd, fiscalSign)
-                .getData().items.get(0).name);
+    void getCheck1() throws IOException {
+        assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", NetworkManager.getInstance()
+                .getCheck(fn1, fd1, fiscalSign1, date1, sum1).getData().items.get(0).name);
+    }
+
+    @Test
+    void getCheck2() throws IOException {
+        assertEquals("1:3305976 Пакет ПЕРЕКРЕСТОК майка 65х40см", NetworkManager.getInstance()
+                .getCheck(fn2, fd2, fiscalSign2, date2, sum2).getData().items.get(0).name);
     }
 }

@@ -19,7 +19,7 @@ public class Item {
 
     @SerializedName("quantity")
     @Expose
-    public Integer quantity;
+    public Double quantity;
 
     @SerializedName("nds10")
     @Expose

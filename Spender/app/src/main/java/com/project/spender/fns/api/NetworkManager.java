@@ -34,7 +34,11 @@ public class NetworkManager {
         return res.code() == 204;
     }
 
-    public Check getCheck(String fn, String fd, String fiscalSign) throws IOException {
+    public Check getCheck(String fn, String fd, String fiscalSign, String date, String sum)
+            throws IOException {
+        if (!isCheckExist(fn, fd, fiscalSign, date, sum)) {
+            return null;
+        }
         Response<Check> res = fns.getCheck(loginPassword, "", "",
                 fn, fd, fiscalSign, "no").execute();
         return res.body();

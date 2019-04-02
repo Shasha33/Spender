@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class Receipt {
 
     @SerializedName("operationType")
-    @Expose
+//    @/Expose
     public Integer operationType;
 
     @SerializedName("fiscalSign")

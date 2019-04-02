@@ -17,11 +17,18 @@ class FnsApiTest {
     private Retrofit retrofit;
     private FnsApi fns;
     private String loginPassword;
+
     private String fn;
     private String fd;
     private String fiscalSign;
     private String date;
     private String sum;
+
+    private String fn2;
+    private String fd2;
+    private String fiscalSign2;
+    private String date2;
+    private String sum2;
 
     @BeforeEach
     void init() {
@@ -35,6 +42,12 @@ class FnsApiTest {
         fiscalSign = "124643923";
         date = "20190402T1357";
         sum = "21700";
+
+        fn2 = "9289000100349869";
+        fd2 = "6651";
+        fiscalSign2 = "2111509816";
+        date2 = "20190402T2121";
+        sum2 = "169268";
     }
 
     @Test
