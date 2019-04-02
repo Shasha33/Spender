@@ -6,8 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FnsApiTest {
 
@@ -17,6 +20,9 @@ class FnsApiTest {
                 .baseUrl("https://proverkacheka.nalog.ru:9999") //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()).build(); //Конвертер, необходимый для преобразования JSON'а в объекты
         FnsApi fns =retrofit.create(FnsApi.class);
-        System.out.println(fns.isCheckExist("8710000101337659", "94248", "815426975", "2018-05-18T22:05:00", "23561").execute().code());
+        Response res = fns.isCheckExist("9286000100242530", "27641", "124643923", "20190402T1357", "217.00").execute();
+        System.out.println(res.code());
+        System.out.println(res.message());
+//        assertTrue(res.isSuccessful());
     }
 }
