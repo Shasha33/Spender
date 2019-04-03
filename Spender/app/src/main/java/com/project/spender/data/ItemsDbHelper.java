@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
+import com.project.spender.Good;
 import com.project.spender.fns.api.Check;
 import com.project.spender.fns.api.Item;
 
@@ -57,18 +58,44 @@ public class ItemsDbHelper extends SQLiteOpenHelper {
         long newRowId = db.insert(CheckContract.ItemEntry.TABLE_NAME, null, values);
     }
 
-    public Cursor getAllByName(String subString) {
+    public List<Good> getAllByCursor(Cursor cursor) {
+        List<Good> items = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndex(CheckContract.ItemEntry.COLUMN_NAME));
+            String date = cursor.getString(cursor.getColumnIndex(CheckContract.ItemEntry.COLUMN_DATE));
+            double price = cursor.getDouble(cursor.getColumnIndex(CheckContract.ItemEntry.COLUMN_PRICE));
+            String shop = cursor.getString(cursor.getColumnIndex(CheckContract.ItemEntry.COLUMN_SHOP));
+            items.add(new Good(name, date, price, shop));
+        }
+        return items;
+    }
+
+    public List<Good> getAllByName(String subString) {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + CheckContract.ItemEntry.TABLE_NAME + " WHERE name LIKE '%"+ subString + "%'";
         Cursor cursor = db.rawQuery(query, null);
-        return cursor;
 
-        //        List<Item> items = new ArrayList<>();
-//        while (cursor.moveToNext()) {
-//            items.append(Item(cursor.getInt(cursor.getColumnIndex(CheckContract.ItemEntry.COLUMN_NAME)), ));
-//        }
-
+        return getAllByCursor(cursor);
     }
 
+    public List<Good> getAll() {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + CheckContract.ItemEntry.TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
 
+        return getAllByCursor(cursor);
+    }
+
+    public List<Good> getAllByDateRange(String beginDate, String endDate) {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + CheckContract.ItemEntry.TABLE_NAME + " WHERE date" +
+                " BETWEEN '" + beginDate + "' AND '" + endDate + "'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        return getAllByCursor(cursor);
+    }
+
+    public void clear() {
+        onUpgrade(getWritableDatabase(), 0, 0);
+    }
 }
