@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     System.out.println("Error while loading check " + e.getMessage() + " " + e.getCause() + " " + e.getClass());
                 }
-            } else {
-                textResult.setText("(∩｀-´)⊃━☆ﾟ.*･｡ﾟ");
             }
         }
     }

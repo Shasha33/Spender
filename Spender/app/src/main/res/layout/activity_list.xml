@@ -10,9 +10,9 @@
     <ListView
         android:id="@+id/itemsList"
         android:layout_width="294dp"
-        android:layout_height="514dp"
+        android:layout_height="400dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
