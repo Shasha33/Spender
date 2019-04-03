@@ -1,5 +1,11 @@
 package com.project.spender;
 
+import android.content.Intent;
+
+import com.project.spender.fns.api.Check;
+import com.project.spender.fns.api.Item;
+import com.project.spender.fns.api.Receipt;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +20,7 @@ public class DataBase {
     private static final String goodsTable = "itemsTable";
 
     public DataBase() throws SQLException {
+        System.out.print("Created database\n");
         connection = DriverManager.getConnection("jdbc:sqlite:" + goodsTable + ".db");
         try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS "
@@ -59,6 +66,10 @@ public class DataBase {
         return items;
     }
 
+    public List<Good> getAll() throws SQLException {
+        final String sql = "SELECT * FROM " + goodsTable;
+        return getListBySql(sql);
+    }
     public List<Good> getAllByName(String subString) throws SQLException {
         final String sql = "SELECT * FROM " + goodsTable + " WHERE name LIKE '%"+ subString + "%'";
         return getListBySql(sql);
@@ -73,6 +84,14 @@ public class DataBase {
     public void clear() throws SQLException {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DELETE FROM " + goodsTable);
+        }
+    }
+
+    public void parseGoodFromCheck(Check check) throws SQLException {
+        Receipt receipt = check.getData();
+        System.out.println(receipt.dateTime);
+        for (Item item : receipt.items) {
+            add(item.name, receipt.dateTime, receipt.dateTime, item.price, receipt.retailPlaceAddress);
         }
     }
 }

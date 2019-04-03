@@ -9,7 +9,7 @@ public class Check {
     @Expose
     private Document document;
 
-    Receipt getData() {
+    public Receipt getData() {
         return document.receipt;
     }
 
