@@ -25,4 +25,18 @@ public class Item {
     @Expose
     public Integer nds10;
 
+    /**
+     *  @param sum
+     * @param price
+     * @param name
+     * @param quantity
+     */
+    public Item(Integer sum, Integer price, String name, Double quantity) {
+        super();
+        this.sum = sum;
+        this.price = price;
+        this.name = name;
+        this.quantity = quantity;
+    }
+
 }
