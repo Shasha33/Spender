@@ -18,12 +18,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+<<<<<<< HEAD
 import com.project.spender.data.ItemsDbHelper;
 import com.project.spender.fns.api.Check;
 import com.project.spender.fns.api.Item;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.Receipt;
 
+=======
+import com.project.spender.fns.api.Check;
+import com.project.spender.fns.api.NetworkManager;
+
+import java.io.IOException;
+>>>>>>> workingnt
 import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
     private Button clear;
     private static TextView textResult;
     private NetworkManager networkManager;
+<<<<<<< HEAD
     protected static ItemsDbHelper dbHelper;
+=======
+    protected static DataBase dataBase;
+>>>>>>> workingnt
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -54,8 +65,11 @@ public class MainActivity extends AppCompatActivity {
                 String date = scanningResult.get(0);
                 String sum = scanningResult.get(1);
 
+<<<<<<< HEAD
                 System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
 
+=======
+>>>>>>> workingnt
                 try {
                     if (!networkManager.isCheckExist(fn, fd, fp, date, sum)) {
                         Toast.makeText(this, "Check does not exist",
@@ -63,7 +77,13 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     Check check = networkManager.getCheck(fn, fd, fp, date, sum);
+<<<<<<< HEAD
                     parseGoodFromCheck(check);
+=======
+                    dataBase.parseGoodFromCheck(check);
+                } catch (SQLException e) {
+                    System.out.println("KEK! " + e.getMessage());
+>>>>>>> workingnt
                 } catch (Exception e) {
                     System.out.println("Error while loading check " + e.getMessage() + " " + e.getCause() + " " + e.getClass());
                 }
@@ -81,7 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
     static protected List<String> parseNumbers(String content) {
         List<String> res = new ArrayList<>();
+<<<<<<< HEAD
         System.out.println(content);
+=======
+>>>>>>> workingnt
         for (String i : content.split("[&|=|a-z]")) {
             if (i.length() != 0) {
                 if (i.contains(".")) {
@@ -103,6 +126,17 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
+        StrictMode.ThreadPolicy policy =
+                new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        networkManager = NetworkManager.getInstance();
+        try {
+            dataBase = new DataBase();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage() + " AAAA!");
+        }
+        System.out.println(dataBase);
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
