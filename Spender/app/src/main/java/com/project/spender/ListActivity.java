@@ -44,7 +44,7 @@ public class ListActivity extends AppCompatActivity {
         }
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_checked, itemsList);
+                android.R.layout.simple_list_item_1, itemsList);
         listView = findViewById(R.id.itemsList);
         listView.setAdapter(adapter);
 
@@ -62,6 +62,7 @@ public class ListActivity extends AppCompatActivity {
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
+                v.setText("");
                 System.out.println(itemsList.size() + " " + v.getText());
                 adapter.notifyDataSetChanged();
                 return true;
