@@ -8,12 +8,12 @@ import com.google.gson.annotations.SerializedName;
 public class Receipt {
 
     @SerializedName("operationType")
-//    @/Expose
-    public Integer operationType;
+    @Expose
+    public Long operationType;
 
     @SerializedName("fiscalSign")
     @Expose
-    public Integer fiscalSign;
+    public Long fiscalSign;
 
     @SerializedName("dateTime")
     @Expose
@@ -25,11 +25,11 @@ public class Receipt {
 
     @SerializedName("totalSum")
     @Expose
-    public Integer totalSum;
+    public Long totalSum;
 
     @SerializedName("nds10")
     @Expose
-    public Integer nds10;
+    public Long nds10;
 
     @SerializedName("userInn")
     @Expose
@@ -37,7 +37,7 @@ public class Receipt {
 
     @SerializedName("taxationType")
     @Expose
-    public Integer taxationType;
+    public Long taxationType;
 
     @SerializedName("operator")
     @Expose
@@ -45,7 +45,7 @@ public class Receipt {
 
     @SerializedName("fiscalDocumentNumber")
     @Expose
-    public Integer fiscalDocumentNumber;
+    public Long fiscalDocumentNumber;
 
     @SerializedName("properties")
     @Expose
@@ -53,11 +53,11 @@ public class Receipt {
 
     @SerializedName("receiptCode")
     @Expose
-    public Integer receiptCode;
+    public Long receiptCode;
 
     @SerializedName("requestNumber")
     @Expose
-    public Integer requestNumber;
+    public Long requestNumber;
 
     @SerializedName("user")
     @Expose
@@ -77,7 +77,7 @@ public class Receipt {
 
     @SerializedName("ecashTotalSum")
     @Expose
-    public Integer ecashTotalSum;
+    public Long ecashTotalSum;
 
     @SerializedName("retailPlaceAddress")
     @Expose
@@ -85,10 +85,10 @@ public class Receipt {
 
     @SerializedName("cashTotalSum")
     @Expose
-    public Integer cashTotalSum;
+    public Long cashTotalSum;
 
     @SerializedName("shiftNumber")
     @Expose
-    public Integer shiftNumber;
+    public Long shiftNumber;
 
 }
