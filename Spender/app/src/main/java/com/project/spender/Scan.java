@@ -15,6 +15,7 @@ public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHa
     public void onCreate(Bundle state) {
         super.onCreate(state);
         scannerView = new ZXingScannerView(this);
+        System.out.println(scannerView);
         setContentView(scannerView);
     }
 

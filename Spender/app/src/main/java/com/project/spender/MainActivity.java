@@ -24,6 +24,7 @@ import com.project.spender.fns.api.Item;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.Receipt;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,11 +49,12 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 List<String> scanningResult = parseNumbers(data.getStringExtra("result"));
 
-                String fn = scanningResult.get(2);
-                String fd = scanningResult.get(3);
-                String fp = scanningResult.get(4);
-                String date = scanningResult.get(0);
-                String sum = scanningResult.get(1);
+                final String fn = scanningResult.get(2);
+                final String fd = scanningResult.get(3);
+                final String fp = scanningResult.get(4);
+                final String date = scanningResult.get(0);
+                final String sum = scanningResult.get(1);
+
 
                 System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
 
@@ -62,11 +64,15 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Check check = networkManager.getCheck(fn, fd, fp, date, sum);
+                    Check check = networkManager.getCheck(fn, fd, fp, date, sum);;
                     parseGoodFromCheck(check);
-                } catch (Exception e) {
-                    System.out.println("Error while loading check " + e.getMessage() + " " + e.getCause() + " " + e.getClass());
+                } catch (Throwable e) {
+                    Toast.makeText(this, "Error while loading check " + e.getMessage() +
+                            " " + e.getCause() + " " + e.getClass(), Toast.LENGTH_LONG).show();
                 }
+                Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Cant scan check", Toast.LENGTH_SHORT).show();
             }
         }
     }
