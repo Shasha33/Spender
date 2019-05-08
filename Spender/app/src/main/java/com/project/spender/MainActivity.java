@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.http.HEAD;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button scan;
@@ -47,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Button clear;
     private static TextView textResult;
     private NetworkManager networkManager;
-<<<<<<< HEAD
     protected static ItemsDbHelper dbHelper;
-=======
-    protected static DataBase dataBase;
->>>>>>> workingnt
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -65,11 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 String date = scanningResult.get(0);
                 String sum = scanningResult.get(1);
 
-<<<<<<< HEAD
-                System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
-
-=======
->>>>>>> workingnt
                 try {
                     if (!networkManager.isCheckExist(fn, fd, fp, date, sum)) {
                         Toast.makeText(this, "Check does not exist",
@@ -77,13 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     Check check = networkManager.getCheck(fn, fd, fp, date, sum);
-<<<<<<< HEAD
                     parseGoodFromCheck(check);
-=======
-                    dataBase.parseGoodFromCheck(check);
-                } catch (SQLException e) {
-                    System.out.println("KEK! " + e.getMessage());
->>>>>>> workingnt
                 } catch (Exception e) {
                     System.out.println("Error while loading check " + e.getMessage() + " " + e.getCause() + " " + e.getClass());
                 }
@@ -101,10 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     static protected List<String> parseNumbers(String content) {
         List<String> res = new ArrayList<>();
-<<<<<<< HEAD
         System.out.println(content);
-=======
->>>>>>> workingnt
         for (String i : content.split("[&|=|a-z]")) {
             if (i.length() != 0) {
                 if (i.contains(".")) {
