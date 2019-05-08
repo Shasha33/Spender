@@ -11,12 +11,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-<<<<<<< HEAD
-import com.project.spender.data.ItemsDbHelper;
-import com.project.spender.fns.api.Item;
 
-=======
->>>>>>> workingnt
+import com.project.spender.data.ItemsDbHelper;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,18 +23,15 @@ public class ListActivity extends AppCompatActivity {
     private ListView listView;
     private EditText request;
     private List<String> itemsList;
-<<<<<<< HEAD
+
     private ItemsDbHelper dbHelper;
-=======
-    private DataBase dataBase;
->>>>>>> workingnt
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
-<<<<<<< HEAD
         itemsList = new ArrayList<>();
         dbHelper = MainActivity.dbHelper;
 
@@ -47,16 +40,7 @@ public class ListActivity extends AppCompatActivity {
                 itemsList.add(i.name);
             }
         } catch (Exception e) {
-=======
-        dataBase = MainActivity.dataBase;
 
-        try {
-            itemsList = new ArrayList<>();
-            for (Good i : dataBase.getAll()) {
-                itemsList.add(i.name);
-            }
-        } catch (SQLException e) {
->>>>>>> workingnt
             e.printStackTrace();
             itemsList = new ArrayList<>();
         }
@@ -73,23 +57,15 @@ public class ListActivity extends AppCompatActivity {
                 try {
                     updateList(v.getText().toString());
                 } catch (SQLException e) {
-<<<<<<< HEAD
-                    e.printStackTrace();
-=======
                     System.out.println(e.getMessage());
->>>>>>> workingnt
                     itemsList = new ArrayList<>();
                 }
                 InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
-<<<<<<< HEAD
                 v.setText("");
                 System.out.println(itemsList.size() + " " + v.getText());
-=======
-//                System.out.println(itemsList.size() + " " + v.getText());
->>>>>>> workingnt
                 adapter.notifyDataSetChanged();
                 return true;
             }
@@ -98,11 +74,7 @@ public class ListActivity extends AppCompatActivity {
 
     private void updateList(String ex) throws SQLException {
         itemsList.clear();
-<<<<<<< HEAD
         for (Good i : dbHelper.getAllByName(ex)) {
-=======
-        for (Good i : dataBase.getAllByName(ex)) {
->>>>>>> workingnt
             itemsList.add(i.name);
         }
     }

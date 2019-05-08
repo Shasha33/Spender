@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-<<<<<<< HEAD
 import com.project.spender.data.ItemsDbHelper;
 import com.project.spender.fns.api.Check;
 import com.project.spender.fns.api.Item;
@@ -35,8 +34,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import retrofit2.http.HEAD;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -115,17 +112,6 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-        StrictMode.ThreadPolicy policy =
-                new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-        networkManager = NetworkManager.getInstance();
-        try {
-            dataBase = new DataBase();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage() + " AAAA!");
-        }
-        System.out.println(dataBase);
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
