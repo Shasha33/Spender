@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -25,12 +26,7 @@ import com.project.spender.fns.api.Item;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.Receipt;
 
-=======
-import com.project.spender.fns.api.Check;
-import com.project.spender.fns.api.NetworkManager;
-
 import java.io.IOException;
->>>>>>> workingnt
 import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -44,8 +40,10 @@ import retrofit2.http.HEAD;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button scan;
-    private Button statstic;
+    private ImageButton scan;
+    private ImageButton list;
+    private ImageButton statistics;
+    private ImageButton secret;
     private Button clear;
     private static TextView textResult;
     private NetworkManager networkManager;
@@ -57,11 +55,14 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 List<String> scanningResult = parseNumbers(data.getStringExtra("result"));
 
-                String fn = scanningResult.get(2);
-                String fd = scanningResult.get(3);
-                String fp = scanningResult.get(4);
-                String date = scanningResult.get(0);
-                String sum = scanningResult.get(1);
+                final String fn = scanningResult.get(2);
+                final String fd = scanningResult.get(3);
+                final String fp = scanningResult.get(4);
+                final String date = scanningResult.get(0);
+                final String sum = scanningResult.get(1);
+
+
+                System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
 
                 try {
                     if (!networkManager.isCheckExist(fn, fd, fp, date, sum)) {
@@ -69,11 +70,15 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Check check = networkManager.getCheck(fn, fd, fp, date, sum);
+                    Check check = networkManager.getCheck(fn, fd, fp, date, sum);;
                     parseGoodFromCheck(check);
-                } catch (Exception e) {
-                    System.out.println("Error while loading check " + e.getMessage() + " " + e.getCause() + " " + e.getClass());
+                } catch (Throwable e) {
+                    Toast.makeText(this, "Error while loading check " + e.getMessage() +
+                            " " + e.getCause() + " " + e.getClass(), Toast.LENGTH_LONG).show();
                 }
+                Toast.makeText(this, "Loaded", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Cant scan check", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -139,8 +144,32 @@ public class MainActivity extends AppCompatActivity {
 
         clear = findViewById(R.id.clear);
         scan = findViewById(R.id.scan);
-        statstic = findViewById(R.id.statistic);
+        list = findViewById(R.id.list);
+        statistics = findViewById(R.id.statistics);
         textResult = findViewById(R.id.resultText);
+        secret = findViewById(R.id.secret);
+
+        secret.setOnClickListener(new View.OnClickListener() {
+            int cnt = 0;
+
+            @Override
+            public void onClick(View v) {
+                cnt++;
+                if (cnt % 2 == 1) {
+                    secret.setImageResource(R.drawable.clevercat);
+                } else {
+                    secret.setImageResource(R.drawable.cat);
+                }
+            }
+        });
+
+        statistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Misha molodez",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        statstic.setOnClickListener(new View.OnClickListener() {
+        list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intentShowList = new Intent(MainActivity.this, ListActivity.class);
