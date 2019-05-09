@@ -7,11 +7,11 @@ public class Item {
 
     @SerializedName("sum")
     @Expose
-    public Integer sum;
+    public Long sum;
 
     @SerializedName("price")
     @Expose
-    public Integer price;
+    public Long price;
 
     @SerializedName("name")
     @Expose
@@ -25,18 +25,22 @@ public class Item {
     @Expose
     public Integer nds10;
 
-    /**
-     *  @param sum
-     * @param price
-     * @param name
-     * @param quantity
-     */
-    public Item(Integer sum, Integer price, String name, Double quantity) {
-        super();
+    public Long check_id;
+
+    public Item(String name, Long sum, Long price, Double quantity) {
+        this(name, sum, price, quantity, (long) -1);
+    }
+
+    public Item(String name, Long sum, Long price, Double quantity, Long check_id) {
         this.sum = sum;
         this.price = price;
         this.name = name;
         this.quantity = quantity;
+        this.check_id = check_id;
     }
 
+    @Override
+    public String toString() {
+        return name + " " + sum + " " + price + " " + quantity + " " + check_id;
+    }
 }

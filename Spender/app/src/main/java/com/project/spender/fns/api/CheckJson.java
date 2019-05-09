@@ -3,7 +3,7 @@ package com.project.spender.fns.api;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Check {
+public class CheckJson {
 
     @SerializedName("document")
     @Expose
