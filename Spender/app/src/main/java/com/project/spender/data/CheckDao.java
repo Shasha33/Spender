@@ -29,6 +29,7 @@ public abstract class CheckDao {
     @Transaction
     public void insertCheckWithProducts(CheckWithProducts checkWithProducts) {
         insertCheck(checkWithProducts.getCheck());
+        checkWithProducts.updateCheckId(checkWithProducts.getCheck().getId());
         for (Product product : checkWithProducts.getProducts()) {
             insertProduct(product);
         }
