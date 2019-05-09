@@ -21,15 +21,15 @@ public abstract class CheckDao {
     public abstract List<CheckWithProducts> getAll();
 
     @Insert
-    public abstract void insertCheck(Check check);
+    public abstract long insertCheck(Check check);
 
     @Insert
-    public abstract void insertProduct(Product product);
+    public abstract long insertProduct(Product product);
 
     @Transaction
     public void insertCheckWithProducts(CheckWithProducts checkWithProducts) {
-        insertCheck(checkWithProducts.getCheck());
-        checkWithProducts.updateCheckId(checkWithProducts.getCheck().getId());
+        long newIndex = insertCheck(checkWithProducts.getCheck());
+        checkWithProducts.updateCheckId(newIndex);
         for (Product product : checkWithProducts.getProducts()) {
             insertProduct(product);
         }
