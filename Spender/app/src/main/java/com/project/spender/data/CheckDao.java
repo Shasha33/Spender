@@ -13,8 +13,8 @@ public abstract class CheckDao {
     @Query("SELECT * FROM Product")
     public abstract List<Product> getAllProducts();
 
-    @Query("SELECT * FROM Product")
-    public abstract List<Product> getAllChecks();
+    @Query("SELECT * FROM `Check`")
+    public abstract List<Check> getAllChecks();
 
     @Transaction
     @Query("SELECT * FROM `Check`")
