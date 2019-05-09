@@ -2,6 +2,7 @@ package com.project.spender.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
@@ -18,6 +19,19 @@ public class Check {
     private String shop;
 
     private String date;
+
+    @Ignore
+    public Check(String name, long totalSum, String shop, String date) {
+        this(0, name, totalSum, shop, date);
+    }
+
+    public Check(long id, String name, long totalSum, String shop, String date) {
+        this.id = id;
+        this.name = name;
+        this.totalSum = totalSum;
+        this.shop = shop;
+        this.date = date;
+    }
 
     public String getName() {
         return name;
@@ -58,4 +72,6 @@ public class Check {
     public void setDate(String date) {
         this.date = date;
     }
+
+
 }
