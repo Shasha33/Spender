@@ -8,14 +8,54 @@ import android.arch.persistence.room.PrimaryKey;
 public class Check {
 
     @PrimaryKey(autoGenerate = true)
-    public long id;
+    private long id;
 
-    public String name;
+    private String name;
 
     @ColumnInfo(name = "total_sum")
-    public long totalSum;
+    private long totalSum;
 
-    public String shop;
+    private String shop;
 
-    public String date;
+    private String date;
+
+    public String getName() {
+        return name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getTotalSum() {
+        return totalSum;
+    }
+
+    public void setTotalSum(long totalSum) {
+        this.totalSum = totalSum;
+    }
+
+    public String getShop() {
+        return shop;
+    }
+
+    public void setShop(String shop) {
+        this.shop = shop;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

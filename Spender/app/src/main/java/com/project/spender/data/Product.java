@@ -3,26 +3,76 @@ package com.project.spender.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 
-@Entity(foreignKeys = @ForeignKey(entity =
-        Check.class, parentColumns = "id", childColumns = "check_id"))
+@Entity(foreignKeys =
+            @ForeignKey(entity = Check.class, parentColumns = "id", childColumns = "check_id"),
+        indices = {@Index("check_id")})
 public class Product {
 
     @PrimaryKey(autoGenerate = true)
-    public long id;
+    private long id;
 
-    public String name;
+    private String name;
 
-    public long sum;
+    private long sum;
 
-    public long price;
+    private long price;
 
-    public double quantity;
+    private double quantity;
 
     @ColumnInfo(name = "check_id")
-    public long checkId;
+    private long checkId;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getSum() {
+        return sum;
+    }
+
+    public void setSum(long sum) {
+        this.sum = sum;
+    }
+
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
+        this.price = price;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public long getCheckId() {
+        return checkId;
+    }
+
+    public void setCheckId(long checkId) {
+        this.checkId = checkId;
+    }
 
     @Override
     public String toString() {
