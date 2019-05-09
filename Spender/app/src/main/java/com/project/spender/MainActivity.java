@@ -4,36 +4,23 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.net.Uri;
 import android.os.StrictMode;
-import android.service.notification.StatusBarNotification;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.project.spender.data.ItemsDbHelper;
-import com.project.spender.fns.api.Check;
+import com.project.spender.fns.api.CheckJson;
 import com.project.spender.fns.api.Item;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.Receipt;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     if (!networkManager.isCheckExist(fn, fd, fp, date, sum)) {
-                        Toast.makeText(this, "Check does not exist",
+                        Toast.makeText(this, "CheckJson does not exist",
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
-                    Check check = networkManager.getCheck(fn, fd, fp, date, sum);;
-                    parseGoodFromCheck(check);
+                    CheckJson checkJson = networkManager.getCheck(fn, fd, fp, date, sum);;
+                    parseGoodFromCheck(checkJson);
                 } catch (Throwable e) {
                     Toast.makeText(this, "Error while loading check " + e.getMessage() +
                             " " + e.getCause() + " " + e.getClass(), Toast.LENGTH_LONG).show();
@@ -80,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void parseGoodFromCheck(Check check) {
-        Receipt receipt = check.getData();
+    public void parseGoodFromCheck(CheckJson checkJson) {
+        Receipt receipt = checkJson.getData();
         System.out.println(receipt.dateTime);
         for (Item item : receipt.items) {
             dbHelper.insertItem(item.name, receipt.dateTime, item.price, receipt.retailPlaceAddress);

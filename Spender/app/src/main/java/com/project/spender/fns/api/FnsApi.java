@@ -20,8 +20,8 @@ public interface FnsApi {
                                @Query("sum") String sum);
 
     @GET("/v1/inns/*/kkts/*/fss/{fnNum}/tickets/{fdNum}?")
-    Call<Check> getCheck(@Header("Authorization") String loginPassword, @Header("Device-Id") String deviceId, @Header("Device-OS") String deviceOs, @Path("fnNum") String fn, @Path("fdNum") String fd,
-                        @Query("fiscalSign") String fiscalSign, @Query("sendToEmail") String yesOrNo);
+    Call<CheckJson> getCheck(@Header("Authorization") String loginPassword, @Header("Device-Id") String deviceId, @Header("Device-OS") String deviceOs, @Path("fnNum") String fn, @Path("fdNum") String fd,
+                             @Query("fiscalSign") String fiscalSign, @Query("sendToEmail") String yesOrNo);
 
     @GET("/v1/mobile/users/login")
     Call<Void> login(@Header("Authorization") String loginPassword);
