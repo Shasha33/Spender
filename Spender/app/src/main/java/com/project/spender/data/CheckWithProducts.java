@@ -1,9 +1,12 @@
 package com.project.spender.data;
 
 import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Relation;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CheckWithProducts {
 
@@ -12,6 +15,16 @@ public class CheckWithProducts {
 
     @Relation(parentColumn = "id", entityColumn = "check_id")
     private List<Product> products;
+
+    public CheckWithProducts(Check check) {
+        this(check, new ArrayList<Product>());
+    }
+
+    @Ignore
+    public CheckWithProducts(Check check, List<Product> products) {
+        this.check = check;
+        this.products = products;
+    }
 
     public Check getCheck() {
         return check;
@@ -34,5 +47,19 @@ public class CheckWithProducts {
         for (Product product : products) {
             product.setCheckId(newId);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CheckWithProducts that = (CheckWithProducts) o;
+        return Objects.equals(check, that.check) &&
+                Objects.equals(products, that.products);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(check, products);
     }
 }
