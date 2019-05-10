@@ -49,5 +49,7 @@ public class NetworkManagerTestInstrumental {
         });
 
         latch.await();
+
+        assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", liveData.getValue().getCheckJson().getData().items.get(0).name);
     }
 }
