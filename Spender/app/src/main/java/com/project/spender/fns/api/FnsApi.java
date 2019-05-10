@@ -1,6 +1,6 @@
 package com.project.spender.fns.api;
 
-import com.project.spender.fns.api.data.CheckJson;
+import com.project.spender.fns.api.data.Json.CheckJson;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,7 +1,11 @@
 package com.project.spender.fns.api.data;
 
+import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.exception.NetworkException;
 
+/**
+ * Класс для отображения статуса запроса и возврашения результата или исключения.
+ */
 public class CheckJsonWithStatus {
 
     private CheckJson checkJson;

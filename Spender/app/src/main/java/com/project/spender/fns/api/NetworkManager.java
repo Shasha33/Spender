@@ -2,9 +2,8 @@ package com.project.spender.fns.api;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.net.Network;
 
-import com.project.spender.fns.api.data.CheckJson;
+import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.exception.NetworkException;
@@ -123,12 +122,14 @@ public class NetworkManager {
                                                        final String fiscalSign, String date, String sum) {
 
         final MutableLiveData<CheckJsonWithStatus> liveData = new MutableLiveData<>();
+        liveData.postValue(new CheckJsonWithStatus(null, Status.SENDING, null));
+
         fns.isCheckExist(fn, fd, fiscalSign, date, sum).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 204) {
                     liveData.postValue(
-                            new CheckJsonWithStatus(null, Status.IS_EXIST, null));
+                            new CheckJsonWithStatus(null, Status.EXIST, null));
 
                     fns.getCheck(loginPassword, "", "",
                             fn, fd, fiscalSign, "no").enqueue(new Callback<CheckJson>() {

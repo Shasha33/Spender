@@ -1,4 +1,4 @@
-package com.project.spender.fns.api.data;
+package com.project.spender.fns.api.data.Json;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

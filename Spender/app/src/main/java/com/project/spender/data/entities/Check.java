@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.project.spender.fns.api.data.CheckJson;
+import com.project.spender.fns.api.data.Json.CheckJson;
 
 import java.util.Objects;
 

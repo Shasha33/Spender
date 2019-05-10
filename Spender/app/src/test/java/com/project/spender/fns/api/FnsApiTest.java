@@ -1,8 +1,7 @@
 package com.project.spender.fns.api;
 
-import com.project.spender.fns.api.data.CheckJson;
+import com.project.spender.fns.api.data.Json.CheckJson;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -7,7 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.project.spender.fns.api.data.Item;
+import com.project.spender.fns.api.data.Json.Item;
 
 import java.util.Objects;
 

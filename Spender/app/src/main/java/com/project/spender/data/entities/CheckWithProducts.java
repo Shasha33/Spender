@@ -4,8 +4,8 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Relation;
 
-import com.project.spender.fns.api.data.CheckJson;
-import com.project.spender.fns.api.data.Item;
+import com.project.spender.fns.api.data.Json.CheckJson;
+import com.project.spender.fns.api.data.Json.Item;
 
 import java.util.ArrayList;
 import java.util.List;
