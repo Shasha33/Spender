@@ -1,15 +1,28 @@
 package com.project.spender.fns.api;
 
-import com.project.spender.fns.api.exception.NetworkException;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
+import android.support.annotation.Nullable;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.project.spender.fns.api.data.CheckJsonWithStatus;
+import com.project.spender.fns.api.data.Status;
+import com.project.spender.fns.api.exception.NetworkException;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.runner.RunWith;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class NetworkManagerTest {
+
+public class NetworkManagerTest {
     private String fn1;
     private String fd1;
     private String fiscalSign1;
@@ -22,8 +35,11 @@ class NetworkManagerTest {
     private String date2;
     private String sum2;
 
-    @BeforeEach
-    void init() {
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+
+    @Before
+    public void init() {
         fn1 = "9286000100242530";
         fd1 = "27641";
         fiscalSign1 = "124643923";
@@ -38,62 +54,32 @@ class NetworkManagerTest {
     }
 
     @Test
-    void isCheckExistTrue1() throws IOException {
-        assertEquals(204, NetworkManager.getInstance().isCheckExistCodeSync(fn1, fd1, fiscalSign1, date1, sum1));
+    public void isCheckExistTrue1() throws IOException {
+        assertEquals(204, NetworkManager.getInstance()
+                .isCheckExistCodeSync(fn1, fd1, fiscalSign1, date1, sum1));
     }
 
     @Test
-    void isCheckExistTrue2() throws IOException {
-        assertEquals(204, NetworkManager.getInstance().isCheckExistCodeSync(fn2, fd2, fiscalSign2, date2, sum2));
+    public void isCheckExistTrue2() throws IOException {
+        assertEquals(204, NetworkManager.getInstance()
+                .isCheckExistCodeSync(fn2, fd2, fiscalSign2, date2, sum2));
     }
 
     @Test
-    void isCheckExistFalse() throws IOException {
-        assertNotEquals(204, NetworkManager.getInstance().isCheckExistCodeSync(fn1, fd1, fiscalSign1 + "0", date1, sum1));
+    public void isCheckExistFalse() throws IOException {
+        assertNotEquals(204, NetworkManager.getInstance()
+                .isCheckExistCodeSync(fn1, fd1, fiscalSign1 + "0", date1, sum1));
     }
 
     @Test
-    void getCheck1() throws IOException, NetworkException {
+    public void getCheck1() throws IOException, NetworkException {
         assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", NetworkManager.getInstance()
                 .getCheckSync(fn1, fd1, fiscalSign1, date1, sum1).getData().items.get(0).name);
     }
 
     @Test
-    void getCheck2() throws IOException, NetworkException {
+    public void getCheck2() throws IOException, NetworkException {
         assertEquals("1:3305976 Пакет ПЕРЕКРЕСТОК майка 65х40см", NetworkManager.getInstance()
                 .getCheckSync(fn2, fd2, fiscalSign2, date2, sum2).getData().items.get(0).name);
-    }
-
-    @Test
-    void getLiveDataTest() throws InterruptedException {
-
-        final CountDownLatch latch = new CountDownLatch(0);
-        MutableLiveData<Integer> liveData = new MutableLiveData<>();
-
-
-        liveData.observeForever((i) -> latch.countDown());
-        liveData.postValue(1);
-
-        latch.await();
-    }
-
-    @Test
-    void getCheckAsyncSimpleTest() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        LiveData<CheckJsonWithStatus> liveData = NetworkManager.getInstance()
-                .getCheckAsync(fn1, fd1, fiscalSign1, date1, sum1);
-
-
-        liveData.observeForever(new Observer<CheckJsonWithStatus>() {
-            @Override
-            public void onChanged(@Nullable CheckJsonWithStatus checkJsonWithStatus) {
-                if (checkJsonWithStatus != null && checkJsonWithStatus.getStatus() == Status.SUCCESS) {
-                    latch.countDown();
-                }
-            }
-        });
-
-        latch.await();
     }
 }

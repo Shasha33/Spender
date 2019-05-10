@@ -64,33 +64,36 @@ public class NetworkManager {
     }
 
     public LiveData<CheckJsonWithStatus> getCheckAsync(final String fn, final String fd,
-                                                       final String fiscalSign, String date, String sum)
-            throws NetworkException, IOException {
+                                                       final String fiscalSign, String date, String sum) {
 
         final MutableLiveData<CheckJsonWithStatus> liveData = new MutableLiveData<>();
         fns.isCheckExist(fn, fd, fiscalSign, date, sum).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 204) {
-                    try {
-                        liveData.postValue(
-                                new CheckJsonWithStatus(null, Status.IS_EXIST, null));
+                    liveData.postValue(
+                            new CheckJsonWithStatus(null, Status.IS_EXIST, null));
 
-                        Response<CheckJson> res = fns.getCheck(loginPassword, "", "",
-                                fn, fd, fiscalSign, "no").execute();
+                    fns.getCheck(loginPassword, "", "",
+                            fn, fd, fiscalSign, "no").enqueue(new Callback<CheckJson>() {
+                        @Override
+                        public void onResponse(Call<CheckJson> call, Response<CheckJson> response) {
+                            if (response.code() == 200) {
+                                liveData.postValue(new CheckJsonWithStatus(response.body(), Status.SUCCESS, null));
+                            } else {
+                                liveData.postValue(new CheckJsonWithStatus(
+                                        null, Status.ERROR,
+                                        new NetworkException("Check is exist, but getCheck return code " + response.code() , response.code())));
+                            }
+                        }
 
-                        if (res.code() == 200) {
-                            liveData.postValue(new CheckJsonWithStatus(res.body(), Status.SUCCESS, null));
-                        } else {
+                        @Override
+                        public void onFailure(Call<CheckJson> call, Throwable t) {
                             liveData.postValue(new CheckJsonWithStatus(
                                     null, Status.ERROR,
-                                    new NetworkException("Check is exist, but getCheck return code " + res.code() , res.code())));
+                                    new NetworkException(t)));
                         }
-                    } catch (IOException e) {
-                        liveData.postValue(new CheckJsonWithStatus(
-                                null, Status.ERROR,
-                                new NetworkException(e)));
-                    }
+                    });
                 }
             }
 
