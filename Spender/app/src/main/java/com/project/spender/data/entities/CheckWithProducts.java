@@ -1,4 +1,4 @@
-package com.project.spender.data;
+package com.project.spender.data.entities;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Ignore;

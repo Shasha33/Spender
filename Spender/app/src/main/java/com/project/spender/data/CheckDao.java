@@ -5,6 +5,10 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 
+import com.project.spender.data.entities.Check;
+import com.project.spender.data.entities.CheckWithProducts;
+import com.project.spender.data.entities.Product;
+
 import java.util.List;
 
 @Dao
