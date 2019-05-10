@@ -39,17 +39,17 @@ class NetworkManagerTest {
 
     @Test
     void isCheckExistTrue1() throws IOException {
-        assertEquals(204, NetworkManager.getInstance().isCheckExistSync(fn1, fd1, fiscalSign1, date1, sum1));
+        assertEquals(204, NetworkManager.getInstance().isCheckExistCodeSync(fn1, fd1, fiscalSign1, date1, sum1));
     }
 
     @Test
     void isCheckExistTrue2() throws IOException {
-        assertEquals(204, NetworkManager.getInstance().isCheckExistSync(fn2, fd2, fiscalSign2, date2, sum2));
+        assertEquals(204, NetworkManager.getInstance().isCheckExistCodeSync(fn2, fd2, fiscalSign2, date2, sum2));
     }
 
     @Test
     void isCheckExistFalse() throws IOException {
-        assertNotEquals(204, NetworkManager.getInstance().isCheckExistSync(fn1, fd1, fiscalSign1 + "0", date1, sum1));
+        assertNotEquals(204, NetworkManager.getInstance().isCheckExistCodeSync(fn1, fd1, fiscalSign1 + "0", date1, sum1));
     }
 
     @Test

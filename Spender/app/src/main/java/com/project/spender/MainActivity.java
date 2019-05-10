@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
 //
 //                try {
-//                    if (!networkManager.isCheckExistSync(fn, fd, fp, date, sum)) {
+//                    if (!networkManager.isCheckExistCodeSync(fn, fd, fp, date, sum)) {
 //                        Toast.makeText(this, "CheckJson does not exist",
 //                                Toast.LENGTH_LONG).show();
 //                        return;
