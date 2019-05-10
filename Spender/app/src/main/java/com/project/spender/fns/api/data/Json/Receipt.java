@@ -1,4 +1,4 @@
-package com.project.spender.fns.api.data;
+package com.project.spender.fns.api.data.Json;
 
 
 import java.util.List;

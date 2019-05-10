@@ -4,6 +4,9 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Relation;
 
+import com.project.spender.fns.api.data.Json.CheckJson;
+import com.project.spender.fns.api.data.Json.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +30,14 @@ public class CheckWithProducts {
     public CheckWithProducts(Check check, List<Product> products) {
         this.check = check;
         this.products = products;
+    }
+
+    public CheckWithProducts(CheckJson checkJson) {
+        check = new Check(checkJson);
+        products = new ArrayList<>();
+        for (Item item : checkJson.getData().items) {
+            products.add(new Product(item));
+        }
     }
 
     public Check getCheck() {

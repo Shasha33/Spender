@@ -1,22 +1,34 @@
 package com.project.spender.fns.api;
 
-import com.project.spender.fns.api.data.CheckJson;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
+import com.project.spender.fns.api.data.Json.CheckJson;
+import com.project.spender.fns.api.data.CheckJsonWithStatus;
+import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.exception.NetworkException;
 
 import java.io.IOException;
 
 import okhttp3.Credentials;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Класс реализующий общение с сетью. Является синглтоном.
+ *
+ * (todo) нужно допилить запросы регистрации.
+ */
 public class NetworkManager {
-    private Retrofit retrofit;
     private FnsApi fns;
     private String loginPassword;
 
     private NetworkManager() {
-        retrofit = new Retrofit.Builder()
+        //Базовая часть адреса
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://proverkacheka.nalog.ru:9999") //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()).build(); //Конвертер, необходимый для преобразования JSON'а в объекты
         fns = retrofit.create(FnsApi.class);
@@ -27,30 +39,128 @@ public class NetworkManager {
         private static NetworkManager instance = new NetworkManager();
     }
 
+    /**
+     * Возвращает синглтон. Создает его, если это первый вызов.
+     *
+     * @return инстанс синглтона.
+     */
     public static NetworkManager getInstance() {
         return NetworkManagerHolder.instance;
     }
 
-    public int isCheckExistSync(String fn, String fd, String fiscalSign, String date, String sum)
+    /**
+     * Проверяет существование чека через ФНС. Является синхронизованным, поэтому по умолчанию нельзя запускать из main потока.
+     *
+     * @param fn Номер ФН (Фискальный Номер) — 16-значный номер. Например 8710000100518392.
+     * @param fd Номер ФД (Фискальный документ) — до 10 знаков. Например 54812.
+     * @param fiscalSign Номер ФПД (Фискальный Признак Документа, также известный как ФП) — до 10 знаков. Например 3522207165.
+     * @param date Дата — дата с чека. Формат может отличаться.
+     * @param sum Сумма — сумма с чека в копейках.
+     *
+     * @return Код ответа. 204 -- OK, 406 -- не нашел, остальное хз.
+     *
+     * @throws IOException кидается, при проблемах соединения с сервером.
+     */
+    public int isCheckExistCodeSync(String fn, String fd, String fiscalSign, String date, String sum)
             throws IOException {
-        Response res = fns.isCheckExist(fn, fd, fiscalSign, date, sum).execute();
-        return res.code();
+
+        return fns.isCheckExist(fn, fd, fiscalSign, date, sum).execute().code();
     }
 
+    /**
+     *  Получает чек из ФНС и возвращает в виде объекта CheckJson.
+     *  Является синхронизованным, поэтому по умолчанию нельзя запускать из main потока.
+     *  Внутри себя делает isCheckExistCodeSync.
+     *
+     *  (todo) нужно добавить логин и пароль
+     *
+     * @param fn Номер ФН (Фискальный Номер) — 16-значный номер. Например 8710000100518392.
+     * @param fd Номер ФД (Фискальный документ) — до 10 знаков. Например 54812.
+     * @param fiscalSign Номер ФПД (Фискальный Признак Документа, также известный как ФП) — до 10 знаков. Например 3522207165.
+     * @param date Дата — дата с чека. Формат может отличаться.
+     * @param sum Сумма — сумма с чека в копейках.
+     *
+     * @return чек в виде CheckJson.
+     *
+     * @throws IOException кидается, при проблемах соединения с сервером.
+     * @throws NetworkException кидается, если ответа не ОК (код можно получить .getCode()).
+     */
     public CheckJson getCheckSync(String fn, String fd, String fiscalSign, String date, String sum)
             throws IOException, NetworkException {
-        int responseCode = isCheckExistSync(fn, fd, fiscalSign, date, sum);
-        if (responseCode == 204) {
+
+        int responseCode = isCheckExistCodeSync(fn, fd, fiscalSign, date, sum);
+        if (responseCode != 204) {
             throw new NetworkException("isException return " + responseCode, responseCode);
         }
 
         Response<CheckJson> res = fns.getCheck(loginPassword, "", "",
                 fn, fd, fiscalSign, "no").execute();
 
-        responseCode = res.code();
-        if (responseCode != 200) {
-            throw new NetworkException("Check is exist, but getCheck return code " + responseCode , responseCode);
+        if (res.code() != 200) {
+            throw new NetworkException("Check is exist, but getCheck return code " + res.code() , res.code());
         }
         return res.body();
+    }
+
+    /**
+     * Венец творения.
+     * Асинхронное получение чека. Внутри себя делает асинхронную проверку существования чека.
+     * Следить за ходом вычисления можно с помощью LiveData<CheckJsonWithStatus> (тупой пример в androidTest/...).
+     *
+     *  (todo) нужно добавить логин и пароль
+     *
+     * @param fn Номер ФН (Фискальный Номер) — 16-значный номер. Например 8710000100518392.
+     * @param fd Номер ФД (Фискальный документ) — до 10 знаков. Например 54812.
+     * @param fiscalSign Номер ФПД (Фискальный Признак Документа, также известный как ФП) — до 10 знаков. Например 3522207165.
+     * @param date Дата — дата с чека. Формат может отличаться.
+     * @param sum Сумма — сумма с чека в копейках.
+     *
+     * @return Объект типа LiveData<CheckJsonWithStatus>. Позволяет узнать текущее состояние получения.
+     * Есть возможность подписки. Также хранит исключение прервавшее работу.
+     */
+    public LiveData<CheckJsonWithStatus> getCheckAsync(final String fn, final String fd,
+                                                       final String fiscalSign, String date, String sum) {
+
+        final MutableLiveData<CheckJsonWithStatus> liveData = new MutableLiveData<>();
+        liveData.postValue(new CheckJsonWithStatus(null, Status.SENDING, null));
+
+        fns.isCheckExist(fn, fd, fiscalSign, date, sum).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 204) {
+                    liveData.postValue(
+                            new CheckJsonWithStatus(null, Status.EXIST, null));
+
+                    fns.getCheck(loginPassword, "", "",
+                            fn, fd, fiscalSign, "no").enqueue(new Callback<CheckJson>() {
+                        @Override
+                        public void onResponse(Call<CheckJson> call, Response<CheckJson> response) {
+                            if (response.code() == 200) {
+                                liveData.postValue(new CheckJsonWithStatus(response.body(), Status.SUCCESS, null));
+                            } else {
+                                liveData.postValue(new CheckJsonWithStatus(
+                                        null, Status.ERROR,
+                                        new NetworkException("Check is exist, but getCheck return code " + response.code() , response.code())));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CheckJson> call, Throwable t) {
+                            liveData.postValue(new CheckJsonWithStatus(
+                                    null, Status.ERROR,
+                                    new NetworkException(t)));
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                liveData.postValue(new CheckJsonWithStatus(
+                        null, Status.ERROR,
+                        new NetworkException(t)));
+            }
+        });
+        return liveData;
     }
 }

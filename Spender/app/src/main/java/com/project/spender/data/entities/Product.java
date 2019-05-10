@@ -7,6 +7,8 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.project.spender.fns.api.data.Json.Item;
+
 import java.util.Objects;
 
 
@@ -44,6 +46,10 @@ public class Product {
         this.price = price;
         this.quantity = quantity;
         this.checkId = checkId;
+    }
+
+    public Product(Item item) {
+        this(item.name, item.sum, item.price, item.quantity, 0);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.project.spender.fns.api;
 
-import com.project.spender.fns.api.data.CheckJson;
+import com.project.spender.fns.api.data.Json.CheckJson;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static junit.framework.TestCase.assertTrue;
+
 
 class FnsApiTest {
     private Retrofit retrofit;

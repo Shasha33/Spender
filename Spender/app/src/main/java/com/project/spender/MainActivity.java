@@ -16,9 +16,6 @@ import android.widget.Toast;
 import com.project.spender.data.AppDatabase;
 import com.project.spender.data.DatabaseHolder;
 import com.project.spender.fns.api.NetworkManager;
-import com.project.spender.fns.api.data.CheckJson;
-import com.project.spender.fns.api.data.Item;
-import com.project.spender.fns.api.data.Receipt;
 
 import java.util.ArrayList;
 import java.util.List;

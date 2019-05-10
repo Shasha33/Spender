@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.project.spender.fns.api.data.Json.CheckJson;
+
 import java.util.Objects;
 
 /**
@@ -36,6 +38,10 @@ public class Check {
         this.totalSum = totalSum;
         this.shop = shop;
         this.date = date;
+    }
+
+    public Check(CheckJson checkJson) {
+        this("Unnamed", checkJson.getData().totalSum, checkJson.getData().user, checkJson.getData().dateTime);
     }
 
     @Override
