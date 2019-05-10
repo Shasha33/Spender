@@ -13,10 +13,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.spender.fns.api.CheckJson;
-import com.project.spender.fns.api.Item;
+import com.project.spender.data.AppDatabase;
+import com.project.spender.data.DatabaseHolder;
 import com.project.spender.fns.api.NetworkManager;
-import com.project.spender.fns.api.Receipt;
+import com.project.spender.fns.api.data.CheckJson;
+import com.project.spender.fns.api.data.Item;
+import com.project.spender.fns.api.data.Receipt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton secret;
     private Button clear;
     private static TextView textResult;
+    private AppDatabase dbManager;
     private NetworkManager networkManager;
 
     @Override
@@ -47,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
 
                 try {
-                    if (!networkManager.isCheckExist(fn, fd, fp, date, sum)) {
+                    if (networkManager.isCheckExistSync(fn, fd, fp, date, sum) == 0) {
                         Toast.makeText(this, "CheckJson does not exist",
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
-                    CheckJson checkJson = networkManager.getCheck(fn, fd, fp, date, sum);;
+                    CheckJson checkJson = networkManager.getCheckSync(fn, fd, fp, date, sum);;
                     parseGoodFromCheck(checkJson);
                 } catch (Throwable e) {
                     Toast.makeText(this, "Error while loading check " + e.getMessage() +
@@ -68,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
     public void parseGoodFromCheck(CheckJson checkJson) {
         Receipt receipt = checkJson.getData();
         System.out.println(receipt.dateTime);
-        for (Item item : receipt.items) {
-            dbHelper.insertItem(item.name, receipt.dateTime, item.price, receipt.retailPlaceAddress);
-        }
+//        for (Item item : receipt.items) {
+//            dbHelper.insertItem(item.name, receipt.dateTime, item.price, receipt.retailPlaceAddress);
+//        }
+
     }
 
     static protected List<String> parseNumbers(String content) {
@@ -104,14 +108,13 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        networkManager = NetworkManager.getInstance();
 
         StrictMode.ThreadPolicy policy =
                 new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        networkManager = NetworkManager.getInstance();
-
-        dbHelper = new ItemsDbHelper(this);
+        dbManager = DatabaseHolder.getDatabase(MainActivity.this);
 
         clear = findViewById(R.id.clear);
         scan = findViewById(R.id.scan);
