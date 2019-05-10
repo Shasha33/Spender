@@ -1,5 +1,7 @@
 package com.project.spender.fns.api;
 
+import com.project.spender.fns.api.data.CheckJson;
+
 import java.io.IOException;
 
 import okhttp3.Credentials;
