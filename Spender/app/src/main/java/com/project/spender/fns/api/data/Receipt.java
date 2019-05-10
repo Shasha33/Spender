@@ -1,4 +1,4 @@
-package com.project.spender.fns.api;
+package com.project.spender.fns.api.data;
 
 
 import java.util.List;
@@ -9,11 +9,11 @@ public class Receipt {
 
     @SerializedName("operationType")
     @Expose
-    public Long operationType;
+    public long operationType;
 
     @SerializedName("fiscalSign")
     @Expose
-    public Long fiscalSign;
+    public long fiscalSign;
 
     @SerializedName("dateTime")
     @Expose
@@ -25,11 +25,11 @@ public class Receipt {
 
     @SerializedName("totalSum")
     @Expose
-    public Long totalSum;
+    public long totalSum;
 
     @SerializedName("nds10")
     @Expose
-    public Long nds10;
+    public long nds10;
 
     @SerializedName("userInn")
     @Expose
@@ -37,7 +37,7 @@ public class Receipt {
 
     @SerializedName("taxationType")
     @Expose
-    public Long taxationType;
+    public long taxationType;
 
     @SerializedName("operator")
     @Expose
@@ -45,7 +45,7 @@ public class Receipt {
 
     @SerializedName("fiscalDocumentNumber")
     @Expose
-    public Long fiscalDocumentNumber;
+    public long fiscalDocumentNumber;
 
     @SerializedName("properties")
     @Expose
@@ -53,11 +53,11 @@ public class Receipt {
 
     @SerializedName("receiptCode")
     @Expose
-    public Long receiptCode;
+    public long receiptCode;
 
     @SerializedName("requestNumber")
     @Expose
-    public Long requestNumber;
+    public long requestNumber;
 
     @SerializedName("user")
     @Expose
@@ -77,7 +77,7 @@ public class Receipt {
 
     @SerializedName("ecashTotalSum")
     @Expose
-    public Long ecashTotalSum;
+    public long ecashTotalSum;
 
     @SerializedName("retailPlaceAddress")
     @Expose
@@ -85,10 +85,10 @@ public class Receipt {
 
     @SerializedName("cashTotalSum")
     @Expose
-    public Long cashTotalSum;
+    public long cashTotalSum;
 
     @SerializedName("shiftNumber")
     @Expose
-    public Long shiftNumber;
+    public long shiftNumber;
 
 }

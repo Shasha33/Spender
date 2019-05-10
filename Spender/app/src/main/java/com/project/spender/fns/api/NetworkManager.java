@@ -1,5 +1,8 @@
 package com.project.spender.fns.api;
 
+import com.project.spender.fns.api.data.CheckJson;
+import com.project.spender.fns.api.exception.NetworkException;
+
 import java.io.IOException;
 
 import okhttp3.Credentials;
@@ -28,19 +31,26 @@ public class NetworkManager {
         return NetworkManagerHolder.instance;
     }
 
-    public boolean isCheckExist(String fn, String fd, String fiscalSign, String date, String sum)
+    public int isCheckExistSync(String fn, String fd, String fiscalSign, String date, String sum)
             throws IOException {
         Response res = fns.isCheckExist(fn, fd, fiscalSign, date, sum).execute();
-        return res.code() == 204;
+        return res.code();
     }
 
-    public CheckJson getCheck(String fn, String fd, String fiscalSign, String date, String sum)
-            throws IOException {
-        if (!isCheckExist(fn, fd, fiscalSign, date, sum)) {
-            return null;
+    public CheckJson getCheckSync(String fn, String fd, String fiscalSign, String date, String sum)
+            throws IOException, NetworkException {
+        int responseCode = isCheckExistSync(fn, fd, fiscalSign, date, sum);
+        if (responseCode == 204) {
+            throw new NetworkException("isException return " + responseCode, responseCode);
         }
+
         Response<CheckJson> res = fns.getCheck(loginPassword, "", "",
                 fn, fd, fiscalSign, "no").execute();
+
+        responseCode = res.code();
+        if (responseCode != 200) {
+            throw new NetworkException("Check is exist, but getCheck return code " + responseCode , responseCode);
+        }
         return res.body();
     }
 }

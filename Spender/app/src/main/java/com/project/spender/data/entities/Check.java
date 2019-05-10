@@ -1,10 +1,15 @@
-package com.project.spender.data;
+package com.project.spender.data.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Objects;
+
+/**
+ * Класс описывающий чек и его представление в бд.
+ */
 @Entity
 public class Check {
 
@@ -31,6 +36,22 @@ public class Check {
         this.totalSum = totalSum;
         this.shop = shop;
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Check check = (Check) o;
+        return totalSum == check.totalSum &&
+                Objects.equals(name, check.name) &&
+                Objects.equals(shop, check.shop) &&
+                Objects.equals(date, check.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, totalSum, shop, date);
     }
 
     public String getName() {
