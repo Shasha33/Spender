@@ -11,4 +11,8 @@ public class NetworkException extends Exception {
         super(message);
         this.code = code;
     }
+
+    public NetworkException(Throwable cause) {
+        super(cause);
+    }
 }
