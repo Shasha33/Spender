@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Класс описывающий чек c товарами и его взаимоотношение с таблицами в бд.
+ */
 public class CheckWithProducts {
 
     @Embedded

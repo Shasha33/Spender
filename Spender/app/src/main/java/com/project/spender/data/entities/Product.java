@@ -10,6 +10,9 @@ import android.arch.persistence.room.PrimaryKey;
 import java.util.Objects;
 
 
+/**
+ * Класс описывающий товар и его представление в бд.
+ */
 @Entity(foreignKeys =
             @ForeignKey(entity = Check.class, parentColumns = "id", childColumns = "check_id"),
         indices = {@Index("check_id")})

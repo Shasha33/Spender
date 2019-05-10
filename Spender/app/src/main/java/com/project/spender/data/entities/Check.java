@@ -7,6 +7,9 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Objects;
 
+/**
+ * Класс описывающий чек и его представление в бд.
+ */
 @Entity
 public class Check {
 
