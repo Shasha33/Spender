@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -32,6 +36,9 @@ dependencies {
     // junit 4
     testImplementation "junit:junit:4.12"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.3.2"
+
+    // rule fo tests
+    testImplementation "androidx.arch.core:core-testing:2.0.1"
 
     // androidX for testing
     androidTestImplementation 'androidx.test:core:1.1.0'
