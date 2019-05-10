@@ -37,12 +37,12 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
 //
 //                try {
-//                    if (!networkManager.isCheckExist(fn, fd, fp, date, sum)) {
+//                    if (!networkManager.isCheckExistSync(fn, fd, fp, date, sum)) {
 //                        Toast.makeText(this, "CheckJson does not exist",
 //                                Toast.LENGTH_LONG).show();
 //                        return;
 //                    }
-//                    CheckJson checkJson = networkManager.getCheck(fn, fd, fp, date, sum);;
+//                    CheckJson checkJson = networkManager.getCheckSync(fn, fd, fp, date, sum);;
 //                    parseGoodFromCheck(checkJson);
 //                } catch (Throwable e) {
 //                    Toast.makeText(this, "Error while loading check " + e.getMessage() +

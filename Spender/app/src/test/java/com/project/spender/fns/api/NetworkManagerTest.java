@@ -37,28 +37,28 @@ class NetworkManagerTest {
 
     @Test
     void isCheckExistTrue1() throws IOException {
-        assertTrue(NetworkManager.getInstance().isCheckExist(fn1, fd1, fiscalSign1, date1, sum1));
+        assertTrue(NetworkManager.getInstance().isCheckExistSync(fn1, fd1, fiscalSign1, date1, sum1));
     }
 
     @Test
     void isCheckExistTrue2() throws IOException {
-        assertTrue(NetworkManager.getInstance().isCheckExist(fn2, fd2, fiscalSign2, date2, sum2));
+        assertTrue(NetworkManager.getInstance().isCheckExistSync(fn2, fd2, fiscalSign2, date2, sum2));
     }
 
     @Test
     void isCheckExistFalse() throws IOException {
-        assertFalse(NetworkManager.getInstance().isCheckExist(fn1, fd1, fiscalSign1 + "0", date1, sum1));
+        assertFalse(NetworkManager.getInstance().isCheckExistSync(fn1, fd1, fiscalSign1 + "0", date1, sum1));
     }
 
     @Test
     void getCheck1() throws IOException {
         assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", NetworkManager.getInstance()
-                .getCheck(fn1, fd1, fiscalSign1, date1, sum1).getData().items.get(0).name);
+                .getCheckSync(fn1, fd1, fiscalSign1, date1, sum1).getData().items.get(0).name);
     }
 
     @Test
     void getCheck2() throws IOException {
         assertEquals("1:3305976 Пакет ПЕРЕКРЕСТОК майка 65х40см", NetworkManager.getInstance()
-                .getCheck(fn2, fd2, fiscalSign2, date2, sum2).getData().items.get(0).name);
+                .getCheckSync(fn2, fd2, fiscalSign2, date2, sum2).getData().items.get(0).name);
     }
 }
