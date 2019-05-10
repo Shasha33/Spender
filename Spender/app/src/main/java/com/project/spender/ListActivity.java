@@ -1,26 +1,25 @@
 package com.project.spender;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.inputmethod.InputMethodManager;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.spender.data.AppDatabase;
-import com.project.spender.data.DatabaseHolder;
 import com.project.spender.data.entities.Product;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.project.spender.data.ItemsDbHelper;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -28,6 +27,9 @@ public class ListActivity extends AppCompatActivity {
     private EditText request;
     private List<String> itemsList;
     private AppDatabase dbManager;
+    private ImageButton scan;
+    private ImageButton list;
+    private ImageButton statistics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,39 @@ public class ListActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
         itemsList = new ArrayList<>();
-        dbManager = DatabaseHolder.getDatabase(ListActivity.this);
+        dbManager = ChecksRoller.getInstance(this).getAppDatabase();
+
+        scan = findViewById(R.id.scan);
+        list = findViewById(R.id.list);
+        statistics = findViewById(R.id.statistics);
+
+        list.setBackgroundColor(Color.argb(40, 255, 0, 0));
+
+        statistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ListActivity.this, "Misha molodez",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intentShowList = new Intent(ListActivity.this, ListActivity.class);
+                startActivity(intentShowList);
+            }
+        });
+
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(ListActivity.this, Scan.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                startActivityForResult(intent, 42);
+            }
+        });
 
         try {
             for (Product i : dbManager.getCheckDao().getAllProducts()) {
@@ -51,6 +85,8 @@ public class ListActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, itemsList);
         listView = findViewById(R.id.itemsList);
         listView.setAdapter(adapter);
+
+
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener(new TextView.OnEditorActionListener() {

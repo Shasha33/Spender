@@ -17,9 +17,6 @@ import com.project.spender.data.AppDatabase;
 import com.project.spender.data.DatabaseHolder;
 import com.project.spender.fns.api.NetworkManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton scan;
@@ -30,64 +27,21 @@ public class MainActivity extends AppCompatActivity {
     private static TextView textResult;
     private AppDatabase dbManager;
     private NetworkManager networkManager;
-
+    private int clickCounter;
+    private final static int MAGICCONST = 10;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        (todo) create constants for request code and fields names
         if (requestCode == 42) {
             if (resultCode == Activity.RESULT_OK) {
-                List<String> scanningResult = parseNumbers(data.getStringExtra("result"));
-
-                final String fn = scanningResult.get(2);
-                final String fd = scanningResult.get(3);
-                final String fp = scanningResult.get(4);
-                final String date = scanningResult.get(0);
-                final String sum = scanningResult.get(1);
-
-
-                System.out.println(fn + " " + fd + " " + fp + " " + date + " " + sum);
-
-                try {
-                    if (networkManager.isCheckExistSync(fn, fd, fp, date, sum) == 0) {
-                        Toast.makeText(this, "CheckJson does not exist",
-                                Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    CheckJson checkJson = networkManager.getCheckSync(fn, fd, fp, date, sum);;
-                    parseGoodFromCheck(checkJson);
-                } catch (Throwable e) {
-                    Toast.makeText(this, "Error while loading check " + e.getMessage() +
-                            " " + e.getCause() + " " + e.getClass(), Toast.LENGTH_LONG).show();
-                }
                 Toast.makeText(this, "Loaded", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Cant scan check", Toast.LENGTH_LONG).show();
             }
         }
     }
+// (todo) move this somewhere
 
-    public void parseGoodFromCheck(CheckJson checkJson) {
-        Receipt receipt = checkJson.getData();
-        System.out.println(receipt.dateTime);
-//        for (Item item : receipt.items) {
-//            dbHelper.insertItem(item.name, receipt.dateTime, item.price, receipt.retailPlaceAddress);
-//        }
-
-    }
-
-    static protected List<String> parseNumbers(String content) {
-        List<String> res = new ArrayList<>();
-        System.out.println(content);
-        for (String i : content.split("[&|=|a-z]")) {
-            if (i.length() != 0) {
-                if (i.contains(".")) {
-                    res.add(i.replace(".", ""));
-                } else {
-                    res.add(i);
-                }
-            }
-        }
-        return res;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        networkManager = NetworkManager.getInstance();
+        networkManager = ChecksRoller.getInstance(this).getNetworkManager();
 
         StrictMode.ThreadPolicy policy =
                 new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -113,22 +67,23 @@ public class MainActivity extends AppCompatActivity {
 
         dbManager = DatabaseHolder.getDatabase(MainActivity.this);
 
-        clear = findViewById(R.id.clear);
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
-        textResult = findViewById(R.id.resultText);
         secret = findViewById(R.id.secret);
 
         secret.setOnClickListener(new View.OnClickListener() {
-            int cnt = 0;
-
             @Override
             public void onClick(View v) {
-                cnt++;
-                if (cnt % 2 == 1) {
+                clickCounter++;
+                if (clickCounter == MAGICCONST) {
                     secret.setImageResource(R.drawable.clevercat);
-                } else {
+                    clickCounter = 0;
+                } else if (clickCounter == MAGICCONST - 2) {
+                    Toast.makeText(MainActivity.this, "ALMOST",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
                     secret.setImageResource(R.drawable.cat);
                 }
             }
@@ -138,15 +93,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Misha molodez",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbHelper.clear();
-                Toast.makeText(MainActivity.this, "All items removed successfully",
                         Toast.LENGTH_LONG).show();
             }
         });
