@@ -63,4 +63,37 @@ class NetworkManagerTest {
         assertEquals("1:3305976 Пакет ПЕРЕКРЕСТОК майка 65х40см", NetworkManager.getInstance()
                 .getCheckSync(fn2, fd2, fiscalSign2, date2, sum2).getData().items.get(0).name);
     }
+
+    @Test
+    void getLiveDataTest() throws InterruptedException {
+
+        final CountDownLatch latch = new CountDownLatch(0);
+        MutableLiveData<Integer> liveData = new MutableLiveData<>();
+
+
+        liveData.observeForever((i) -> latch.countDown());
+        liveData.postValue(1);
+
+        latch.await();
+    }
+
+    @Test
+    void getCheckAsyncSimpleTest() throws InterruptedException {
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        LiveData<CheckJsonWithStatus> liveData = NetworkManager.getInstance()
+                .getCheckAsync(fn1, fd1, fiscalSign1, date1, sum1);
+
+
+        liveData.observeForever(new Observer<CheckJsonWithStatus>() {
+            @Override
+            public void onChanged(@Nullable CheckJsonWithStatus checkJsonWithStatus) {
+                if (checkJsonWithStatus != null && checkJsonWithStatus.getStatus() == Status.SUCCESS) {
+                    latch.countDown();
+                }
+            }
+        });
+
+        latch.await();
+    }
 }
