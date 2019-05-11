@@ -6,9 +6,15 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.project.spender.data.AppDatabase;
+import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
+import com.project.spender.data.entities.Product;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.Json.CheckJson;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 public class ChecksRoller {
 
@@ -39,6 +45,16 @@ public class ChecksRoller {
             checksRoller = new ChecksRoller(context);
         }
         return checksRoller;
+    }
+
+    public void cheese() {
+        Check check = new Check(0, "Typical",300000 , "Auchan", "11.11.1111");
+        Product product1 = new Product("Lambert", 100000, 1000, 100, 0);
+        Product product2 = new Product("Oltermanni", 100000, 1000, 100, 0);
+        Product product3 = new Product("Larec", 100000, 1000, 100, 0);
+
+        appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(check,
+                Arrays.asList(product1, product2, product3)));
     }
 
     public int putCheck(ScanResult result) {

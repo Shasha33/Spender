@@ -36,8 +36,11 @@ public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHa
     @Override
     public void handleResult(Result result) {
         ScanResult scanResult = new ScanResult(result.getText());
-        ChecksRoller.getInstance(getParent().getApplicationContext()).putCheck(scanResult);
-        setResult(Activity.RESULT_OK);
+        if (ChecksRoller.getInstance(getParent()).putCheck(scanResult) != 0) {
+            setResult(Activity.RESULT_CANCELED);
+        } else {
+            setResult(Activity.RESULT_OK);
+        }
         finish();
     }
 }

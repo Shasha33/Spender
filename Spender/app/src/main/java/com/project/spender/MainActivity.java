@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.spender.data.AppDatabase;
-import com.project.spender.data.DatabaseHolder;
 import com.project.spender.fns.api.NetworkManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private NetworkManager networkManager;
     private int clickCounter;
     private final static int MAGICCONST = 10;
+    private Button cheese;
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        (todo) create constants for request code and fields names
@@ -65,12 +68,22 @@ public class MainActivity extends AppCompatActivity {
                 new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        dbManager = DatabaseHolder.getDatabase(MainActivity.this);
+        dbManager = ChecksRoller.getInstance(this).getAppDatabase();
 
+        cheese = findViewById(R.id.cheese);
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
         secret = findViewById(R.id.secret);
+
+        statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
+
+        cheese.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChecksRoller.getInstance(MainActivity.this).cheese();
+            }
+        });
 
         secret.setOnClickListener(new View.OnClickListener() {
             @Override

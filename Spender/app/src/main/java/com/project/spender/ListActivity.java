@@ -48,14 +48,15 @@ public class ListActivity extends AppCompatActivity {
         statistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ListActivity.this, "Misha molodez",
-                        Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(ListActivity.this, "AAAAAAAAA", Toast.LENGTH_SHORT).show();
                 final Intent intentShowList = new Intent(ListActivity.this, ListActivity.class);
                 startActivity(intentShowList);
             }
