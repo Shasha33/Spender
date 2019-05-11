@@ -1,5 +1,6 @@
 package com.project.spender;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,8 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.spender.data.AppDatabase;
+import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,8 @@ public class ListActivity extends AppCompatActivity {
     private ListView listView;
     private EditText request;
     private List<String> itemsList;
+    private List<CheckWithProducts> checkList;
+    static private List<Product> productList;
     private AppDatabase dbManager;
     private ImageButton scan;
     private ImageButton list;
@@ -36,7 +43,11 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
+
         itemsList = new ArrayList<>();
+        checkList = new ArrayList<>();
+        productList = new ArrayList<>();
+
         dbManager = ChecksRoller.getInstance(this).getAppDatabase();
 
         scan = findViewById(R.id.scan);
@@ -73,21 +84,35 @@ public class ListActivity extends AppCompatActivity {
         });
 
         try {
-            for (Product i : dbManager.getCheckDao().getAllProducts()) {
-                itemsList.add(i.getName());
+            for (CheckWithProducts i : dbManager.getCheckDao().getAll()) {
+                checkList.add(i);
+                itemsList.add(i.getCheck().getName());
+
             }
         } catch (Exception e) {
 
             e.printStackTrace();
             itemsList = new ArrayList<>();
+            checkList = new ArrayList<>();
         }
 
+
+// (todo) create my own adapter for pretty view and make it shows checks in correct way
+
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, itemsList);
-        listView = findViewById(R.id.itemsList);
+                R.layout.list_view, itemsList);
+
+        listView = findViewById(R.id.productsList);
         listView.setAdapter(adapter);
-
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                productList.clear();
+                productList.addAll(checkList.get(position).getProducts());
+                Intent intent = new Intent(ListActivity.this, CheckShowActivity.class);
+                startActivity(intent);
+            }
+        });
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -113,9 +138,13 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
+    public static List<Product> getProductList() {
+        return productList;
+    }
+
 //    private void updateList(String ex) throws SQLException {
 //        itemsList.clear();
-//        for (Product i : dbHelper.getAllByName(ex)) {
+//        for (CheckWithProducts i : ChecksRoller.getInstance(this).getAppDatabase().getAllByName(ex)) {
 //            itemsList.add(i.getName());
 //        }
 //    }
