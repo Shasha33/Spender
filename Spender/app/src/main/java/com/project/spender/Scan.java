@@ -1,10 +1,11 @@
 package com.project.spender;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
 import com.google.zxing.Result;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHandler{
@@ -34,9 +35,12 @@ public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHa
 
     @Override
     public void handleResult(Result result) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("result", result.getText());
-        setResult(Activity.RESULT_OK, returnIntent);
+        ScanResult scanResult = new ScanResult(result.getText());
+        if (ChecksRoller.getInstance(getParent()).putCheck(scanResult) != 0) {
+            setResult(Activity.RESULT_CANCELED);
+        } else {
+            setResult(Activity.RESULT_OK);
+        }
         finish();
     }
 }
