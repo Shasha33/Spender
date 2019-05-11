@@ -3,6 +3,7 @@ package com.project.spender.fns.api;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.project.spender.ScanResult;
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Status;
@@ -69,6 +70,13 @@ public class NetworkManager {
         return fns.isCheckExist(fn, fd, fiscalSign, date, sum).execute().code();
     }
 
+    public int isCheckExistCodeSync(ScanResult scanResult)
+            throws IOException {
+
+        return fns.isCheckExist(scanResult.getFn(), scanResult.getFd(), scanResult.getFp(),
+                scanResult.getDate(), scanResult.getSum()).execute().code();
+    }
+
     /**
      *  Получает чек из ФНС и возвращает в виде объекта CheckJson.
      *  Является синхронизованным, поэтому по умолчанию нельзя запускать из main потока.
@@ -102,6 +110,13 @@ public class NetworkManager {
             throw new NetworkException("Check is exist, but getCheck return code " + res.code() , res.code());
         }
         return res.body();
+    }
+
+    public CheckJson getCheckSync(ScanResult scanResult)
+            throws IOException, NetworkException {
+
+        return getCheckSync(scanResult.getFn(), scanResult.getFd(), scanResult.getFp(),
+                scanResult.getDate(), scanResult.getSum());
     }
 
     /**
@@ -164,5 +179,10 @@ public class NetworkManager {
             }
         });
         return liveData;
+    }
+
+    public LiveData<CheckJsonWithStatus> getCheckAsync(ScanResult scanResult) {
+        return getCheckAsync(scanResult.getFn(), scanResult.getFd(), scanResult.getFp(),
+                scanResult.getDate(), scanResult.getSum());
     }
 }
