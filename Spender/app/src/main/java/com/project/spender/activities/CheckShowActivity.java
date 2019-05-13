@@ -1,10 +1,11 @@
-package com.project.spender;
+package com.project.spender.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.project.spender.R;
 import com.project.spender.data.entities.Product;
 
 import java.util.ArrayList;

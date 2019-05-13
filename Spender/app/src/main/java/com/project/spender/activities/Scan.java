@@ -1,10 +1,12 @@
-package com.project.spender;
+package com.project.spender.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.zxing.Result;
+import com.project.spender.ChecksRoller;
+import com.project.spender.ScanResult;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 

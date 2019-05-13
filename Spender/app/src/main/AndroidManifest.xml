@@ -15,16 +15,16 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CheckShowActivity"></activity>
-        <activity android:name=".ListActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.CheckShowActivity"></activity>
+        <activity android:name=".activities.ListActivity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Scan" />
+        <activity android:name=".activities.Scan" />
 
         <meta-data
             android:name="preloaded_fonts"

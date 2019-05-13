@@ -1,4 +1,4 @@
-package com.project.spender;
+package com.project.spender.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.spender.ChecksRoller;
+import com.project.spender.R;
 import com.project.spender.data.AppDatabase;
 import com.project.spender.fns.api.NetworkManager;
 
