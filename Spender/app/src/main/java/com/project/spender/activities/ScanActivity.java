@@ -10,7 +10,7 @@ import com.project.spender.ScanResult;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHandler{
+public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
     private ZXingScannerView scannerView;
 

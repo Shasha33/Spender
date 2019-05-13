@@ -73,7 +73,7 @@ public class ListActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(ListActivity.this, Scan.class);
+                final Intent intent = new Intent(ListActivity.this, ScanActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivityForResult(intent, 42);
