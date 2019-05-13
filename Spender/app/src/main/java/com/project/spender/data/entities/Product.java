@@ -6,9 +6,14 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.project.spender.fns.api.data.Json.Item;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -18,7 +23,7 @@ import java.util.Objects;
 @Entity(foreignKeys =
             @ForeignKey(entity = Check.class, parentColumns = "id", childColumns = "check_id"),
         indices = {@Index("check_id")})
-public class Product {
+public class Product implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -120,4 +125,32 @@ public class Product {
     public String toString() {
         return name + " " + sum + " " + price +  " " + quantity + " " + checkId;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLongArray(new long[]{id, sum, price, checkId});
+        dest.writeString(name);
+        dest.writeDouble(quantity);
+    }
+
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+
+        @Override
+        public Product createFromParcel(Parcel source) {
+            long[] longs = new long[4];
+            source.readLongArray(longs);
+            return new Product(longs[0], source.readString(),
+                    longs[1], longs[2], source.readDouble(), longs[3]);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }

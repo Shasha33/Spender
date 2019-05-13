@@ -60,7 +60,7 @@ public class ChecksRoller {
     public int putCheck(ScanResult result) {
         try {
             int searchResult = networkManager.isCheckExistCodeSync(result.getFn(),
-                    result.getFd(), result.getFd(), result.getDate(), result.getSum());
+                    result.getFd(), result.getFp(), result.getDate(), result.getSum());
 //                    Should I do something more useful or informative?
             if (searchResult == NetworkManager.CHECK_NOT_FOUND) {
                 Toast.makeText(context, "Check does not exist in FSN bases",
