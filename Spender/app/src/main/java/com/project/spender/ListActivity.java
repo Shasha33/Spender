@@ -21,6 +21,7 @@ import com.project.spender.data.AppDatabase;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,6 @@ public class ListActivity extends AppCompatActivity {
     private EditText request;
     private List<String> itemsList;
     private List<CheckWithProducts> checkList;
-    static private List<Product> productList;
     private AppDatabase dbManager;
     private ImageButton scan;
     private ImageButton list;
@@ -46,7 +46,6 @@ public class ListActivity extends AppCompatActivity {
 
         itemsList = new ArrayList<>();
         checkList = new ArrayList<>();
-        productList = new ArrayList<>();
 
         dbManager = ChecksRoller.getInstance(this).getAppDatabase();
 
@@ -107,9 +106,9 @@ public class ListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                productList.clear();
-                productList.addAll(checkList.get(position).getProducts());
                 Intent intent = new Intent(ListActivity.this, CheckShowActivity.class);
+                ArrayList<Product> products = (ArrayList<Product>) checkList.get(position).getProducts();
+                intent.putParcelableArrayListExtra("products", products);
                 startActivity(intent);
             }
         });
@@ -136,10 +135,6 @@ public class ListActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
-
-    public static List<Product> getProductList() {
-        return productList;
     }
 
 //    private void updateList(String ex) throws SQLException {

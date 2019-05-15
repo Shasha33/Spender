@@ -20,8 +20,10 @@ public class CheckShowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_show);
 
+        List<Product> list = getIntent().getParcelableArrayListExtra("products");
+
         products = new ArrayList<>();
-        for (Product i : ListActivity.getProductList()) {
+        for (Product i : list) {
             products.add(i.getName());
         }
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
