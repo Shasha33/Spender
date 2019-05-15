@@ -53,31 +53,22 @@ public class ListActivity extends AppCompatActivity {
 
         list.setBackgroundColor(Color.argb(40, 255, 0, 0));
 
-        statistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ListActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        statistics.setOnClickListener(v -> {
+            Intent intent = new Intent(ListActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
-        list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(ListActivity.this, "AAAAAAAAA", Toast.LENGTH_SHORT).show();
-                final Intent intentShowList = new Intent(ListActivity.this, ListActivity.class);
-                startActivity(intentShowList);
-            }
+        list.setOnClickListener(v -> {
+            Toast.makeText(ListActivity.this, "AAAAAAAAA", Toast.LENGTH_SHORT).show();
+            final Intent intentShowList = new Intent(ListActivity.this, ListActivity.class);
+            startActivity(intentShowList);
         });
 
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(ListActivity.this, ScanActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        scan.setOnClickListener(v -> {
+            final Intent intent = new Intent(ListActivity.this, ScanActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                startActivityForResult(intent, 42);
-            }
+            startActivityForResult(intent, 42);
         });
 
         try {

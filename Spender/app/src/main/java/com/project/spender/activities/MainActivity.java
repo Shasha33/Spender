@@ -100,47 +100,33 @@ public class MainActivity extends AppCompatActivity {
 
         statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
 
-        secret.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickCounter++;
-                if (clickCounter == MAGICCONST) {
-                    secret.setImageResource(R.drawable.clevercat);
-                    clickCounter = 0;
-                } else if (clickCounter == MAGICCONST - 2) {
-                    Toast.makeText(MainActivity.this, "ALMOST",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    secret.setImageResource(R.drawable.cat);
-                }
+        secret.setOnClickListener(v -> {
+            clickCounter++;
+            if (clickCounter == MAGICCONST) {
+                secret.setImageResource(R.drawable.clevercat);
+                clickCounter = 0;
+            } else if (clickCounter == MAGICCONST - 2) {
+                Toast.makeText(MainActivity.this, "ALMOST",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                secret.setImageResource(R.drawable.cat);
             }
         });
 
-        statistics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Misha molodez",
-                        Toast.LENGTH_LONG).show();
-            }
+        statistics.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Misha molodez",
+                Toast.LENGTH_LONG).show());
+
+        list.setOnClickListener(v -> {
+            final Intent intentShowList = new Intent(MainActivity.this, ListActivity.class);
+            startActivity(intentShowList);
         });
 
-        list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intentShowList = new Intent(MainActivity.this, ListActivity.class);
-                startActivity(intentShowList);
-            }
-        });
+        scan.setOnClickListener(v -> {
+            final Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                startActivityForResult(intent, CHECK_REQUEST);
-            }
+            startActivityForResult(intent, CHECK_REQUEST);
         });
     }
 }
