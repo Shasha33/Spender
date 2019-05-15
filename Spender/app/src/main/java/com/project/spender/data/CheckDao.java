@@ -2,6 +2,7 @@ package com.project.spender.data;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 
@@ -9,9 +10,11 @@ import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
+import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Абстрактный класс описывает правила общения с бд.
@@ -67,13 +70,44 @@ public abstract class CheckDao {
     @Insert
     public abstract long insertProduct(Product product);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract long insertTag(Tag tag);
 
-    @Insert
-    public abstract long insertProductTagJoin(ProductTagJoin productTagJoin);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public abstract void insertProductTagJoin(ProductTagJoin productTagJoin);
 
+    @Query("SELECT id FROM tag WHERE name = :name")
+    public abstract long getTagId(String name);
 
+    @Transaction
+    public void insertTagForProduct(Tag tag, long productId) {
+        long tagId = insertTag(tag);
+        if (tagId == 0) {
+            tagId = getTagId(tag.getName());
+        }
+        insertProductTagJoin(new ProductTagJoin(productId, tagId));
+    }
+
+    @Transaction
+    public void insertTagsForProduct(List<Tag> tags, long productId) {
+        for (Tag tag : tags) {
+            insertTagForProduct(tag, productId);
+        }
+    }
+
+    @Transaction
+    public void insertProductWithTags(ProductWithTags productWithTags) {
+        long productId = insertProduct(productWithTags.getProduct());
+        insertTagsForProduct(productWithTags.getTags(), productId);
+    }
+
+    @Transaction
+    @Query("SELECT tag.id, tag.name FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
+    public abstract List<Tag> getTagsByProductId (long productId);
+
+    @Transaction
+    @Query("SELECT DISTINCT tag.id, tag.name FROM tag, product_tag_join, product WHERE tag.id = tag_id AND product_id == product.id AND check_id = :checkId")
+    public abstract List<Tag> getTagsByCheckId (long checkId);
 
     /**
      * Добавляет в бд чек со всеми товарами. Обновляет id всех добавленных объектов.

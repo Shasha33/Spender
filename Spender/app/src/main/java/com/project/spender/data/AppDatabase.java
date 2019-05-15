@@ -5,6 +5,8 @@ import android.arch.persistence.room.RoomDatabase;
 
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductTagJoin;
+import com.project.spender.data.entities.Tag;
 
 /**
  * Основной класс по работе с базой данных.
@@ -20,7 +22,7 @@ import com.project.spender.data.entities.Product;
  *  Пример: https://github.com/gonzalonm/RoomDemo/blob/master/app/src/main/java/com/lalosoft/roomdemo/App.java
  *
  */
-@Database(entities = {Check.class, Product.class}, version = 1, exportSchema = false)
+@Database(entities = {Check.class, Product.class, Tag.class, ProductTagJoin.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     /**
      * Метод для получения класса для работы с бд.

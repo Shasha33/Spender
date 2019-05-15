@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.Tag;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 
 public class CheckDaoTest {
     private CheckDao checkDao;
@@ -123,5 +125,20 @@ public class CheckDaoTest {
         for (CheckWithProducts e : cwpList) {
             assertThat(returnedCwp, hasItem(e));
         }
+    }
+
+    @Test
+    public void insertSameIdWithIgnore() {
+        Tag tag = new Tag(1, "abc");
+        Tag tag2 = new Tag(2, "abc");
+        assertEquals(1, checkDao.insertTag(tag));
+        assertEquals(-1, checkDao.insertTag(tag));
+        assertEquals(-1, checkDao.insertTag(tag2));
+    }
+
+    @Test
+    public void getIdByNameTestIfHas() {
+        Tag tag = new Tag(1, "abc");
+        assertEquals(1, checkDao.getTagId("abc"));
     }
 }
