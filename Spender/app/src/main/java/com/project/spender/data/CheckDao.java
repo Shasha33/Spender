@@ -8,6 +8,8 @@ import android.arch.persistence.room.Transaction;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductTagJoin;
+import com.project.spender.data.entities.Tag;
 
 import java.util.List;
 
@@ -64,6 +66,14 @@ public abstract class CheckDao {
      */
     @Insert
     public abstract long insertProduct(Product product);
+
+    @Insert
+    public abstract long insertTag(Tag tag);
+
+    @Insert
+    public abstract long insertProductTagJoin(ProductTagJoin productTagJoin);
+
+
 
     /**
      * Добавляет в бд чек со всеми товарами. Обновляет id всех добавленных объектов.
