@@ -1,12 +1,16 @@
 package com.project.spender.activities;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -31,13 +35,12 @@ public class MainActivity extends AppCompatActivity {
     private NetworkManager networkManager;
     private int clickCounter;
     private final static int MAGICCONST = 10;
-    private Button cheese;
-
+    private final static int CAMERA_REQUEST = 1;
+    private final static int CHECK_REQUEST = 42;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        (todo) create constants for request code and fields names
-        if (requestCode == 42) {
+        if (requestCode == CHECK_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(this, "Loaded", Toast.LENGTH_LONG).show();
             } else {
@@ -45,7 +48,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-// (todo) move this somewhere
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        if (requestCode == CAMERA_REQUEST) {
+            if (grantResults.length == 0
+                    || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera permission not got",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
 
     @Override
@@ -62,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST);
+        }
+
         setContentView(R.layout.activity_main);
 
         networkManager = ChecksRoller.getInstance(this).getNetworkManager();
@@ -72,20 +93,12 @@ public class MainActivity extends AppCompatActivity {
 
         dbManager = ChecksRoller.getInstance(this).getAppDatabase();
 
-        cheese = findViewById(R.id.cheese);
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
         secret = findViewById(R.id.secret);
 
         statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
-
-        cheese.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChecksRoller.getInstance(MainActivity.this).cheese();
-            }
-        });
 
         secret.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 final Intent intent = new Intent(MainActivity.this, ScanActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                startActivityForResult(intent, 42);
+                startActivityForResult(intent, CHECK_REQUEST);
             }
         });
     }
