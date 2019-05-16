@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
 
 import org.junit.After;
@@ -29,6 +30,7 @@ public class CheckDaoTest {
     private List<Check> cList;
     private List<Product> pList;
     private List<CheckWithProducts> cwpList;
+    private List<Tag> tList;
 
     @Before
     public void createDb() {
@@ -60,7 +62,12 @@ public class CheckDaoTest {
         cwpList.add(new CheckWithProducts(cList.get(2),
                 Arrays.asList(pList.get(2), pList.get(0))));
 
-        cwpList.add(new CheckWithProducts(cList.get(3), new ArrayList<Product>()));
+        cwpList.add(new CheckWithProducts(cList.get(3), new ArrayList<>()));
+
+        tList = new ArrayList<>(3);
+        tList.add(new Tag("tag1"));
+        tList.add(new Tag("tag2"));
+        tList.add(new Tag("tag3"));
     }
 
     @After
@@ -137,8 +144,20 @@ public class CheckDaoTest {
     }
 
     @Test
-    public void getIdByNameTestIfHas() {
+    public void getIdByNameTest() {
         Tag tag = new Tag(1, "abc");
+        assertEquals(0, checkDao.getTagId("abc"));
+        checkDao.insertTag(tag);
         assertEquals(1, checkDao.getTagId("abc"));
+    }
+
+    @Test
+    public void getTagsByProductIdTest() {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        Check check = cwpList.get(0).getCheck();
+        Product product = cwpList.get(0).getProducts().get(0);
+        checkDao.insertTagsForProduct(tList, product.getId());
+        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product.getId()).toArray()));
+        assertThat(tList, containsInAnyOrder(checkDao.getTagsByCheckId(check.getId()).toArray()));
     }
 }
