@@ -16,15 +16,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.data.AppDatabase;
-import com.project.spender.fns.api.NetworkManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,10 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton list;
     private ImageButton statistics;
     private ImageButton secret;
-    private Button clear;
-    private static TextView textResult;
-    private AppDatabase dbManager;
-    private NetworkManager networkManager;
     private int clickCounter;
     private final static int MAGICCONST = 10;
     private final static int CAMERA_REQUEST = 1;
@@ -84,10 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -101,11 +90,6 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.show();
-        }
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -114,13 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        networkManager = ChecksRoller.getInstance(this).getNetworkManager();
-
         StrictMode.ThreadPolicy policy =
                 new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        dbManager = ChecksRoller.getInstance(this).getAppDatabase();
 
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
