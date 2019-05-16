@@ -70,15 +70,35 @@ public abstract class CheckDao {
     @Insert
     public abstract long insertProduct(Product product);
 
+    /**
+     * Добавляет тег. Ничего не делает если такой есть.
+     * Имя тега, как и id уникальный.
+     *
+     * @param tag добавляемый тег.
+     * @return новый id или 0 если такой есть.
+     */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract long insertTag(Tag tag);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract void insertProductTagJoin(ProductTagJoin productTagJoin);
 
+    /**
+     * Возвращает id тега по имени.
+     *
+     * @param name имя тега.
+     * @return id тега или 0 если такого нет.
+     */
     @Query("SELECT id FROM tag WHERE name = :name")
     public abstract long getTagId(String name);
 
+    /**
+     * Добавляет в бд тег для товара с данным id.
+     * Если тег есть ничего не делает.
+     *
+     * @param tag добавляемый тег.
+     * @param productId id соответствующего товара.
+     */
     @Transaction
     public void insertTagForProduct(Tag tag, long productId) {
         long tagId = insertTag(tag);
@@ -88,6 +108,13 @@ public abstract class CheckDao {
         insertProductTagJoin(new ProductTagJoin(productId, tagId));
     }
 
+    /**
+     * Добавляет лист тегов для товара с данным id.
+     * Если тег есть ничего не делает.
+     *
+     * @param tags добавляемый тег.
+     * @param productId id соответстующего товара.
+     */
     @Transaction
     public void insertTagsForProduct(List<Tag> tags, long productId) {
         for (Tag tag : tags) {
@@ -95,6 +122,11 @@ public abstract class CheckDao {
         }
     }
 
+    /**
+     * Добавляет продукт со списком тегов.
+     * В отличие от insertCheckWithProducts не обновляет id в переданных объектах (хз как лучше)
+     * @param productWithTags продукт с списком тегов
+     */
     @Transaction
     public void insertProductWithTags(ProductWithTags productWithTags) {
         long productId = insertProduct(productWithTags.getProduct());
