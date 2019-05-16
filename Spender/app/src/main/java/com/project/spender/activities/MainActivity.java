@@ -12,6 +12,9 @@ import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -61,6 +64,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cheese:
+                ChecksRoller.getInstance(this).cheese();
+                return true;
+
+            case R.id.action_delete:
+                Toast.makeText(this, "Ask Misha's permission first",
+                        Toast.LENGTH_LONG).show();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 
 
     @Override
@@ -74,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
-            actionBar.hide();
+            actionBar.show();
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
