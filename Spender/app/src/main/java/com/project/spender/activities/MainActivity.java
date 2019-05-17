@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(this, "Loaded", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Cant scan check", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Check not received", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.settings, menu);
+        getMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
 
@@ -67,12 +66,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_cheese:
-                ChecksRoller.getInstance(this).cheese();
+                ChecksRoller.getInstance().cheese();
                 return true;
 
             case R.id.action_delete:
-                Toast.makeText(this, "Ask Misha's permission first",
-                        Toast.LENGTH_LONG).show();
+                ChecksRoller.getInstance().onRemoveAllClicked();
                 return true;
 
             default:
@@ -86,9 +84,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        ChecksRoller.init(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -105,23 +101,8 @@ public class MainActivity extends AppCompatActivity {
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
-        secret = findViewById(R.id.secret);
 
         statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
-
-        secret.setOnClickListener(v -> {
-            clickCounter++;
-            if (clickCounter == MAGICCONST) {
-                secret.setImageResource(R.drawable.clevercat);
-                clickCounter = 0;
-            } else if (clickCounter == MAGICCONST - 2) {
-                Toast.makeText(MainActivity.this, "ALMOST",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else {
-                secret.setImageResource(R.drawable.cat);
-            }
-        });
 
         statistics.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Misha molodez",
                 Toast.LENGTH_LONG).show());

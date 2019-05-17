@@ -45,10 +45,9 @@ public class ListActivity extends AppCompatActivity {
         itemsList = new ArrayList<>();
         checkList = new ArrayList<>();
 
-        dbManager = ChecksRoller.getInstance(this).getAppDatabase();
+        dbManager = ChecksRoller.getInstance().getAppDatabase();
 
         scan = findViewById(R.id.scan);
-        list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
 
         list.setBackgroundColor(Color.argb(40, 255, 0, 0));
@@ -56,12 +55,6 @@ public class ListActivity extends AppCompatActivity {
         statistics.setOnClickListener(v -> {
             Intent intent = new Intent(ListActivity.this, MainActivity.class);
             startActivity(intent);
-        });
-
-        list.setOnClickListener(v -> {
-            Toast.makeText(ListActivity.this, "AAAAAAAAA", Toast.LENGTH_SHORT).show();
-            final Intent intentShowList = new Intent(ListActivity.this, ListActivity.class);
-            startActivity(intentShowList);
         });
 
         scan.setOnClickListener(v -> {
@@ -92,20 +85,15 @@ public class ListActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.productsList);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ListActivity.this, CheckShowActivity.class);
-                ArrayList<Product> products = (ArrayList<Product>) checkList.get(position).getProducts();
-                intent.putParcelableArrayListExtra("products", products);
-                startActivity(intent);
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(ListActivity.this, CheckShowActivity.class);
+            intent.putParcelableArrayListExtra("products",
+                    (ArrayList<Product>) checkList.get(position).getProducts());
+            startActivity(intent);
         });
 
         request = findViewById(R.id.request);
-        request.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        request.setOnEditorActionListener((v, actionId, event) -> {
 //                try {
 //                    updateList(v.getText().toString());
 //                } catch (SQLException e) {
@@ -119,10 +107,9 @@ public class ListActivity extends AppCompatActivity {
 //                v.setText("");
 //                System.out.println(itemsList.size() + " " + v.getText());
 //                adapter.notifyDataSetChanged();
-                Toast.makeText(ListActivity.this, "Waiting for shashas understanding",
-                        Toast.LENGTH_SHORT).show();
-                return true;
-            }
+            Toast.makeText(ListActivity.this, "Waiting for shashas understanding",
+                    Toast.LENGTH_SHORT).show();
+            return true;
         });
     }
 

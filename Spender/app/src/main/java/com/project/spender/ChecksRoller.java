@@ -40,10 +40,11 @@ public class ChecksRoller {
         checksRoller = this;
     }
 
-    public static ChecksRoller getInstance(Context context) {
-        if (checksRoller == null) {
-            checksRoller = new ChecksRoller(context);
-        }
+    public static void init(Context context) {
+        checksRoller = new ChecksRoller(context);
+    }
+
+    public static ChecksRoller getInstance() {
         return checksRoller;
     }
 
@@ -91,6 +92,18 @@ public class ChecksRoller {
         }
 
         return 0;
+    }
+
+    public void onDeleteAllClicked(Product product) {
+
+    }
+
+    public void onAddTagClicked(Product product) {
+
+    }
+
+    public void onRemoveAllClicked() {
+        //(todo)
     }
 
 }
