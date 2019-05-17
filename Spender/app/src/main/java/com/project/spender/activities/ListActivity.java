@@ -29,7 +29,6 @@ public class ListActivity extends AppCompatActivity {
 
     private ListView listView;
     private EditText request;
-    private List<String> itemsList;
     private List<CheckWithProducts> checkList;
     private AppDatabase dbManager;
     private ImageButton scan;
@@ -42,14 +41,13 @@ public class ListActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
-        itemsList = new ArrayList<>();
         checkList = new ArrayList<>();
 
         dbManager = ChecksRoller.getInstance().getAppDatabase();
 
         scan = findViewById(R.id.scan);
         statistics = findViewById(R.id.statistics);
-
+        list = findViewById(R.id.list);
         list.setBackgroundColor(Color.argb(40, 255, 0, 0));
 
         statistics.setOnClickListener(v -> {
@@ -65,26 +63,15 @@ public class ListActivity extends AppCompatActivity {
         });
 
         try {
-            for (CheckWithProducts i : dbManager.getCheckDao().getAll()) {
-                checkList.add(i);
-                itemsList.add(i.getCheck().getName());
-
-            }
+            checkList = dbManager.getCheckDao().getAll();
         } catch (Exception e) {
 
             e.printStackTrace();
-            itemsList = new ArrayList<>();
             checkList = new ArrayList<>();
         }
 
-
-// (todo) create my own adapter for pretty view and make it shows checks in correct way
-
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                R.layout.list_view, itemsList);
-
         listView = findViewById(R.id.productsList);
-        listView.setAdapter(adapter);
+        listView.setAdapter(new ListAdapter(this, checkList));
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(ListActivity.this, CheckShowActivity.class);
             intent.putParcelableArrayListExtra("products",

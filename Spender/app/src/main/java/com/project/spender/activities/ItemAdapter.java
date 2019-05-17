@@ -13,13 +13,14 @@ import com.project.spender.R;
 import com.project.spender.data.entities.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAdapter extends BaseAdapter {
     Context context;
     LayoutInflater lInflater;
-    ArrayList<Product> productList;
+    List<Product> productList;
 
-    ItemAdapter(Context context, ArrayList<Product> products) {
+    ItemAdapter(Context context, List<Product> products) {
         this.context = context;
         productList = products;
         lInflater = (LayoutInflater) context
