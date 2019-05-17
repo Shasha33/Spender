@@ -62,7 +62,7 @@ public class ListAdapter extends BaseAdapter {
     }
 
     Check getCheck(int position) {
-        return (Check) getItem(position);
+        return ((CheckWithProducts) getItem(position)).getCheck()   ;
     }
 
 }
