@@ -36,7 +36,7 @@ public class ChecksRoller {
         this.context = context;
         networkManager = NetworkManager.getInstance();
         appDatabase = Room.databaseBuilder(context,
-                AppDatabase.class, DATABASE).allowMainThreadQueries().build();
+                AppDatabase.class, DATABASE).allowMainThreadQueries().fallbackToDestructiveMigration().build();
         checksRoller = this;
     }
 
