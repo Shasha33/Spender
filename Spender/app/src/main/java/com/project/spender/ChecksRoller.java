@@ -56,6 +56,7 @@ public class ChecksRoller {
 
         appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(check,
                 Arrays.asList(product1, product2, product3)));
+
     }
 
     public int putCheck(ScanResult result) {

@@ -15,7 +15,9 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CheckShowActivity"></activity>
+        <activity android:name=".activities.TagChoiceActivity"></activity>
+        <activity android:name=".activities.NewTagActivity" />
+        <activity android:name=".activities.CheckShowActivity" />
         <activity android:name=".activities.ListActivity" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>

@@ -1,5 +1,6 @@
 package com.project.spender.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.entities.Product;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,10 +43,28 @@ public class CheckShowActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.new_tag:
+                Intent intent = new Intent(this, NewTagActivity.class);
+                startActivity(intent);
+                return true;
+
             case R.id.remove:
+                for (Product product : productsForAction) {
+                    ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(product.getId());
+                    products.remove(product);
+                }
+                productsForAction.clear();
                 return true;
 
             case R.id.add_tag:
+                Intent intentTagChoice = new Intent(this, TagChoiceActivity.class);
+                long[] ids = new long[productsForAction.size()];
+                int i = 0;
+                for (Product p : productsForAction) {
+                    ids[i++] = p.getId();
+                }
+                intentTagChoice.putExtra("ids", ids);
+                startActivity(intentTagChoice);
                 return true;
 
             default:

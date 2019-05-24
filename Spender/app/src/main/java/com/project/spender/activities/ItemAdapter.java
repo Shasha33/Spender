@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.entities.Product;
 
@@ -56,7 +58,14 @@ public class ItemAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.price)).setText("price: "  +
                 String.format("%.2f", product.getPrice() / 100.0));
         ((TextView) view.findViewById(R.id.count)).setText("quantity: " + product.getQuantity());
+        ListView list = view.findViewById(R.id.tagList);
 
+        //(todo) update checkroller to make this line shorter
+        TagAdapter adapter = new TagAdapter(context,
+                ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(product.getId()));
+
+
+        list.setAdapter(adapter);
         return view;
     }
 

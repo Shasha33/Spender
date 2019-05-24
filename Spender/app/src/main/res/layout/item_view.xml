@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
@@ -12,6 +14,13 @@
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/tagList"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_gravity="top"
+            android:orientation="horizontal" />
 
         <TextView
             android:id="@+id/name"
