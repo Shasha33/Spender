@@ -53,6 +53,7 @@ public class ListAdapter extends BaseAdapter {
 
         Check check = getCheck(position);
 
+
         ((TextView) view.findViewById(R.id.name)).setText(check.getName());
         ((TextView) view.findViewById(R.id.sum)).setText("Total: "  +
                 String.format("%.2f", check.getTotalSum() / 100.0));
