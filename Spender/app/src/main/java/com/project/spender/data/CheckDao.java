@@ -24,30 +24,7 @@ import java.util.Set;
 @Dao
 public abstract class CheckDao {
 
-    /**
-     * Метод получает все товары из бд без информации о чеках.
-     *
-     * @return все товары
-     */
-    @Query("SELECT * FROM Product")
-    public abstract List<Product> getAllProducts();
-
-    /**
-     * Метод получает все чеки из бд без информации о товарах.
-     *
-     * @return все чеки
-     */
-    @Query("SELECT * FROM `Check`")
-    public abstract List<Check> getAllChecks();
-
-    /**
-     * Метод получает все чеки вместе со всеми товарами в них.
-     *
-     * @return все чеки с информацией о товарах
-     */
-    @Transaction
-    @Query("SELECT * FROM `Check`")
-    public abstract List<CheckWithProducts> getAll();
+    // INSERT
 
     /**
      * Добавляет новый чек в бд. Если id > 0 и такой id уже есть, то кидает Exception.
@@ -84,33 +61,40 @@ public abstract class CheckDao {
     public abstract void insertProductTagJoin(ProductTagJoin productTagJoin);
 
     /**
-     * Возвращает id тега по имени.
+     * Добавляет в бд чек со всеми товарами. Обновляет id всех добавленных объектов.
+     * В случае неудачи кидает Exception.
      *
-     * @param name имя тега.
-     * @return id тега или 0 если такого нет.
+     * @param checkWithProducts добавляемый чек с товарами.
      */
-    @Query("SELECT id FROM tag WHERE name = :name")
-    public abstract long getTagId(String name);
+    @Transaction
+    public void insertCheckWithProducts(CheckWithProducts checkWithProducts) {
+        long newIndex = insertCheck(checkWithProducts.getCheck());
+        checkWithProducts.updateCheckId(newIndex);
+        for (Product product : checkWithProducts.getProducts()) {
+            product.setId(insertProduct(product));
+        }
+    }
 
     /**
      * Добавляет в бд тег для товара с данным id.
-     * Если тег есть ничего не делает.
+     * Если тег есть, ничего не делает.
      *
      * @param tag добавляемый тег.
      * @param productId id соответствующего товара.
      */
     @Transaction
-    public void insertTagForProduct(Tag tag, long productId) {
+    public long insertTagForProduct(Tag tag, long productId) {
         long tagId = insertTag(tag);
         if (tagId == 0) {
             tagId = getTagId(tag.getName());
         }
         insertProductTagJoin(new ProductTagJoin(productId, tagId));
+        return tagId;
     }
 
     /**
      * Добавляет лист тегов для товара с данным id.
-     * Если тег есть ничего не делает.
+     * Если тег есть, ничего не делает.
      *
      * @param tags добавляемый тег.
      * @param productId id соответстующего товара.
@@ -133,6 +117,43 @@ public abstract class CheckDao {
         insertTagsForProduct(productWithTags.getTags(), productId);
     }
 
+    // GET
+    // todo getByTag and getByTime
+
+    /**
+     * Метод получает все товары из бд без информации о чеках.
+     *
+     * @return все товары
+     */
+    @Query("SELECT * FROM Product")
+    public abstract List<Product> getAllProducts();
+
+    /**
+     * Метод получает все чеки из бд без информации о товарах.
+     *
+     * @return все чеки
+     */
+    @Query("SELECT * FROM `Check`")
+    public abstract List<Check> getAllChecks();
+
+    /**
+     * Метод получает все чеки вместе со всеми товарами в них.
+     *
+     * @return все чеки с информацией о товарах
+     */
+    @Transaction
+    @Query("SELECT * FROM `Check`")
+    public abstract List<CheckWithProducts> getAll();
+
+    /**
+     * Возвращает id тега по имени.
+     *
+     * @param name имя тега.
+     * @return id тега или 0 если такого нет.
+     */
+    @Query("SELECT id FROM tag WHERE name = :name")
+    public abstract long getTagId(String name);
+
     @Transaction
     @Query("SELECT tag.id, tag.name FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
     public abstract List<Tag> getTagsByProductId (long productId);
@@ -142,17 +163,32 @@ public abstract class CheckDao {
     public abstract List<Tag> getTagsByCheckId (long checkId);
 
     /**
-     * Добавляет в бд чек со всеми товарами. Обновляет id всех добавленных объектов.
-     * В случае неудачи кидает Exception.
+     * Получает последний вставленный id.
      *
-     * @param checkWithProducts добавляемый чек с товарами.
+     * @return послединий id.
+     */
+    @Query("SELECT last_insert_rowid()")
+    public  abstract long getLastId();
+
+    // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
+    // Теги являются независимыми, поэтому их иногда нужно чистить вручную.
+
+    @Query("DELETE FROM `check` WHERE id = :id")
+    public abstract void deleteCheckById(long id);
+
+    @Query("DELETE FROM product WHERE id = :id")
+    public abstract void deleteProductById(long id);
+
+    @Query("DELETE FROM tag WHERE id = :id")
+    public abstract void deleteTagById(long id);
+
+    @Query("DELETE FROM tag WHERE name = :name")
+    public abstract void deleteTagByName(String name);
+
+    /**
+     * Удаляет все неиспользуемые теги.
      */
     @Transaction
-    public void insertCheckWithProducts(CheckWithProducts checkWithProducts) {
-        long newIndex = insertCheck(checkWithProducts.getCheck());
-        checkWithProducts.updateCheckId(newIndex);
-        for (Product product : checkWithProducts.getProducts()) {
-            product.setId(insertProduct(product));
-        }
-    }
+    @Query("DELETE FROM tag WHERE id NOT IN (SELECT tag_id FROM product_tag_join)")
+    public  abstract void deleteAllUnusedTags();
 }

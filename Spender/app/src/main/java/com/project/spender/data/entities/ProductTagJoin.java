@@ -5,16 +5,20 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 /**
  * Таблица развязки.
  */
 @Entity(tableName = "product_tag_join",
         primaryKeys = {"product_id", "tag_id"},
         foreignKeys = {
-            @ForeignKey(entity = Product.class,
+            @ForeignKey(onDelete = CASCADE,
+                        entity = Product.class,
                         parentColumns = "id",
                         childColumns = "product_id"),
-            @ForeignKey(entity = Tag.class,
+            @ForeignKey(onDelete = CASCADE,
+                        entity = Tag.class,
                         parentColumns = "id",
                         childColumns = "tag_id")
         },

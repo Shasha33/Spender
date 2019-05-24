@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 
 /**
  * Класс описывающий товар и его представление в бд.
  */
 @Entity(foreignKeys =
-            @ForeignKey(entity = Check.class, parentColumns = "id", childColumns = "check_id"),
+            @ForeignKey(onDelete = CASCADE, entity = Check.class, parentColumns = "id", childColumns = "check_id"),
         indices = {@Index("check_id")})
 public class Product implements Parcelable {
 
@@ -56,6 +58,7 @@ public class Product implements Parcelable {
     public Product(Item item) {
         this(item.name, item.sum, item.price, item.quantity, 0);
     }
+
 
     @Override
     public boolean equals(Object o) {
