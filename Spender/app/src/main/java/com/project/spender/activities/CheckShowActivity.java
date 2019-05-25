@@ -54,9 +54,11 @@ public class CheckShowActivity extends AppCompatActivity {
                 }
                 listView.invalidateViews();
                 productsForAction.clear();
+                return;
             case REMOVING_CODE:
                 Toast.makeText(this, "Heh", Toast.LENGTH_SHORT).show();
                 productsForAction.clear();
+                return;
         }
     }
 
@@ -90,6 +92,7 @@ public class CheckShowActivity extends AppCompatActivity {
                     ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(product.getId());
                     products.remove(product);
                 }
+                listView.invalidateViews();
                 productsForAction.clear();
                 return true;
 

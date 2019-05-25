@@ -1,5 +1,6 @@
 package com.project.spender.activities;
 
+import android.graphics.Color;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,14 @@ import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.entities.Tag;
 
+import java.util.List;
+import java.util.Random;
+
+
 public class NewTagActivity extends AppCompatActivity {
+
+    private static final Integer[] DEFAULT_COLOR = {Color.RED, Color.GRAY, Color.GREEN, Color.BLACK,
+    Color.BLUE, Color.CYAN, Color.YELLOW, Color.MAGENTA, Color.DKGRAY};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +32,22 @@ public class NewTagActivity extends AppCompatActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int newTagColor;
                 String newTagName = name.getText().toString();
-                int newTagColor = Integer.parseInt(color.getText().toString());
+                if (color.getText().toString().equals("")) {
+
+                    Random random = new Random();
+                    int index = random.nextInt(DEFAULT_COLOR.length);
+                    newTagColor = DEFAULT_COLOR[index];
+                } else {
+                    newTagColor = Integer.parseInt(color.getText().toString());
+                }
+
                 ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertTag(new Tag(newTagName, newTagColor));
-                Toast.makeText(NewTagActivity.this, "Added new tag", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
     }
 }
+
+

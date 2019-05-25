@@ -26,11 +26,6 @@ public class TagChoiceActivity extends AppCompatActivity {
 
         List<Tag> tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
 
-        List<String> tagNames = new ArrayList<>();
-        for (Tag tag : tags) {
-            tagNames.add(tag.getName());
-        }
-
         list.setOnItemClickListener((parent, view, position, id) -> {
             Intent resultIntent = new Intent();
             resultIntent.putExtra("tag id", tags.get(position).getId());
@@ -38,7 +33,6 @@ public class TagChoiceActivity extends AppCompatActivity {
             finish();
         });
 
-        list.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_single_choice, tagNames));
+        list.setAdapter(new TagChoiceAdapter(this, tags));
     }
 }

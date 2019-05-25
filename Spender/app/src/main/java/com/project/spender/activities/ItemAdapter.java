@@ -2,6 +2,7 @@ package com.project.spender.activities;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,16 +77,12 @@ public class ItemAdapter extends BaseAdapter {
 
         LinearLayout layout = view.findViewById(R.id.linear_layout);
         Adapter adapter = new TagAdapter(context, tags);
+        layout.removeAllViews();
         for (int i = 0; i < tags.size(); i++) {
             System.out.println(i);
             View child = adapter.getView(i, null, null);
-            if (i % 3 == 0) {
-                child.setBackgroundColor(Color.RED);
-            } else if (i % 3 == 2) {
-                child.setBackgroundColor(Color.GREEN);
-            } else {
-                child.setBackgroundColor(Color.CYAN);
-            }
+            child.setBackgroundColor(tags.get(i).getColor());
+            System.out.println(tags.get(i).getColor());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
             params.setMargins(5, 0, 5, 0);
             layout.addView(child, params);
