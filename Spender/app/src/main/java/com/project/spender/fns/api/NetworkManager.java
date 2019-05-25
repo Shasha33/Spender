@@ -31,7 +31,6 @@ public class NetworkManager {
     public final static int CHECK_NOT_FOUND = 406;
 
     private NetworkManager() {
-        //Базовая часть адреса
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://proverkacheka.nalog.ru:9999") //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()).build(); //Конвертер, необходимый для преобразования JSON'а в объекты
@@ -207,7 +206,7 @@ public class NetworkManager {
     }
 
     /**
-     * Регистрация нового пользователся. Пароль придет в виде смс на указанный номер.
+     * Регистрация нового пользователя. Пароль придет в виде смс на указанный номер.
      *
      * @param newUser обьект со всеми необходимыми данными.
      * @return код ответа:
@@ -223,7 +222,7 @@ public class NetworkManager {
     }
 
     /**
-     * Востановления пароля. Новый пароль придет в виде смс на указанный номер.
+     * Восстановление пароля. Новый пароль придет в виде смс на указанный номер.
      *
      * @param phone номер телефона. Формат : +79991234567
      * @return код ответа:
