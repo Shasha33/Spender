@@ -84,8 +84,8 @@ public abstract class CheckDao {
      */
     @Transaction
     public long insertTagForProduct(Tag tag, long productId) {
-        long tagId = insertTag(tag);
-        if (tagId == 0) {
+        long tagId = (tag.getId() > 0) ? tag.getId() : insertTag(tag);
+        if (tagId <= 0) {
             tagId = getTagId(tag.getName());
         }
         insertProductTagJoin(new ProductTagJoin(productId, tagId));
