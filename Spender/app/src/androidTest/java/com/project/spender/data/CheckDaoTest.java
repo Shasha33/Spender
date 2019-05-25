@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
 
@@ -154,15 +155,26 @@ public class CheckDaoTest {
     }
 
     @Test
+    public void insertTagTest() {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        Product product1 = cwpList.get(0).getProducts().get(0);
+        checkDao.insertTagForProduct(tList.get(0), product1.getId());
+        assertThat(checkDao.getTagsByProductId(product1.getId()), contains(tList.get(0)));
+    }
+
+    @Test
     public void getTagsByProductIdTest() {
         checkDao.insertCheckWithProducts(cwpList.get(0));
 
         Check check = cwpList.get(0).getCheck();
-        Product product = cwpList.get(0).getProducts().get(0);
+        Product product1 = cwpList.get(0).getProducts().get(0);
+        Product product2 = cwpList.get(0).getProducts().get(1);
 
-        checkDao.insertTagsForProduct(tList, product.getId());
+        checkDao.insertTagsForProduct(tList, product1.getId());
+        checkDao.insertTagsForProduct(tList, product2.getId());
 
-        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product.getId()).toArray()));
+        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product1.getId()).toArray()));
+        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product2.getId()).toArray()));
         assertThat(tList, containsInAnyOrder(checkDao.getTagsByCheckId(check.getId()).toArray()));
     }
 
@@ -208,6 +220,16 @@ public class CheckDaoTest {
         checkDao.deleteProductById(productId);
         assertThat(checkDao.getTagId(tList.get(2).getName()), greaterThan(0L));
         checkDao.deleteAllUnusedTags();
+        assertEquals(0, checkDao.getTagsByProductId(productId).size());
+    }
+
+    @Test
+    public void deleteTagProductReflationTest() {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        long productId = cwpList.get(0).getProducts().get(0).getId();
+        long tagId = checkDao.insertTagForProduct(tList.get(0), productId);
+        assertEquals(1, checkDao.getTagsByProductId(productId).size());
+        checkDao.deleteTagProductRealation(new ProductTagJoin(productId, tagId));
         assertEquals(0, checkDao.getTagsByProductId(productId).size());
     }
 
