@@ -6,6 +6,7 @@ import android.os.StrictMode;
 
 import androidx.annotation.Nullable;
 
+import com.project.spender.ScanResult;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Status;
 
@@ -19,19 +20,22 @@ import static org.junit.Assert.*;
 
 public class NetworkManagerTestInstrumental {
 
-    private String fn1;
-    private String fd1;
-    private String fiscalSign1;
-    private String date1;
-    private String sum1;
+    private ScanResult scanResult1;
+
+    // все сломается если я поменяю пароль
+    private String defaultLogin = "+79112813247";
+    private String defaultPassword = "882107";
 
     @Before
     public void init() {
-        fn1 = "9286000100242530";
-        fd1 = "27641";
-        fiscalSign1 = "124643923";
-        date1 = "20190402T1357";
-        sum1 = "21700";
+
+        String fn1 = "9286000100242530";
+        String fd1 = "27641";
+        String fiscalSign1 = "124643923";
+        String date1 = "20190402T1357";
+        String sum1 = "21700";
+
+        scanResult1 = new ScanResult(fn1, fd1, fiscalSign1, date1, sum1);
     }
 
     @Test
@@ -39,7 +43,7 @@ public class NetworkManagerTestInstrumental {
         final CountDownLatch latch = new CountDownLatch(1);
 
         LiveData<CheckJsonWithStatus> liveData = NetworkManager.getInstance()
-                .getCheckAsync(fn1, fd1, fiscalSign1, date1, sum1);
+                .getCheckAsync(defaultLogin, defaultPassword, scanResult1);
 
 
         liveData.observeForever(checkJsonWithStatus -> {
