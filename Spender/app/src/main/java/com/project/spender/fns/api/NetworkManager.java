@@ -206,7 +206,7 @@ public class NetworkManager {
     /**
      * Востановления пароля. Новый пароль придет в виде смс на указанный номер.
      *
-     * @param phone номер телефона.
+     * @param phone номер телефона. Формат : "+79991234567"
      * @return код ответа:
      * 204 -- OK,
      * 404 -- номер телефона не найден или номер некорректный,
@@ -215,5 +215,20 @@ public class NetworkManager {
      */
     public int restorePasswordSync(String phone) throws IOException {
         return fns.restore(phone).execute().code();
+    }
+
+    /**
+     * Проверка корректности логина и пароля.
+     *
+     * @param phone телефон пользователя. Формат : "+79991234567"
+     * @param password пароль пользователя.
+     * @return код ответа:
+     * 200 -- ОК,
+     * 403 -- некорректный номер телефона или пароль,
+     * остальное хз.
+     * @throws IOException кидается при проблемах соединения с сервером.
+     */
+    public int checkUserSync(String phone, String password) throws IOException {
+        return fns.login(Credentials.basic(phone, password)).execute().code();
     }
 }
