@@ -154,15 +154,26 @@ public class CheckDaoTest {
     }
 
     @Test
+    public void insertTagTest() {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        Product product1 = cwpList.get(0).getProducts().get(0);
+        checkDao.insertTagForProduct(tList.get(0), product1.getId());
+        assertThat(checkDao.getTagsByProductId(product1.getId()), contains(tList.get(0)));
+    }
+
+    @Test
     public void getTagsByProductIdTest() {
         checkDao.insertCheckWithProducts(cwpList.get(0));
 
         Check check = cwpList.get(0).getCheck();
-        Product product = cwpList.get(0).getProducts().get(0);
+        Product product1 = cwpList.get(0).getProducts().get(0);
+        Product product2 = cwpList.get(0).getProducts().get(1);
 
-        checkDao.insertTagsForProduct(tList, product.getId());
+        checkDao.insertTagsForProduct(tList, product1.getId());
+        checkDao.insertTagsForProduct(tList, product2.getId());
 
-        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product.getId()).toArray()));
+        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product1.getId()).toArray()));
+        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product2.getId()).toArray()));
         assertThat(tList, containsInAnyOrder(checkDao.getTagsByCheckId(check.getId()).toArray()));
     }
 
