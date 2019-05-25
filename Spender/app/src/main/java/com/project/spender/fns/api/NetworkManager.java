@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import com.project.spender.ScanResult;
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
+import com.project.spender.fns.api.data.NewUser;
 import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.exception.NetworkException;
 
@@ -62,7 +63,7 @@ public class NetworkManager {
      *
      * @return Код ответа. 204 -- OK, 406 -- не нашел, остальное хз.
      *
-     * @throws IOException кидается, при проблемах соединения с сервером.
+     * @throws IOException кидается при проблемах соединения с сервером.
      */
     public int isCheckExistCodeSync(String fn, String fd, String fiscalSign, String date, String sum)
             throws IOException {
@@ -92,7 +93,7 @@ public class NetworkManager {
      *
      * @return чек в виде CheckJson.
      *
-     * @throws IOException кидается, при проблемах соединения с сервером.
+     * @throws IOException кидается при проблемах соединения с сервером.
      * @throws NetworkException кидается, если ответа не ОК (код можно получить .getCode()).
      */
     public CheckJson getCheckSync(String fn, String fd, String fiscalSign, String date, String sum)
@@ -184,5 +185,35 @@ public class NetworkManager {
     public LiveData<CheckJsonWithStatus> getCheckAsync(ScanResult scanResult) {
         return getCheckAsync(scanResult.getFn(), scanResult.getFd(), scanResult.getFp(),
                 scanResult.getDate(), scanResult.getSum());
+    }
+
+    /**
+     * Регистрация нового пользователся. Пароль придет в виде смс на указанный номер.
+     *
+     * @param newUser обьект со всеми необходимыми данными.
+     * @return код ответа:
+     * 204 -- OK,
+     * 409 -- пользователь уже существует,
+     * 500 -- номер телефона не корректный,
+     * 400 -- адрес электронной почты некорректный.
+     * остальное хз.
+     * @throws IOException кидается при проблемах соединения с сервером.
+     */
+    public int registrationSync(NewUser newUser) throws IOException {
+        return fns.signup(newUser).execute().code();
+    }
+
+    /**
+     * Востановления пароля. Новый пароль придет в виде смс на указанный номер.
+     *
+     * @param phone номер телефона.
+     * @return код ответа:
+     * 204 -- OK,
+     * 404 -- номер телефона не найден или номер некорректный,
+     * остальное хз.
+     * @throws IOException кидается при проблемах соединения с сервером.
+     */
+    public int restorePasswordSync(String phone) throws IOException {
+        return fns.restore(phone).execute().code();
     }
 }

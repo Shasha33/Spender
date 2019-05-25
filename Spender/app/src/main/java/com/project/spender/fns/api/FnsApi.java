@@ -1,10 +1,14 @@
 package com.project.spender.fns.api;
 
 import com.project.spender.fns.api.data.Json.CheckJson;
+import com.project.spender.fns.api.data.NewUser;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -27,4 +31,10 @@ public interface FnsApi {
 
     @GET("/v1/mobile/users/login")
     Call<Void> login(@Header("Authorization") String loginPassword);
+
+    @POST("/v1/mobile/users/signup")
+    Call<Void> signup(@Body NewUser newUser);
+
+    @POST("/v1/mobile/users/restore")
+    Call<Void> restore(@Field("phone") String phone);
 }
