@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
 
@@ -219,6 +220,16 @@ public class CheckDaoTest {
         checkDao.deleteProductById(productId);
         assertThat(checkDao.getTagId(tList.get(2).getName()), greaterThan(0L));
         checkDao.deleteAllUnusedTags();
+        assertEquals(0, checkDao.getTagsByProductId(productId).size());
+    }
+
+    @Test
+    public void deleteTagProductReflationTest() {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        long productId = cwpList.get(0).getProducts().get(0).getId();
+        long tagId = checkDao.insertTagForProduct(tList.get(0), productId);
+        assertEquals(1, checkDao.getTagsByProductId(productId).size());
+        checkDao.deleteTagProductRealation(new ProductTagJoin(productId, tagId));
         assertEquals(0, checkDao.getTagsByProductId(productId).size());
     }
 
