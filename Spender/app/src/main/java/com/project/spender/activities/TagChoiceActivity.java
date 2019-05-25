@@ -33,14 +33,17 @@ public class TagChoiceActivity extends AppCompatActivity {
 
         // (todo) definitely it needs to be improved
         for (long id : ids) {
+            System.out.println(id + " already has tags:");
             for (Tag t : ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(id)) {
                 tagNames.remove(t.getName());
                 tags.remove(t);
+                System.out.println(t.getName());
             }
         }
 
         list.setOnItemClickListener((parent, view, position, id) -> {
             for (long productId : ids) {
+                System.out.println(productId + " " + tags.get(position).getName());
                 ChecksRoller.getInstance().getAppDatabase().getCheckDao()
                         .insertTagForProduct(tags.get(position), productId);
             }

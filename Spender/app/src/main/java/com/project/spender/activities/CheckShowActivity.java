@@ -65,6 +65,8 @@ public class CheckShowActivity extends AppCompatActivity {
                 }
                 intentTagChoice.putExtra("ids", ids);
                 startActivity(intentTagChoice);
+                productsForAction.clear();
+                Toast.makeText(this, "added tag", Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
@@ -86,6 +88,7 @@ public class CheckShowActivity extends AppCompatActivity {
         listView.setAdapter(new ItemAdapter(this, products));
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
+            System.out.println("Clicked " + position);
             if (productsForAction.contains(products.get(position))) {
                 productsForAction.remove(products.get(position));
                 view.setBackgroundColor(Color.WHITE);
