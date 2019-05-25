@@ -1,19 +1,25 @@
 package com.project.spender.fns.api.exception;
 
+import retrofit2.Response;
+
 /**
  * Исключение кидаемое NetworkManager.
  * Может быть пораждено неправильным http кодом, либо другим исключением.
  */
 public class NetworkException extends Exception {
-    private int code;
+    private Response response;
 
     public int getCode() {
-        return code;
+        return (response != null)? response.code() : -1;
     }
 
-    public NetworkException(String message, int code) {
+    public String getMasage() {
+        return (response != null)? response.message() : "-1";
+    }
+
+    public NetworkException(String message, Response response) {
         super(message);
-        this.code = code;
+        this.response = response;
     }
 
     public NetworkException(Throwable cause) {
