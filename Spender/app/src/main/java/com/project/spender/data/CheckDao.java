@@ -93,6 +93,15 @@ public abstract class CheckDao {
     }
 
     /**
+     * Adds tag for product by id
+     */
+    @Transaction
+    public long insertExistingTagForProduct(long tagId, long productId) {
+        insertProductTagJoin(new ProductTagJoin(productId, tagId));
+        return tagId;
+    }
+
+    /**
      * Добавляет лист тегов для товара с данным id.
      * Если тег есть, ничего не делает.
      *

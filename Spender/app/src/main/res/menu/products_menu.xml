@@ -18,4 +18,9 @@
         android:title="new tag"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/remove_tag"
+        android:title="remove tag from selected"
+        app:showAsAction="never"/>
+
 </menu>

@@ -1,5 +1,6 @@
 package com.project.spender.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,29 +25,16 @@ public class TagChoiceActivity extends AppCompatActivity {
         ListView list = findViewById(R.id.tag_list);
 
         List<Tag> tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
-        long[] ids = getIntent().getExtras().getLongArray("ids");
 
         List<String> tagNames = new ArrayList<>();
         for (Tag tag : tags) {
             tagNames.add(tag.getName());
         }
 
-        // (todo) definitely it needs to be improved
-        for (long id : ids) {
-            System.out.println(id + " already has tags:");
-            for (Tag t : ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(id)) {
-                tagNames.remove(t.getName());
-                tags.remove(t);
-                System.out.println(t.getName());
-            }
-        }
-
         list.setOnItemClickListener((parent, view, position, id) -> {
-            for (long productId : ids) {
-                System.out.println(productId + " " + tags.get(position).getName());
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao()
-                        .insertTagForProduct(tags.get(position), productId);
-            }
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("tag id", tags.get(position).getId());
+            setResult(RESULT_OK, resultIntent);
             finish();
         });
 

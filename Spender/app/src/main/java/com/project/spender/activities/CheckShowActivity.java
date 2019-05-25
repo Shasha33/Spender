@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.Tag;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,15 +30,51 @@ public class CheckShowActivity extends AppCompatActivity {
     private ArrayList<Product> products;
     private ListView listView;
 
+    private static final int ADDING_CODE = 20;
+    private static final int REMOVING_CODE = 40;
+
     private HashSet<Product> productsForAction;
 
     private static final int SELECTED_ITEM = Color.rgb(0, 255, 127);
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        long tag = data.getLongExtra("tag id", -1);
+        if (tag == -1) {
+            return;
+        }
+        switch (requestCode) {
+            case ADDING_CODE:
+                for (Product product : productsForAction) {
+                    ChecksRoller.getInstance().getAppDatabase()
+                            .getCheckDao().insertExistingTagForProduct(tag, product.getId());
+                }
+                listView.invalidateViews();
+                productsForAction.clear();
+            case REMOVING_CODE:
+                Toast.makeText(this, "Heh", Toast.LENGTH_SHORT).show();
+                productsForAction.clear();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.products_menu, menu);
         return true;
+    }
+
+    private int getRequestCode(int id) {
+        switch (id) {
+            case R.id.remove_tag:
+                return REMOVING_CODE;
+            case R.id.add_tag:
+                return ADDING_CODE;
+        }
+        return -1;
     }
 
     @Override
@@ -57,16 +94,9 @@ public class CheckShowActivity extends AppCompatActivity {
                 return true;
 
             case R.id.add_tag:
+            case R.id.remove_tag:
                 Intent intentTagChoice = new Intent(this, TagChoiceActivity.class);
-                long[] ids = new long[productsForAction.size()];
-                int i = 0;
-                for (Product p : productsForAction) {
-                    ids[i++] = p.getId();
-                }
-                intentTagChoice.putExtra("ids", ids);
-                startActivity(intentTagChoice);
-                productsForAction.clear();
-                Toast.makeText(this, "added tag", Toast.LENGTH_SHORT).show();
+                startActivityForResult(intentTagChoice, getRequestCode(item.getItemId()));
                 return true;
 
             default:
