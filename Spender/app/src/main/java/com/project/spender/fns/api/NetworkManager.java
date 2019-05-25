@@ -77,6 +77,12 @@ public class NetworkManager {
                 scanResult.getDate(), scanResult.getSum()).execute().code();
     }
 
+    @Deprecated
+    public CheckJson getCheckSync(String fn, String fd, String fiscalSign, String date, String sum)
+            throws IOException, NetworkException {
+        return getCheckSync(defaultLogin, defaultPassword, fn, fd, fiscalSign, date, sum);
+    }
+
     /**
      *  Получает чек из ФНС и возвращает в виде объекта CheckJson.
      *  Является синхронизованным, поэтому по умолчанию нельзя запускать из main потока.
@@ -99,16 +105,16 @@ public class NetworkManager {
             throws IOException, NetworkException {
 
         String loginPassword = Credentials.basic(phone, password);
-        int responseCode = isCheckExistCodeSync(fn, fd, fiscalSign, date, sum);
-        if (responseCode != 204) {
-            throw new NetworkException("isException return " + responseCode, responseCode);
+        Response responseExist = fns.isCheckExist(fn, fd, fiscalSign, date, sum).execute();
+        if (responseExist.code() != 204) {
+            throw new NetworkException("isException return " + responseExist.code(), responseExist);
         }
 
         Response<CheckJson> res = fns.getCheck(loginPassword, "", "",
                 fn, fd, fiscalSign, "no").execute();
 
         if (res.code() != 200) {
-            throw new NetworkException("Check is exist, but getCheck return code " + res.code() , res.code());
+            throw new NetworkException("Check is exist, but getCheck return code " + res.code() + " " + res.message() , res);
         }
         return res.body();
     }
@@ -166,7 +172,7 @@ public class NetworkManager {
                             } else {
                                 liveData.postValue(new CheckJsonWithStatus(
                                         null, Status.ERROR,
-                                        new NetworkException("Check is exist, but getCheck return code " + response.code() , response.code())));
+                                        new NetworkException("Check is exist, but getCheck return code " + response.code() + " " + response.message() , response)));
                             }
                         }
 

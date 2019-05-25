@@ -54,4 +54,12 @@ public class ScanResult {
         date = resultNumbers.get(0);
         sum = resultNumbers.get(1);
     }
+
+    public ScanResult(String fn, String fd, String fp, String date, String sum) {
+        this.fn = fn;
+        this.fd = fd;
+        this.fp = fp;
+        this.date = date;
+        this.sum = sum;
+    }
 }
