@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.ScanResult;
 import com.project.spender.data.CheckDao;
 import com.project.spender.data.entities.Tag;
 import com.project.spender.data.entities.TagWithSum;
