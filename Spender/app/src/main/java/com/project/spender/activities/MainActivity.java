@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
                 ChecksRoller.getInstance().onRemoveAllClicked();
                 return true;
 
+            case R.id.action_tag_list:
+                Intent intent = new Intent(this, TagListActivity.class);
+                startActivity(intent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

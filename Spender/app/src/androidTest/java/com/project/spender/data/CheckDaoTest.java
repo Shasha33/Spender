@@ -9,7 +9,6 @@ import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
-import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
 
 import org.junit.After;
@@ -229,7 +228,7 @@ public class CheckDaoTest {
         long productId = cwpList.get(0).getProducts().get(0).getId();
         long tagId = checkDao.insertTagForProduct(tList.get(0), productId);
         assertEquals(1, checkDao.getTagsByProductId(productId).size());
-        checkDao.deleteTagProductRealation(new ProductTagJoin(productId, tagId));
+        checkDao.deleteTagProductRelation(new ProductTagJoin(productId, tagId));
         assertEquals(0, checkDao.getTagsByProductId(productId).size());
     }
 

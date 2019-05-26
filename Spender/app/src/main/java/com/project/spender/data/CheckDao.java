@@ -190,6 +190,10 @@ public abstract class CheckDao {
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.
 
+
+    @Query("DELETE FROM 'check'")
+    public abstract void deleteAll();
+
     @Query("DELETE FROM `check` WHERE id = :id")
     public abstract void deleteCheckById(long id);
 
@@ -203,7 +207,7 @@ public abstract class CheckDao {
     public abstract void deleteTagByName(String name);
 
     @Delete
-    public abstract void deleteTagProductRealation(ProductTagJoin productTagJoin);
+    public abstract void deleteTagProductRelation(ProductTagJoin productTagJoin);
 
     /**
      * Удаляет все неиспользуемые теги.

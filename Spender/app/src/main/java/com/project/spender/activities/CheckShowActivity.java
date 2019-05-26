@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.Tag;
 
 import java.lang.reflect.Array;
@@ -57,6 +58,13 @@ public class CheckShowActivity extends AppCompatActivity {
                 return;
             case REMOVING_CODE:
                 Toast.makeText(this, "Heh", Toast.LENGTH_SHORT).show();
+                for (Product product : productsForAction) {
+                    System.out.println(product.getName() + " " + product.getId() + " " + tag);
+                    ChecksRoller.getInstance().getAppDatabase()
+                            .getCheckDao()
+                            .deleteTagProductRelation(new ProductTagJoin(product.getId(), tag));
+                }
+                listView.invalidateViews();
                 productsForAction.clear();
                 return;
         }

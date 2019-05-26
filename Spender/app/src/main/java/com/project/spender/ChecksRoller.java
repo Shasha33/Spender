@@ -104,7 +104,7 @@ public class ChecksRoller {
     }
 
     public void onRemoveAllClicked() {
-        //(todo)
+        appDatabase.getCheckDao().deleteAll();
     }
 
 }

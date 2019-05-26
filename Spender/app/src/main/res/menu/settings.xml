@@ -12,4 +12,10 @@
         android:icon="@drawable/delete"
         app:showAsAction="always"/>
 
+    <item android:id="@+id/action_tag_list"
+        android:title="view_tags"
+        app:showAsAction="always"
+        android:icon="@drawable/tag">
+    </item>
+
 </menu>

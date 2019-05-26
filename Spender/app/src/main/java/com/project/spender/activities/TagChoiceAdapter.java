@@ -53,7 +53,7 @@ public class TagChoiceAdapter extends BaseAdapter {
         Tag tag = tagList.get(position);
 
         ((TextView) convertView.findViewById(R.id.tag_in_list_name)).setText(tag.getName());
-        convertView.findViewById(R.id.tag_in_list_name).setBackgroundColor(tag.getColor());
+        convertView.findViewById(R.id.tag_in_list_color).setBackgroundColor(tag.getColor());
 
 
         return convertView;
