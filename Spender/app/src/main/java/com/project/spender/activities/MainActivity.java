@@ -11,13 +11,27 @@ import android.os.StrictMode;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.data.CheckDao;
+import com.project.spender.data.entities.Tag;
+import com.project.spender.data.entities.TagWithSum;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton statistics;
     private ImageButton secret;
     private int clickCounter;
+
+    private PieChart pieChart;
+
     private final static int MAGICCONST = 10;
     private final static int CAMERA_REQUEST = 1;
     private final static int CHECK_REQUEST = 42;
@@ -120,5 +137,27 @@ public class MainActivity extends AppCompatActivity {
 
             startActivityForResult(intent, CHECK_REQUEST);
         });
+
+        //Pie
+        pieChart = findViewById(R.id.pieChart);
+        CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
+        checkDao.getTagsWithSum().observe(this, this::setData);
+    }
+
+    private void setData(List<TagWithSum> tagsWithSum) {
+        List<PieEntry> entries = new ArrayList<>();
+        for (TagWithSum tws : tagsWithSum) {
+            entries.add(new PieEntry(tws.sum, tws.tag.getName()));
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Tags with sum");
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData(dataSet);
+
+        pieChart.setData(data);
+        pieChart.animateXY(5000, 5000);
+
+        pieChart.invalidate();
     }
 }
