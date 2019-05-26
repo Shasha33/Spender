@@ -94,6 +94,15 @@ public abstract class CheckDao {
     }
 
     /**
+     * Adds tag for product by id
+     */
+    @Transaction
+    public long insertExistingTagForProduct(long tagId, long productId) {
+        insertProductTagJoin(new ProductTagJoin(productId, tagId));
+        return tagId;
+    }
+
+    /**
      * Добавляет лист тегов для товара с данным id.
      * Если тег есть, ничего не делает.
      *
@@ -130,6 +139,13 @@ public abstract class CheckDao {
     public abstract List<Product> getAllProducts();
 
     /**
+     * Returns list of all tags
+     */
+    @Query("SELECT * FROM Tag")
+    public abstract List<Tag> getAllTags();
+
+
+    /**
      * Метод получает все чеки из бд без информации о товарах.
      *
      * @return все чеки
@@ -156,11 +172,11 @@ public abstract class CheckDao {
     public abstract long getTagId(String name);
 
     @Transaction
-    @Query("SELECT tag.id, tag.name FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
+    @Query("SELECT tag.id, tag.name, tag.color FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
     public abstract List<Tag> getTagsByProductId (long productId);
 
     @Transaction
-    @Query("SELECT DISTINCT tag.id, tag.name FROM tag, product_tag_join, product WHERE tag.id = tag_id AND product_id == product.id AND check_id = :checkId")
+    @Query("SELECT DISTINCT tag.id, tag.name, tag.color FROM tag, product_tag_join, product WHERE tag.id = tag_id AND product_id == product.id AND check_id = :checkId")
     public abstract List<Tag> getTagsByCheckId (long checkId);
 
     /**
@@ -173,6 +189,10 @@ public abstract class CheckDao {
 
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.
+
+
+    @Query("DELETE FROM 'check'")
+    public abstract void deleteAll();
 
     @Query("DELETE FROM `check` WHERE id = :id")
     public abstract void deleteCheckById(long id);
@@ -187,7 +207,7 @@ public abstract class CheckDao {
     public abstract void deleteTagByName(String name);
 
     @Delete
-    public abstract void deleteTagProductRealation(ProductTagJoin productTagJoin);
+    public abstract void deleteTagProductRelation(ProductTagJoin productTagJoin);
 
     /**
      * Удаляет все неиспользуемые теги.
