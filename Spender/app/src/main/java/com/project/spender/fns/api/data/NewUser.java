@@ -9,4 +9,10 @@ public class NewUser {
     public String email;
     public String name;
     public String phone;
+
+    public NewUser(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
 }

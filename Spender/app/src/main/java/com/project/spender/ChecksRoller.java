@@ -3,6 +3,7 @@ package com.project.spender;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -12,13 +13,15 @@ import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.Json.CheckJson;
+import com.project.spender.fns.api.data.NewUser;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class ChecksRoller {
 
     private static ChecksRoller checksRoller;
-    private NetworkManager networkManager;
+    private static NetworkManager networkManager;
     private AppDatabase appDatabase;
     private static final String DATABASE = "DataBase";
     private Context context;
@@ -42,6 +45,18 @@ public class ChecksRoller {
             editor.putString(ACCOUNT_PASSWORD, password);
         }
         editor.apply();
+    }
+
+    public static int remindPassword(@NonNull String number) {
+        try {
+            return networkManager.restorePasswordSync(number);
+        } catch (IOException e) {
+            //(todo) introduce constant
+            return -100;
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+        return 125125;
     }
 
     private static void updateLoginInfo() {
@@ -84,6 +99,10 @@ public class ChecksRoller {
         appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(check,
                 Arrays.asList(product1, product2, product3)));
 
+    }
+
+    public static int register(@NonNull String name, @NonNull String email, @NonNull String number) throws IOException {
+        return networkManager.registrationSync(new NewUser(name, email, number));
     }
 
     public int putCheck(ScanResult result){
