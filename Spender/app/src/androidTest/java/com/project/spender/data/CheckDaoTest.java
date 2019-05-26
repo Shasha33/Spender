@@ -1,10 +1,12 @@
 package com.project.spender.data;
 
-import android.arch.persistence.room.Room;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.room.Room;
 import android.content.Context;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import com.jraska.livedata.TestObserver;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
@@ -13,6 +15,7 @@ import com.project.spender.data.entities.Tag;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -31,6 +34,9 @@ public class CheckDaoTest {
     private List<Product> pList;
     private List<CheckWithProducts> cwpList;
     private List<Tag> tList;
+
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
     public void createDb() {
@@ -230,6 +236,28 @@ public class CheckDaoTest {
         assertEquals(1, checkDao.getTagsByProductId(productId).size());
         checkDao.deleteTagProductRelation(new ProductTagJoin(productId, tagId));
         assertEquals(0, checkDao.getTagsByProductId(productId).size());
+    }
+
+    @Test
+    public void getTagsWithSumTest() throws InterruptedException {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        Product p0 = cwpList.get(0).getProducts().get(0);
+        Product p1 = cwpList.get(0).getProducts().get(1);
+
+        long p0Id = p0.getId();
+        long p1Id = p1.getId();
+
+        checkDao.insertTagForProduct(tList.get(0), p0Id);
+        checkDao.insertTagForProduct(tList.get(1), p0Id);
+        checkDao.insertTagForProduct(tList.get(1), p1Id);
+
+        long sum0= p0.getSum();
+        long sum1= p0.getSum() + p1.getSum();
+
+        TestObserver.test(checkDao.getTagsWithSum())
+                .awaitValue()
+                .assertValue(tags -> Arrays.equals(tags.stream().map(tag -> tag.sum).sorted().toArray(), new Long[]{sum0, sum1}));
+
     }
 
 }

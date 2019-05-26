@@ -1,7 +1,7 @@
 package com.project.spender.data;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.Product;

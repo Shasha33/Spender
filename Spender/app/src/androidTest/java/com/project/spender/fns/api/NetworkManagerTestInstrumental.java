@@ -1,17 +1,12 @@
 package com.project.spender.fns.api;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.os.StrictMode;
-
-import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 
 import com.project.spender.ScanResult;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Status;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;

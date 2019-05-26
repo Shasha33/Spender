@@ -1,11 +1,12 @@
 package com.project.spender.data;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Transaction;
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
@@ -13,6 +14,7 @@ import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
+import com.project.spender.data.entities.TagWithSum;
 
 import java.util.List;
 
@@ -172,11 +174,18 @@ public abstract class CheckDao {
 
     @Transaction
     @Query("SELECT tag.id, tag.name, tag.color FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
-    public abstract List<Tag> getTagsByProductId (long productId);
+    public abstract List<Tag> getTagsByProductId(long productId);
 
     @Transaction
     @Query("SELECT DISTINCT tag.id, tag.name, tag.color FROM tag, product_tag_join, product WHERE tag.id = tag_id AND product_id == product.id AND check_id = :checkId")
-    public abstract List<Tag> getTagsByCheckId (long checkId);
+    public abstract List<Tag> getTagsByCheckId(long checkId);
+
+    @Transaction
+    @Query("SELECT tag.id, tag.name, tag.color, SUM(product.sum) as sum " +
+            "FROM tag, product_tag_join, product " +
+            "WHERE tag.id = tag_id AND product_id == product.id " +
+            "GROUP BY tag.id")
+    public abstract LiveData<List<TagWithSum>> getTagsWithSum();
 
     /**
      * Получает последний вставленный id.

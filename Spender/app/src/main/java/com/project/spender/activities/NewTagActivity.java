@@ -1,9 +1,10 @@
 package com.project.spender.activities;
 
 import android.graphics.Color;
+import com.google.android.material.textfield.TextInputEditText;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 
 import com.project.spender.ChecksRoller;

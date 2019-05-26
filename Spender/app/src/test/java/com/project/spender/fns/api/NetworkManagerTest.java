@@ -1,24 +1,14 @@
 package com.project.spender.fns.api;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
-
 import com.project.spender.ScanResult;
-import com.project.spender.fns.api.data.CheckJsonWithStatus;
-import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.exception.NetworkException;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
 

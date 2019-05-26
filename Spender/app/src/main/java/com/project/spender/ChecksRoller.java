@@ -1,11 +1,12 @@
 package com.project.spender;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.room.Room;
 
 import com.project.spender.data.AppDatabase;
 import com.project.spender.data.entities.Check;
