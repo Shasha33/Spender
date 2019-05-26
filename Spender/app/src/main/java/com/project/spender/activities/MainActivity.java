@@ -1,7 +1,6 @@
 package com.project.spender.activities;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,9 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -28,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton scan;
     private ImageButton list;
     private ImageButton statistics;
-    private ImageButton secret;
-    private int clickCounter;
-    private final static int MAGICCONST = 10;
     private final static int CAMERA_REQUEST = 1;
     private final static int CHECK_REQUEST = 42;
 

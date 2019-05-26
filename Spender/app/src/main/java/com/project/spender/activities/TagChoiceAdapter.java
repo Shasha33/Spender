@@ -1,20 +1,15 @@
 package com.project.spender.activities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.project.spender.R;
-import com.project.spender.data.entities.Check;
-import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Tag;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TagChoiceAdapter extends BaseAdapter {

@@ -5,14 +5,9 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.spender.ChecksRoller;
@@ -81,29 +76,9 @@ public class ListActivity extends AppCompatActivity {
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener((v, actionId, event) -> {
-//                try {
-//                    updateList(v.getText().toString());
-//                } catch (SQLException e) {
-//                    System.out.println(e.getMessage());
-//                    itemsList = new ArrayList<>();
-//                }
-//                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if (imm != null) {
-//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-//                }
-//                v.setText("");
-//                System.out.println(itemsList.size() + " " + v.getText());
-//                adapter.notifyDataSetChanged();
             Toast.makeText(ListActivity.this, "Waiting for shashas understanding",
                     Toast.LENGTH_SHORT).show();
             return true;
         });
     }
-
-//    private void updateList(String ex) throws SQLException {
-//        itemsList.clear();
-//        for (CheckWithProducts i : ChecksRoller.getInstance(this).getAppDatabase().getAllByName(ex)) {
-//            itemsList.add(i.getName());
-//        }
-//    }
 }

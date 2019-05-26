@@ -15,7 +15,6 @@ import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Абстрактный класс описывает правила общения с бд.
