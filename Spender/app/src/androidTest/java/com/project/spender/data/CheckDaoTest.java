@@ -1,6 +1,6 @@
 package com.project.spender.data;
 
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 
 import androidx.test.core.app.ApplicationProvider;

@@ -1,7 +1,6 @@
 package com.project.spender;
 
-import android.app.Application;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -12,9 +11,7 @@ import com.project.spender.data.entities.Product;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.Json.CheckJson;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
 
 public class ChecksRoller {
 

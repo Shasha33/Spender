@@ -1,8 +1,8 @@
 package com.project.spender.data.entities;
 
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.Relation;
+import androidx.room.Embedded;
+import androidx.room.Ignore;
+import androidx.room.Relation;
 
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.Json.Item;

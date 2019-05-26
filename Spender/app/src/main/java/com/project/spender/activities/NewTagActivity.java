@@ -1,18 +1,16 @@
 package com.project.spender.activities;
 
 import android.graphics.Color;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputEditText;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.entities.Tag;
 
-import java.util.List;
 import java.util.Random;
 
 
