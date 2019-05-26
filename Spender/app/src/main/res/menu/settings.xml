@@ -13,9 +13,15 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_tag_list"
-        android:title="view_tags"
-        app:showAsAction="always"
+        android:title="view tags"
+        app:showAsAction="never"
         android:icon="@drawable/tag">
+    </item>
+
+    <item
+        android:title="login"
+        app:showAsAction="never"
+        android:id="@+id/login">
     </item>
 
 </menu>

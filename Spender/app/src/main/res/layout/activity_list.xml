@@ -42,6 +42,10 @@
             android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
-    <include android:id="@+id/header" layout="@layout/buttons" />
+    <include
+        android:id="@+id/header"
+        layout="@layout/buttons"
+        tools:layout_editor_absoluteX="-572dp"
+        tools:layout_editor_absoluteY="-184dp" />
 
 </android.support.constraint.ConstraintLayout>
