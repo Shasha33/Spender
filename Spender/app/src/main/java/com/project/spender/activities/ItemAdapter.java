@@ -1,18 +1,12 @@
 package com.project.spender.activities;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.ColorSpace;
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.project.spender.ChecksRoller;
@@ -20,7 +14,6 @@ import com.project.spender.R;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.Tag;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;

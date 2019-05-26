@@ -15,7 +15,8 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.TagListActivity"></activity>
+        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.TagListActivity" />
         <activity android:name=".activities.TagChoiceActivity" />
         <activity android:name=".activities.NewTagActivity" />
         <activity android:name=".activities.CheckShowActivity" />

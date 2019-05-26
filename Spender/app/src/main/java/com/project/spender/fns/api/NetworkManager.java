@@ -25,8 +25,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NetworkManager {
     private FnsApi fns;
-    private String defaultLogin = "79112813247";
-    private String defaultPassword = "882107";
+    public static final String DEFAULT_LOGIN = "79112813247";
+    public static final String DEFAULT_PASSWORD = "882107";
     public final static int CHECK_EXISTS = 204;
     public final static int CHECK_NOT_FOUND = 406;
 
@@ -79,7 +79,7 @@ public class NetworkManager {
     @Deprecated
     public CheckJson getCheckSync(String fn, String fd, String fiscalSign, String date, String sum)
             throws IOException, NetworkException {
-        return getCheckSync(defaultLogin, defaultPassword, fn, fd, fiscalSign, date, sum);
+        return getCheckSync(DEFAULT_LOGIN, DEFAULT_PASSWORD, fn, fd, fiscalSign, date, sum);
     }
 
     /**
@@ -113,7 +113,7 @@ public class NetworkManager {
                 fn, fd, fiscalSign, "no").execute();
 
         if (res.code() != 200) {
-            throw new NetworkException("Check is exist, but getCheck return code " + res.code() + " " + res.message() , res);
+            throw new NetworkException("Check exists, but getCheck return code " + res.code() + " " + res.message() , res);
         }
         return res.body();
     }
@@ -121,7 +121,7 @@ public class NetworkManager {
     @Deprecated
     public CheckJson getCheckSync(ScanResult scanResult)
             throws IOException, NetworkException {
-        return getCheckSync(defaultLogin, defaultPassword, scanResult);
+        return getCheckSync(DEFAULT_LOGIN, DEFAULT_PASSWORD, scanResult);
     }
 
     public CheckJson getCheckSync(String phone, String password, ScanResult scanResult)
@@ -197,7 +197,7 @@ public class NetworkManager {
 
     @Deprecated
     public LiveData<CheckJsonWithStatus> getCheckAsync(ScanResult scanResult) {
-        return getCheckAsync(defaultLogin, defaultPassword, scanResult);
+        return getCheckAsync(DEFAULT_LOGIN, DEFAULT_PASSWORD, scanResult);
     }
 
     public LiveData<CheckJsonWithStatus> getCheckAsync(String phone, String password, ScanResult scanResult) {

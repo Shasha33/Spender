@@ -77,29 +77,9 @@ public class ListActivity extends AppCompatActivity {
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener((v, actionId, event) -> {
-//                try {
-//                    updateList(v.getText().toString());
-//                } catch (SQLException e) {
-//                    System.out.println(e.getMessage());
-//                    itemsList = new ArrayList<>();
-//                }
-//                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if (imm != null) {
-//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-//                }
-//                v.setText("");
-//                System.out.println(itemsList.size() + " " + v.getText());
-//                adapter.notifyDataSetChanged();
             Toast.makeText(ListActivity.this, "Waiting for shashas understanding",
                     Toast.LENGTH_SHORT).show();
             return true;
         });
     }
-
-//    private void updateList(String ex) throws SQLException {
-//        itemsList.clear();
-//        for (CheckWithProducts i : ChecksRoller.getInstance(this).getAppDatabase().getAllByName(ex)) {
-//            itemsList.add(i.getName());
-//        }
-//    }
 }

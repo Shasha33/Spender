@@ -2,11 +2,17 @@ package com.project.spender.fns.api.data;
 
 /**
  * Объект для нового пользователя.
- * emain и name используются только при регистрации и больше нигде.
+ * email и name используются только при регистрации и больше нигде.
  * Формат номера: +79991234567
  */
 public class NewUser {
-    public String emain;
+    public String email;
     public String name;
     public String phone;
+
+    public NewUser(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
 }

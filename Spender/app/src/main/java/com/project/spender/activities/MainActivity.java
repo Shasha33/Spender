@@ -52,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == CHECK_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(this, "Loaded", Toast.LENGTH_LONG).show();
-            } else {
+            } else if (requestCode == ScanResult.NOT_ENOUGH_DATA) {
+                Toast.makeText(this, "Authorization required", Toast.LENGTH_LONG).show();
+            }
+            else {
                 Toast.makeText(this, "Check not received", Toast.LENGTH_LONG).show();
             }
         }
@@ -91,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, TagListActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.login:
+                startActivity(new Intent(this, LoginActivity.class));
 
             default:
                 return super.onOptionsItemSelected(item);

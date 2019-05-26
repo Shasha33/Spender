@@ -2,6 +2,9 @@ package com.project.spender;
 
 import androidx.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.project.spender.data.AppDatabase;
@@ -10,23 +13,59 @@ import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.Json.CheckJson;
+import com.project.spender.fns.api.data.NewUser;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class ChecksRoller {
 
     private static ChecksRoller checksRoller;
-    private NetworkManager networkManager;
+    private static NetworkManager networkManager;
     private AppDatabase appDatabase;
     private static final String DATABASE = "DataBase";
     private Context context;
+    public static final String ACCOUNT_INFO = "settings";
+    public static final String ACCOUNT_LOGIN = "login";
+    public static final String ACCOUNT_PASSWORD = "password";
+    private static SharedPreferences accountInfo;
+    private static String number;
+    private static String password;
+
+    /**
+     * Saves new number and password.
+     * If parameter did not change put null to it
+     */
+    public static void saveAccountInfo(@Nullable String name, @Nullable String password) {
+        SharedPreferences.Editor editor = accountInfo.edit();
+        if (name != null) {
+            editor.putString(ACCOUNT_LOGIN, name);
+        }
+        if (password != null) {
+            editor.putString(ACCOUNT_PASSWORD, password);
+        }
+        editor.apply();
+    }
+
+    public static int remindPassword(@NonNull String number) {
+        try {
+            return networkManager.restorePasswordSync(number);
+        } catch (IOException e) {
+            //(todo) introduce constant
+            return -100;
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+        return 125125;
+    }
+
+    private static void updateLoginInfo() {
+        number = accountInfo.getString(ACCOUNT_LOGIN, null);
+        password = accountInfo.getString(ACCOUNT_PASSWORD, null);
+    }
 
     public AppDatabase getAppDatabase() {
         return appDatabase;
-    }
-
-    public NetworkManager getNetworkManager() {
-        return networkManager;
     }
 
     private ChecksRoller(Context context) {
@@ -38,7 +77,13 @@ public class ChecksRoller {
     }
 
     public static void init(Context context) {
+        accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
         checksRoller = new ChecksRoller(context);
+        updateLoginInfo();
+        if (number == null || password == null) {
+            Toast.makeText(context,
+                    "Authorization required to receive checks", Toast.LENGTH_LONG).show();
+        }
     }
 
     public static ChecksRoller getInstance() {
@@ -56,36 +101,23 @@ public class ChecksRoller {
 
     }
 
-    public int putCheck(ScanResult result) {
-        try {
-            int searchResult = networkManager.isCheckExistCodeSync(result.getFn(),
-                    result.getFd(), result.getFp(), result.getDate(), result.getSum());
-//                    Should I do something more useful or informative?
-            if (searchResult == NetworkManager.CHECK_NOT_FOUND) {
-                Toast.makeText(context, "Check does not exist in FSN bases",
-                        Toast.LENGTH_LONG).show();
-                return -1;
-            } else if (searchResult != NetworkManager.CHECK_EXISTS) {
-                Toast.makeText(context, "Unknown reason, but check does not received",
-                        Toast.LENGTH_LONG).show();
-                return -1;
-            }
-        } catch (Throwable e) {
-            Toast.makeText(context, "Error while loading check " + e.getMessage() +
-                    " " + e.getCause() + " " + e.getClass(), Toast.LENGTH_LONG).show();
-            System.out.println("1 Error while loading check " + e.getMessage() +
-                    " | " + e.getCause() + " | " + e.getClass());
+    public static int register(@NonNull String name, @NonNull String email, @NonNull String number) throws IOException {
+        return networkManager.registrationSync(new NewUser(name, email, number));
+    }
+
+    public int putCheck(ScanResult result){
+        updateLoginInfo();
+        if (number == null || password == null) {
+            return ScanResult.NOT_ENOUGH_DATA;
         }
 
         try {
-
-            CheckJson checkJson = networkManager.getCheckSync(result.getFn(),
-                    result.getFd(), result.getFd(), result.getDate(), result.getSum());
+            CheckJson checkJson = networkManager.getCheckSync(number, password, result);
             appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(checkJson));
         } catch (Throwable e) {
             Toast.makeText(context, "Error while loading check " + e.getMessage() +
                     " " + e.getCause() + " " + e.getClass(), Toast.LENGTH_LONG).show();
-            System.out.println("2 Error while loading check " + e.getMessage() +
+            System.out.println("Error while loading check " + e.getMessage() +
                     " | " + e.getCause() + " | " + e.getClass());
         }
 

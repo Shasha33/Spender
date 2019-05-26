@@ -5,6 +5,9 @@ import java.util.List;
 
 public class ScanResult {
 
+    //(todo) come up with natural clear name
+    public static final int NOT_ENOUGH_DATA = -10;
+
     private final String fn;
     private final String fd;
     private final String fp;
