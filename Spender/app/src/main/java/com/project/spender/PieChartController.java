@@ -16,7 +16,7 @@ import java.util.List;
 public class PieChartController {
     private final PieChart pieChart;
 
-    private final int speed = 1000;
+    private final int speed = 1400;
 
     public PieChartController(PieChart pieChart) {
         this.pieChart = pieChart;
@@ -36,8 +36,8 @@ public class PieChartController {
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Tags");
-//        dataSet.setColors(colors);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(colors);
+//        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         dataSet.setSliceSpace(3f);
 
         PieData data = new PieData(dataSet);
