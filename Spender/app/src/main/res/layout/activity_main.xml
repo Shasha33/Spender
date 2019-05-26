@@ -7,8 +7,6 @@
     tools:context=".activities.MainActivity"
     >
 
-    <include android:id="@+id/header" layout="@layout/buttons" />
-
     <ImageButton
         android:id="@+id/secret"
         android:layout_width="261dp"
@@ -21,6 +19,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cat" />
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
+        android:foregroundGravity="bottom"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secret"
+        app:layout_constraintVertical_bias="0.765"
+        tools:layout_editor_absoluteX="64dp" />
 
 
 </android.support.constraint.ConstraintLayout>
