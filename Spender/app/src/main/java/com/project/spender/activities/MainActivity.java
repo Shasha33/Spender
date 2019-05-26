@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.project.spender.ChecksRoller;
+import com.project.spender.PieChartController;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
 import com.project.spender.data.CheckDao;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton secret;
     private int clickCounter;
 
-    private PieChart pieChart;
+    private PieChartController pieChartController;
 
     private final static int MAGICCONST = 10;
     private final static int CAMERA_REQUEST = 1;
@@ -145,25 +146,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Pie
-        pieChart = findViewById(R.id.pieChart);
+        pieChartController = new PieChartController(findViewById(R.id.pieChart));
         CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
-        checkDao.getTagsWithSum().observe(this, this::setData);
+        checkDao.getTagsWithSum().observe(this, pieChartController::setData);
     }
 
-    private void setData(List<TagWithSum> tagsWithSum) {
-        List<PieEntry> entries = new ArrayList<>();
-        for (TagWithSum tws : tagsWithSum) {
-            entries.add(new PieEntry(tws.sum, tws.tag.getName()));
-        }
-
-        PieDataSet dataSet = new PieDataSet(entries, "Tags with sum");
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData(dataSet);
-
-        pieChart.setData(data);
-        pieChart.animateXY(5000, 5000);
-
-        pieChart.invalidate();
-    }
 }
