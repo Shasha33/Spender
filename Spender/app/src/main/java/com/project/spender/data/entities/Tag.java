@@ -17,7 +17,7 @@ public class Tag {
 
     private String name;
     private int color;
-    private String subString;
+    private String substring;
 
     @Ignore
     public Tag(String name) {
@@ -30,11 +30,11 @@ public class Tag {
     }
 
 
-    public Tag(long id, String name, int color, String subString) {
+    public Tag(long id, String name, int color, String substring) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.subString = "";
+        this.substring = "";
     }
 
     @Ignore
@@ -51,7 +51,7 @@ public class Tag {
         return color;
     }
 
-    public String getSubString() {return subString;}
+    public String getSubString() {return substring;}
 
     public long getId() {
         return id;
