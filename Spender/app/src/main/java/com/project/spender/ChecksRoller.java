@@ -2,12 +2,14 @@ package com.project.spender;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Room;
 
+import com.project.spender.activities.LoginActivity;
 import com.project.spender.data.AppDatabase;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
@@ -22,6 +24,8 @@ import java.util.List;
 
 public class ChecksRoller {
 
+
+    public static final String LOG_TAG = "KITPRIVIT";
     private static ChecksRoller checksRoller;
     private static NetworkManager networkManager;
     private static AppDatabase appDatabase;
@@ -115,6 +119,7 @@ public class ChecksRoller {
     public int putCheck(ScanResult result){
         updateLoginInfo();
         if (number == null || password == null) {
+            Log.i(LOG_TAG, "Missing user info to get checks");
             return ScanResult.NOT_ENOUGH_DATA;
         }
 
@@ -122,12 +127,12 @@ public class ChecksRoller {
             CheckJson checkJson = networkManager.getCheckSync(number, password, result);
             appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(checkJson));
         } catch (Throwable e) {
-            Toast.makeText(context, "Error while loading check " + e.getMessage() +
-                    " " + e.getCause() + " " + e.getClass(), Toast.LENGTH_LONG).show();
-            System.out.println("Error while loading check " + e.getMessage() +
+            Toast.makeText(context, "Error while loading check", Toast.LENGTH_LONG).show();
+            Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e.getMessage() +
                     " | " + e.getCause() + " | " + e.getClass());
+            return -1;
         }
-
+        Log.i(ChecksRoller.LOG_TAG, "check received");
         return 0;
     }
 
@@ -145,6 +150,7 @@ public class ChecksRoller {
 
     public void onRemoveAllClicked() {
         appDatabase.getCheckDao().deleteAll();
+        Log.i(LOG_TAG, "All items removed");
     }
 
 }

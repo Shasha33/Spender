@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,12 +43,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "Loaded", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Scanned", Toast.LENGTH_SHORT).show();
             } else if (requestCode == ScanResult.NOT_ENOUGH_DATA) {
-                Toast.makeText(this, "Authorization required", Toast.LENGTH_LONG).show();
-            }
-            else {
-                Toast.makeText(this, "Check not received", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Authorization required", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Check not received", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Camera permission not got",
                         Toast.LENGTH_LONG).show();
+                Log.i(ChecksRoller.LOG_TAG, "didnt get camera permission");
+            } else {
+                Log.i(ChecksRoller.LOG_TAG, "got camera permission");
             }
         }
     }
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
         ChecksRoller.init(this);
 
+        Log.i(ChecksRoller.LOG_TAG, "KEK");
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -128,9 +133,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
-
-        statistics.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Misha molodez",
-                Toast.LENGTH_LONG).show());
 
         list.setOnClickListener(v -> {
             final Intent intentShowList = new Intent(MainActivity.this, ListActivity.class);

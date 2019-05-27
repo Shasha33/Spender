@@ -2,6 +2,8 @@ package com.project.spender.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.Result;
@@ -18,7 +20,6 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     public void onCreate(Bundle state) {
         super.onCreate(state);
         scannerView = new ZXingScannerView(this);
-        System.out.println(scannerView);
         setContentView(scannerView);
     }
 
