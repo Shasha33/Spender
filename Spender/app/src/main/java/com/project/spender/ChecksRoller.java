@@ -18,12 +18,13 @@ import com.project.spender.fns.api.data.NewUser;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 public class ChecksRoller {
 
     private static ChecksRoller checksRoller;
     private static NetworkManager networkManager;
-    private AppDatabase appDatabase;
+    private static AppDatabase appDatabase;
     private static final String DATABASE = "DataBase";
     private Context context;
     public static final String ACCOUNT_INFO = "settings";
@@ -46,6 +47,11 @@ public class ChecksRoller {
             editor.putString(ACCOUNT_PASSWORD, password);
         }
         editor.apply();
+    }
+
+    public static void clearAccountInfo() {
+        SharedPreferences.Editor editor = accountInfo.edit();
+        editor.clear();
     }
 
     public static int remindPassword(@NonNull String number) {
@@ -123,6 +129,10 @@ public class ChecksRoller {
         }
 
         return 0;
+    }
+
+    public List<CheckWithProducts> findCheckByRegEx(String regEx) {
+        return appDatabase.getCheckDao().getCheckByRegEx("%" + regEx + "%");
     }
 
     public void onDeleteAllClicked(Product product) {

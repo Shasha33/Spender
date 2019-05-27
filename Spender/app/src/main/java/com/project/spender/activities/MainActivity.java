@@ -8,32 +8,21 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.project.spender.ChecksRoller;
 import com.project.spender.PieChartController;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
 import com.project.spender.data.CheckDao;
-import com.project.spender.data.entities.Tag;
-import com.project.spender.data.entities.TagWithSum;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     private PieChartController pieChartController;
 
-    private final static int MAGICCONST = 10;
+    private final static int MAGICCONST = 30;
     private final static int CAMERA_REQUEST = 1;
-    private final static int CHECK_REQUEST = 42;
+    private final static int CHECK_REQUEST = 42;//okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, TagListActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.login:
+            case R.id.putin:
                 startActivity(new Intent(this, LoginActivity.class));
+            case R.id.putout:
+                ChecksRoller.clearAccountInfo();
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -128,6 +119,14 @@ public class MainActivity extends AppCompatActivity {
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
 
+        secret = findViewById(R.id.secret);
+        secret.setOnClickListener(view -> {
+            clickCounter++;
+            if (clickCounter > MAGICCONST) {
+                secret.setBackgroundResource(R.drawable.clevercat);
+                clickCounter = 0;
+            }
+        });
         statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
 
         statistics.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Misha molodez",
