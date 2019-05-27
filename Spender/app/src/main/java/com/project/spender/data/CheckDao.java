@@ -178,15 +178,15 @@ public abstract class CheckDao {
     public abstract long getTagId(String name);
 
     @Transaction
-    @Query("SELECT tag.id, tag.name, tag.color FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
+    @Query("SELECT tag.id, tag.name, tag.color, tag.substring FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
     public abstract List<Tag> getTagsByProductId(long productId);
 
     @Transaction
-    @Query("SELECT DISTINCT tag.id, tag.name, tag.color FROM tag, product_tag_join, product WHERE tag.id = tag_id AND product_id == product.id AND check_id = :checkId")
+    @Query("SELECT DISTINCT tag.id, tag.name, tag.color, tag.substring FROM tag, product_tag_join, product WHERE tag.id = tag_id AND product_id == product.id AND check_id = :checkId")
     public abstract List<Tag> getTagsByCheckId(long checkId);
 
     @Transaction
-    @Query("SELECT tag.id, tag.name, tag.color, SUM(product.sum) as sum " +
+    @Query("SELECT tag.id, tag.name, tag.color, tag.substring, SUM(product.sum) as sum " +
             "FROM tag, product_tag_join, product " +
             "WHERE tag.id = tag_id AND product_id == product.id " +
             "GROUP BY tag.id")

@@ -36,6 +36,20 @@
         app:layout_constraintStart_toStartOf="@id/new_tag_name"
         tools:ignore="MissingConstraints" />
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/new_tag_substring"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Substring for auto add (not necessary)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/new_tag_name"
+        tools:ignore="MissingConstraints" />
+
     <Button
         android:id="@+id/enter_new_tag_info"
         android:layout_width="wrap_content"

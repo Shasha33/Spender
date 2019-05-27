@@ -127,7 +127,7 @@ public class ChecksRoller {
         appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
         for (Product i : newCheck.getProducts()) {
             for (Tag j : appDatabase.getCheckDao().getAllTags()) {
-                if (i.getName().contains(j.getSubString())) {
+                if (j.getSubstring() != null && i.getName().contains(j.getSubstring())) {
                     appDatabase.getCheckDao().insertTagForProduct(j, i.getId());
                 }
             }

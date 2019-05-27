@@ -27,6 +27,8 @@ public class NewTagActivity extends AppCompatActivity {
         Button enter = findViewById(R.id.enter_new_tag_info);
         TextInputEditText name = findViewById(R.id.new_tag_name);
         TextInputEditText color = findViewById(R.id.new_tag_color);
+        TextInputEditText substring = findViewById(R.id.new_tag_substring);
+
         enter.setOnClickListener(v -> {
             int newTagColor;
             String newTagName = name.getText().toString();
@@ -39,7 +41,9 @@ public class NewTagActivity extends AppCompatActivity {
                 newTagColor = Integer.parseInt(color.getText().toString());
             }
 
-            ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertTag(new Tag(newTagName, newTagColor));
+            String newSubstring = substring.getText().toString();
+
+            ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertTag(new Tag(newTagName, newTagColor, newSubstring));
             finish();
         });
     }

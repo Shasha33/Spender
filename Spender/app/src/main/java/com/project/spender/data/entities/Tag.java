@@ -1,5 +1,6 @@
 package com.project.spender.data.entities;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
@@ -10,14 +11,14 @@ import java.util.Objects;
 /**
  * Таблица тегов
  */
-@Entity(indices = {@Index(value = "name", unique = true ), @Index(value = "color")})
+@Entity(indices = {@Index(value = "name", unique = true ), @Index(value = "color"), @Index(value = "substring")})
 public class Tag {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
     private String name;
     private int color;
-    private String substring;
+    @Nullable private String substring;
 
     @Ignore
     public Tag(String name) {
@@ -34,7 +35,7 @@ public class Tag {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.substring = "";
+        this.substring = substring;
     }
 
     @Ignore
@@ -47,11 +48,18 @@ public class Tag {
         this(0, newTagName, newTagColor);
     }
 
+    @Ignore
+    public Tag(String newTagName, int newTagColor, String substring) {
+        this(0, newTagName, newTagColor, substring);
+    }
+
     public int getColor() {
         return color;
     }
 
-    public String getSubString() {return substring;}
+    public String getSubstring() {
+        return substring;
+    }
 
     public long getId() {
         return id;
