@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.room.Room;
 
 import com.project.spender.activities.LoginActivity;
@@ -14,9 +16,13 @@ import com.project.spender.data.AppDatabase;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.Tag;
 import com.project.spender.fns.api.NetworkManager;
+import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.NewUser;
+import com.project.spender.fns.api.data.Status;
+import com.project.spender.fns.api.exception.NetworkException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -116,23 +122,40 @@ public class ChecksRoller {
         return networkManager.registrationSync(new NewUser(name, email, number));
     }
 
-    public int putCheck(ScanResult result){
+    public synchronized void putCheck(CheckJson check) {
+        CheckWithProducts newCheck = new CheckWithProducts(check);
+        appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
+        for (Product i : newCheck.getProducts()) {
+            for (Tag j : appDatabase.getCheckDao().getAllTags()) {
+                if (j.getSubstring() != null && i.getName().contains(j.getSubstring())) {
+                    appDatabase.getCheckDao().insertTagForProduct(j, i.getId());
+                }
+            }
+        }
+    }
+
+    public synchronized int requestCheck(ScanResult result){
         updateLoginInfo();
         if (number == null || password == null) {
             Log.i(LOG_TAG, "Missing user info to get checks");
             return ScanResult.NOT_ENOUGH_DATA;
         }
 
-        try {
-            CheckJson checkJson = networkManager.getCheckSync(number, password, result);
-            appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(checkJson));
-        } catch (Throwable e) {
-            Toast.makeText(context, "Error while loading check", Toast.LENGTH_LONG).show();
-            Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e.getMessage() +
-                    " | " + e.getCause() + " | " + e.getClass());
-            return -1;
-        }
-        Log.i(ChecksRoller.LOG_TAG, "check received");
+        LiveData<CheckJsonWithStatus> liveData = networkManager.getCheckAsync(number, password, result);
+
+        liveData.observeForever(checkJsonWithStatus -> {
+            if (checkJsonWithStatus != null) {
+                if (checkJsonWithStatus.getStatus() == Status.ERROR) {
+                    NetworkException e = checkJsonWithStatus.getException();
+                    Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
+                            + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause() + " " + e.getSuppressed());
+                } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
+                    Log.i(ChecksRoller.LOG_TAG, "check received");
+                    putCheck(checkJsonWithStatus.getCheckJson());
+                }
+            }
+        });
+
         return 0;
     }
 
