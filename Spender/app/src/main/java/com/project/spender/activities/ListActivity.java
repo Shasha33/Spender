@@ -1,11 +1,13 @@
 package com.project.spender.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -77,8 +79,17 @@ public class ListActivity extends AppCompatActivity {
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener((v, actionId, event) -> {
-            Toast.makeText(ListActivity.this, "Waiting for shashas understanding",
-                    Toast.LENGTH_SHORT).show();
+            String s = request.getText().toString();
+
+            checkList.clear();
+            checkList.addAll(ChecksRoller.getInstance().findCheckByRegEx(s));
+
+            InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+
+            listView.invalidateViews();
             return true;
         });
     }

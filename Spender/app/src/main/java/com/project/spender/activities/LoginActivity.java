@@ -1,6 +1,7 @@
 package com.project.spender.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.data.entities.Check;
 import com.project.spender.fns.api.NetworkManager;
 
 import java.io.IOException;
@@ -42,9 +44,11 @@ public class LoginActivity extends AppCompatActivity {
                 result = ChecksRoller.register(newName, newEmail, newNumber);
             } catch (IOException e) {
                 Toast.makeText(LoginActivity.this, "Failed connect to server", Toast.LENGTH_LONG).show();
+                Log.i(ChecksRoller.LOG_TAG, "Failed connect to server");
                 return;
             }
             //(todo) introduce constants
+            Log.i(ChecksRoller.LOG_TAG, "Try to register, answer is" + result);
             switch (result) {
                 case 204:
                     Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_LONG).show();
@@ -91,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             int res = ChecksRoller.remindPassword(num);
+            Log.i(ChecksRoller.LOG_TAG, "Trying to restore password, answer is" + res);
             switch (res) {
                 case -100:
                     Toast.makeText(LoginActivity.this, "Failed to connect server", Toast.LENGTH_SHORT).show();
