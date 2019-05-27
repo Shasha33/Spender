@@ -13,8 +13,7 @@ public class NetworkException extends Exception {
         return (response != null)? response.code() : -1;
     }
 
-    @Override
-    public String getMessage() {
+    public String cleverGetMessage() {
         return (response != null)? response.message() : "-1";
     }
 
