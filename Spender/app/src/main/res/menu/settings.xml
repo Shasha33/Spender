@@ -21,7 +21,15 @@
     <item
         android:title="login"
         app:showAsAction="never"
-        android:id="@+id/login">
+        android:id="@+id/putin">
     </item>
+
+    <item
+        android:title="logout"
+        app:showAsAction="never"
+        android:id="@+id/putout">
+    </item>
+
+
 
 </menu>

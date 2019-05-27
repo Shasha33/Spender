@@ -145,6 +145,11 @@ public abstract class CheckDao {
     @Query("SELECT * FROM Tag")
     public abstract List<Tag> getAllTags();
 
+    @Transaction
+    @Query("SELECT * FROM `Check` WHERE name LIKE :exp")
+    public abstract List<CheckWithProducts> getCheckByRegEx(String exp);
+
+
 
     /**
      * Метод получает все чеки из бд без информации о товарах.
