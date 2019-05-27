@@ -16,6 +16,7 @@ import com.project.spender.data.AppDatabase;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.Tag;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Json.CheckJson;
@@ -122,7 +123,15 @@ public class ChecksRoller {
     }
 
     public synchronized void putCheck(CheckJson check) {
-        appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(check));
+        CheckWithProducts newCheck = new CheckWithProducts(check);
+        appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
+        for (Product i : newCheck.getProducts()) {
+            for (Tag j : appDatabase.getCheckDao().getAllTags()) {
+                if (i.getName().contains(j.getSubString())) {
+                    appDatabase.getCheckDao().insertTagForProduct(j, i.getId());
+                }
+            }
+        }
     }
 
     public synchronized int requestCheck(ScanResult result){

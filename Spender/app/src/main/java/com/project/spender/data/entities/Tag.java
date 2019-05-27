@@ -17,6 +17,7 @@ public class Tag {
 
     private String name;
     private int color;
+    private String subString;
 
     @Ignore
     public Tag(String name) {
@@ -29,14 +30,16 @@ public class Tag {
     }
 
 
-    /**
-     * Spoiled your code a little
-     * I think it ll be better to store colors in database too
-     */
-    public Tag(long id, String name, int color) {
+    public Tag(long id, String name, int color, String subString) {
         this.id = id;
         this.name = name;
         this.color = color;
+        this.subString = "";
+    }
+
+    @Ignore
+    public Tag(long id, String name, int color) {
+        this(id, name, color, "");
     }
 
     @Ignore
@@ -47,6 +50,8 @@ public class Tag {
     public int getColor() {
         return color;
     }
+
+    public String getSubString() {return subString;}
 
     public long getId() {
         return id;
