@@ -41,7 +41,7 @@ public class Check {
     }
 
     public Check(CheckJson checkJson) {
-        this("Unnamed", checkJson.getData().totalSum, checkJson.getData().user, checkJson.getData().dateTime);
+        this(checkJson.getData().user, checkJson.getData().totalSum, checkJson.getData().user, checkJson.getData().dateTime);
     }
 
     @Override
