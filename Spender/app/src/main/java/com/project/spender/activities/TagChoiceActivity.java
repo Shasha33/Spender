@@ -20,11 +20,20 @@ public class TagChoiceActivity extends AppCompatActivity {
 
         ListView list = findViewById(R.id.tag_list);
 
+        int type = getIntent().getIntExtra("op type", -1);
+        int pos = getIntent().getIntExtra("position", -2);
+
         List<Tag> tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
 
         list.setOnItemClickListener((parent, view, position, id) -> {
             Intent resultIntent = new Intent();
             resultIntent.putExtra("tag id", tags.get(position).getId());
+            if (type != -1) {
+                resultIntent.putExtra("position", pos);
+            }
+            if (type != -1) {
+                resultIntent.putExtra("op type", type);
+            }
             setResult(RESULT_OK, resultIntent);
             finish();
         });
