@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         //Pie
         pieChartController = new PieChartController(findViewById(R.id.pieChart));
         CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
+        pieChartController.animate();
         checkDao.getTagsWithSum().observe(this, pieChartController::setData);
     }
 
