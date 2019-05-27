@@ -139,14 +139,14 @@ public class ChecksRoller {
                 if (checkJsonWithStatus.getStatus() == Status.ERROR) {
                     NetworkException e = checkJsonWithStatus.getException();
                     Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
-                            + e.getMasage() + " | " + e.getCode() + " | "+ e.getCause() + " " + e.getSuppressed());
+                            + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause() + " " + e.getSuppressed());
                 } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
                     Log.i(ChecksRoller.LOG_TAG, "check received");
                     putCheck(checkJsonWithStatus.getCheckJson());
                 }
             }
         });
-        
+
         return 0;
     }
 
