@@ -45,8 +45,11 @@ public class PieChartController {
         data.setValueFormatter(new PercentFormatter(pieChart));
 
         pieChart.setData(data);
-        pieChart.animateXY(speed, speed);
 
         pieChart.invalidate();
+    }
+
+    public void animate() {
+        pieChart.animateXY(speed, speed);
     }
 }
