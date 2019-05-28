@@ -198,7 +198,27 @@ public abstract class CheckDao {
      * @return послединий id.
      */
     @Query("SELECT last_insert_rowid()")
-    public  abstract long getLastId();
+    public abstract long getLastId();
+
+    /**
+     *  Список чеков по дате.
+     *  Формат даты -- строка вида:
+     * 1 	YYYY-MM-DD 	2010-12-30
+     * 2 	YYYY-MM-DD HH:MM 	2010-12-30 12:10
+     * 3 	YYYY-MM-DD HH:MM:SS.SSS 	2010-12-30 12:10:04.100
+     * 4 	MM-DD-YYYY HH:MM 	30-12-2010 12:10
+     * 5 	HH:MM 	12:10
+     * 6 	YYYY-MM-DDTHH:MM 	2010-12-30T12:10
+     * 7 	HH:MM:SS 	12:10:01
+     * 8 	YYYYMMDD HHMMSS 	20101230 121001
+     * 9 	now 	2013-05-07
+     *
+     * @param start
+     * @param finish
+     * @return все чеки попадающие в отрезок.
+     */
+    @Query("SELECT * FROM `Check` WHERE date BETWEEN :start AND :finish")
+    public abstract List<Check> getChecksByDate(String start, String finish);
 
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.
