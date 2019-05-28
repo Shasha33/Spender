@@ -1,25 +1,14 @@
 package com.project.spender.activities;
 
-import android.content.Context;
-import android.graphics.Color;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.TagStateHolder;
-import com.project.spender.data.entities.Tag;
 
-import java.util.Random;
-
-import com.mattyork.colours.Colour;
-import com.mattyork.colours.Colour.ColorScheme;
+import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 
 public class NewTagActivity extends AppCompatActivity {
 
@@ -57,13 +46,6 @@ public class NewTagActivity extends AppCompatActivity {
             tagStateHolder.createTag();
             finish();
         });
-    }
-
-    private void hideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
     }
 }
 

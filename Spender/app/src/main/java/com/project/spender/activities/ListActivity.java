@@ -1,7 +1,6 @@
 package com.project.spender.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,11 +20,12 @@ import android.widget.Toast;
 import com.project.spender.CheckListHolder;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 
 import java.util.ArrayList;
+
+import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 
 
 public class ListActivity extends AppCompatActivity {
@@ -170,10 +169,4 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
-    private void hideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
-    }
 }
