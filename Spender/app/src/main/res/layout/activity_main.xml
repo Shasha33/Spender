@@ -16,7 +16,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></com.github.mikephil.charting.charts.PieChart>
+        app:layout_constraintVertical_bias="0.0">
+
+    </com.github.mikephil.charting.charts.PieChart>
 
     <ImageButton
         android:id="@+id/secret"
