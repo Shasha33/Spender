@@ -217,7 +217,7 @@ public abstract class CheckDao {
      * @param finish
      * @return все чеки попадающие в отрезок.
      */
-    @Query("SELECT * FROM `Check` WHERE date BETWEEN :start AND :finish")
+    @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
     public abstract List<Check> getChecksByDate(String start, String finish);
 
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
