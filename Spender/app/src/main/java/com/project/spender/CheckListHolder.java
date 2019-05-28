@@ -101,10 +101,22 @@ public class CheckListHolder {
         list.addAll(list1);
     }
 
+    public void addTags(int position, long[] tagIds) {
+        for (long id : tagIds) {
+            addTag(position, id);
+        }
+    }
+
     public void addTag(int position, long tagId) {
         for (Product product : list.get(position).getProducts()) {
             ChecksRoller.getInstance().getAppDatabase()
                         .getCheckDao().insertExistingTagForProduct(tagId, product.getId());
+        }
+    }
+
+    public void removeTags(int position, long[] tagIds) {
+        for (long id : tagIds) {
+            removeTag(position, id);
         }
     }
 

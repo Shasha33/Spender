@@ -3,6 +3,7 @@ package com.project.spender.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,38 +33,39 @@ public class CheckShowActivity extends AppCompatActivity {
 
     private HashSet<Product> productsForAction;
 
-    private static final int SELECTED_ITEM = Color.rgb(0, 255, 127);
+    public static final int SELECTED_ITEM = Color.rgb(0, 255, 127);
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {
             return;
         }
-        long tag = data.getLongExtra("tag id", -1);
-        if (tag == -1) {
+        long[] tags = data.getLongArrayExtra("tag ids");
+        if (tags == null) {
             return;
         }
-        switch (requestCode) {
-            case ADDING_CODE:
-                for (Product product : productsForAction) {
-                    ChecksRoller.getInstance().getAppDatabase()
+        Log.i(ChecksRoller.LOG_TAG, tags.length + "");
+        for (long tag : tags) {
+            switch (requestCode) {
+                case ADDING_CODE:
+                    for (Product product : productsForAction) {
+                        ChecksRoller.getInstance().getAppDatabase()
                             .getCheckDao().insertExistingTagForProduct(tag, product.getId());
-                }
-                listView.invalidateViews();
-                productsForAction.clear();
-                return;
-            case REMOVING_CODE:
-                Toast.makeText(this, "Heh", Toast.LENGTH_SHORT).show();
-                for (Product product : productsForAction) {
-                    System.out.println(product.getName() + " " + product.getId() + " " + tag);
-                    ChecksRoller.getInstance().getAppDatabase()
-                            .getCheckDao()
-                            .deleteTagProductRelation(new ProductTagJoin(product.getId(), tag));
-                }
-                listView.invalidateViews();
-                productsForAction.clear();
-                return;
+                    }
+                    break;
+                case REMOVING_CODE:
+                    Toast.makeText(this, "Heh", Toast.LENGTH_SHORT).show();
+                    for (Product product : productsForAction) {
+                        System.out.println(product.getName() + " " + product.getId() + " " + tag);
+                        ChecksRoller.getInstance().getAppDatabase()
+                                .getCheckDao()
+                                .deleteTagProductRelation(new ProductTagJoin(product.getId(), tag));
+                    }
+                    break;
+            }
         }
+        productsForAction.clear();
+        listView.invalidateViews();
     }
 
     @Override

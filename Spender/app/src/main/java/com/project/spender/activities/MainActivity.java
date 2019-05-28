@@ -9,9 +9,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.project.spender.PieChartController;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
 import com.project.spender.data.CheckDao;
+import com.project.spender.data.entities.CheckWithProducts;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,14 +91,27 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, TagListActivity.class);
                 startActivity(intent);
                 return true;
+
             case R.id.putin:
                 startActivity(new Intent(this, LoginActivity.class));
+                break;
             case R.id.putout:
                 ChecksRoller.clearAccountInfo();
+                break;
+            case R.id.pie_chart_item:
+                Log.i(ChecksRoller.LOG_TAG, "pie chart");
+                break;
+            case R.id.donut_chart_item:
+                Log.i(ChecksRoller.LOG_TAG, "donut chart");
+                break;
+            case R.id.line_graph_item:
+                Log.i(ChecksRoller.LOG_TAG, "line graph");
+                break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
 
@@ -132,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 clickCounter = 0;
             }
         });
+
         statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
 
         list.setOnClickListener(v -> {

@@ -55,15 +55,15 @@ public class ListActivity extends AppCompatActivity {
             if (requestCode == CHOOSE_TAG_CODE) {
                 int type = data.getIntExtra("op type", -1);
                 int pos = data.getIntExtra("position", -1);
-                long tagId = data.getLongExtra("tag id", -1);
-                if (type == -1 || pos == -1 || tagId == -1) {
+                long[] tagIds = data.getLongArrayExtra("tag ids");
+                if (type == -1 || pos == -1 || tagIds == null) {
                     return;
                 }
-                Log.i(ChecksRoller.LOG_TAG, "choose tag" + tagId + " to " + pos );
+                Log.i(ChecksRoller.LOG_TAG, "choose tag" + tagIds.length + " to " + pos );
                 if (type == R.id.add_tag_for_check) {
-                    holder.addTag(pos, tagId);
+                    holder.addTags(pos, tagIds);
                 } else if (type == R.id.remove_tag_for_check) {
-                    holder.removeTag(pos, tagId);
+                    holder.removeTags(pos, tagIds);
                 }
             }
         }
