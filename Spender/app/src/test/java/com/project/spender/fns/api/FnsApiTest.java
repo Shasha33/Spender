@@ -1,6 +1,7 @@
 package com.project.spender.fns.api;
 
 import com.project.spender.fns.api.data.Json.CheckJson;
+import com.project.spender.fns.api.data.Phone;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,11 +9,13 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import okhttp3.Credentials;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class FnsApiTest {
@@ -81,5 +84,22 @@ class FnsApiTest {
         System.out.println(res.message());
         System.out.println(res.body().getData().items.get(0).name);
         assertTrue(res.isSuccessful());
+    }
+
+    @Test
+    void getRaw() throws IOException {
+        Response resExist = fns.isCheckExist(fn2, fd2, fiscalSign2, date2, sum2).execute();
+        Response<ResponseBody> res = fns.getRawCheck(loginPassword, "", "",
+                fn2, fd2, fiscalSign2, "no").execute();
+        System.out.println(res.body().string());
+        assertTrue(res.isSuccessful());
+    }
+
+    @Test
+    void restoreTest() throws IOException {
+        Response res = fns.restore(new Phone("+79113214567")).execute();
+        System.out.println(res.code());
+        System.out.println(res.message());
+        assertEquals(404, res.code());
     }
 }

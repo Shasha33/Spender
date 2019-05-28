@@ -2,10 +2,13 @@ package com.project.spender.fns.api;
 
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.NewUser;
+import com.project.spender.fns.api.data.Phone;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -36,5 +39,9 @@ public interface FnsApi {
     Call<Void> signup(@Body NewUser newUser);
 
     @POST("/v1/mobile/users/restore")
-    Call<Void> restore(@Field("phone") String phone);
+    Call<Void> restore(@Body Phone phone);
+
+    @GET("/v1/inns/*/kkts/*/fss/{fnNum}/tickets/{fdNum}?")
+    Call<ResponseBody> getRawCheck(@Header("Authorization") String loginPassword, @Header("Device-Id") String deviceId, @Header("Device-OS") String deviceOs, @Path("fnNum") String fn, @Path("fdNum") String fd,
+                                   @Query("fiscalSign") String fiscalSign, @Query("sendToEmail") String yesOrNo);
 }
