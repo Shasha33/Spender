@@ -263,10 +263,16 @@ public class CheckDaoTest {
     }
 
     @Test
-    public void getTimeTest() {
+    public void getCheckByDate() {
         checkDao.insertCheck(cList.get(0));
         checkDao.insertCheck(cList.get(3));
-        assertThat(checkDao.getAllChecks().stream().map(Check::getYear).collect(Collectors.toList()), containsInAnyOrder( 2007, 1994));
+        String date0 = "2007-05-18T22:05:00";
+        String date3 = "1994 05 18 22:05:00";
+        assertEquals(2, checkDao.getChecksByDate(date3, date0).size());
+        String future = "2008 01 11";
+        assertEquals(2, checkDao.getChecksByDate(date3, future).size());
+        String mid = "2005";
+        assertEquals(1, checkDao.getChecksByDate(date3, mid).size());
     }
 
 }
