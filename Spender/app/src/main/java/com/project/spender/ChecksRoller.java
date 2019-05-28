@@ -177,12 +177,11 @@ public class ChecksRoller {
         return appDatabase.getCheckDao().getChecksWithProductsByDateAndRegEx(begin, end, regEx);
     }
 
-    public void onDeleteAllClicked(Product product) {
-
-    }
-
-    public void onAddTagClicked(Product product) {
-
+    public List<Product> findProductsInCheckBySubstring(long checkId, String substring) {
+        Log.i(LOG_TAG, substring + "");
+        List<Product> list = appDatabase.getCheckDao().getProductByRegEx("%" + substring + "%", checkId);
+        Log.i(LOG_TAG, list.size() + "");
+        return list;
     }
 
     public void onRemoveAllClicked() {

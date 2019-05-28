@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int MAGICCONST = 30;
     private final static int CAMERA_REQUEST = 1;
     private final static int CHECK_REQUEST = 42;//okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-
+    private final static int CHART_TAGS_CODE = 15325;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_REQUEST) {
@@ -49,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Check not received", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == CHART_TAGS_CODE) {
+            long[] ids = data.getLongArrayExtra("tag ids");
+            //(todo) update chart
         }
     }
 
@@ -88,14 +89,29 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, TagListActivity.class);
                 startActivity(intent);
                 return true;
+
             case R.id.putin:
                 startActivity(new Intent(this, LoginActivity.class));
+                break;
             case R.id.putout:
                 ChecksRoller.clearAccountInfo();
-
+                break;
+            case R.id.pie_chart_item:
+                Log.i(ChecksRoller.LOG_TAG, "pie chart");
+                break;
+            case R.id.donut_chart_item:
+                Log.i(ChecksRoller.LOG_TAG, "donut chart");
+                break;
+            case R.id.line_graph_item:
+                Log.i(ChecksRoller.LOG_TAG, "line graph");
+                break;
+            case R.id.tags_for_chart:
+                startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
 
@@ -132,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 clickCounter = 0;
             }
         });
-        statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
+
+        statistics.setImageResource(R.drawable.piechart_chosen);
 
         list.setOnClickListener(v -> {
             final Intent intentShowList = new Intent(MainActivity.this, ListActivity.class);
