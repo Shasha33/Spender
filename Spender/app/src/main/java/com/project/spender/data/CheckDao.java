@@ -220,6 +220,20 @@ public abstract class CheckDao {
     @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
     public abstract List<Check> getChecksByDate(String start, String finish);
 
+    @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
+    public abstract List<CheckWithProducts> getChecksWithProductsByDate(String start, String finish);
+
+
+    /**
+     * Trying to add little update
+     * Returns list of checks in given (as only russian say) period matching regular expression
+     */
+
+    @Query("SELECT * FROM `Check` WHERE  name LIKE :regEx AND datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
+    public abstract List<CheckWithProducts> getChecksWithProductsByDateAndRegEx(String start, String finish, String regEx);
+
+
+
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.
 

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.annotation.CheckResult;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -25,6 +27,7 @@ import com.project.spender.CheckListHolder;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.AppDatabase;
+import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
@@ -147,6 +150,7 @@ public class ListActivity extends AppCompatActivity {
             try {
                 holder.setBegin(beginDate.getText().toString());
             } catch (IllegalArgumentException e) {
+                Log.i(ChecksRoller.LOG_TAG, "Invalid format ");
                 Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
             }
             hideKeyboard(v);
@@ -161,8 +165,10 @@ public class ListActivity extends AppCompatActivity {
             try {
                 holder.setEnd(endDate.getText().toString());
             } catch (IllegalArgumentException e) {
+                Log.i(ChecksRoller.LOG_TAG, "Invalid format ");
                 Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
-            }hideKeyboard(v);
+            }
+            hideKeyboard(v);
 
             listView.invalidateViews();
             return true;
