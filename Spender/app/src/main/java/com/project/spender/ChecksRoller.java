@@ -159,8 +159,12 @@ public class ChecksRoller {
         return 0;
     }
 
-    public List<CheckWithProducts> findCheckByRegEx(String regEx) {
+    public List<CheckWithProducts> findCheckBySubstring(String regEx) {
         return appDatabase.getCheckDao().getCheckByRegEx("%" + regEx + "%");
+    }
+
+    public List<CheckWithProducts> findCheckByTimePeriodAndSubstrig(String begin, String end, String subtring) {
+        return appDatabase.getCheckDao().getChecksByDateAndRegEx(begin, end, subtring);
     }
 
     public void onDeleteAllClicked(Product product) {

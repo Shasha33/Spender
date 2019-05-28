@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -143,7 +144,11 @@ public class ListActivity extends AppCompatActivity {
         beginDate.setOnEditorActionListener((v, actionId, event) -> {
 
             Log.i(ChecksRoller.LOG_TAG, "Got begin value " + beginDate.getText().toString());
-            holder.setBegin(beginDate.getText().toString());
+            try {
+                holder.setBegin(beginDate.getText().toString());
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
+            }
             hideKeyboard(v);
 
             listView.invalidateViews();
@@ -153,8 +158,11 @@ public class ListActivity extends AppCompatActivity {
         endDate = findViewById(R.id.end_date);
         endDate.setOnEditorActionListener((v, actionId, event) -> {
             Log.i(ChecksRoller.LOG_TAG, "Got end value " + endDate.getText().toString());
-            holder.setEnd(endDate.getText().toString());
-            hideKeyboard(v);
+            try {
+                holder.setEnd(endDate.getText().toString());
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
+            }hideKeyboard(v);
 
             listView.invalidateViews();
             return true;
