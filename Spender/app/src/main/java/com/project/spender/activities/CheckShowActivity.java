@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mattyork.colours.Colour;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.entities.Product;
@@ -36,7 +37,7 @@ public class CheckShowActivity extends AppCompatActivity {
 
     private HashSet<Product> productsForAction;
 
-    public static final int SELECTED_ITEM = Color.rgb(0, 255, 127);
+    public static final int SELECTED_ITEM = Colour.pastelGreenColor();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
