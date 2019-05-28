@@ -220,6 +220,10 @@ public abstract class CheckDao {
     @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
     public abstract List<Check> getChecksByDate(String start, String finish);
 
+    @Transaction
+    @Query("SELECT * FROM Product WHERE name LIKE :exp AND check_id = :checkId")
+    public abstract List<Product> getProductByRegEx(long checkId, String exp);
+
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.
 
