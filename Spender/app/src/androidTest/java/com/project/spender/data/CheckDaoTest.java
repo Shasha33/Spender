@@ -276,6 +276,14 @@ public class CheckDaoTest {
     }
 
     @Test
+    public void getProductByRegExTest() {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        long checkId = cwpList.get(0).getCheck().getId();
+        assertEquals(2, checkDao.getProductByRegEx(checkId, "%s%").size());
+        assertEquals(1, checkDao.getProductByRegEx(checkId, "%d%").size());
+    }
+
+    @Test
     public void getTagsWithSumAndDateTest() throws InterruptedException {
         for (int t = 0; t < 2; t++) {
             CheckWithProducts cwp = cwpList.get(t);

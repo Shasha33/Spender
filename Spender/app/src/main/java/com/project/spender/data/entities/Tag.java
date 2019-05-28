@@ -1,5 +1,6 @@
 package com.project.spender.data.entities;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
@@ -10,13 +11,14 @@ import java.util.Objects;
 /**
  * Таблица тегов
  */
-@Entity(indices = {@Index(value = "name", unique = true ), @Index(value = "color")})
+@Entity(indices = {@Index(value = "name", unique = true ), @Index(value = "color"), @Index(value = "substring")})
 public class Tag {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
     private String name;
     private int color;
+    @Nullable private String substring;
 
     @Ignore
     public Tag(String name) {
@@ -29,14 +31,16 @@ public class Tag {
     }
 
 
-    /**
-     * Spoiled your code a little
-     * I think it ll be better to store colors in database too
-     */
-    public Tag(long id, String name, int color) {
+    public Tag(long id, String name, int color, String substring) {
         this.id = id;
         this.name = name;
         this.color = color;
+        this.substring = substring;
+    }
+
+    @Ignore
+    public Tag(long id, String name, int color) {
+        this(id, name, color, "");
     }
 
     @Ignore
@@ -44,8 +48,17 @@ public class Tag {
         this(0, newTagName, newTagColor);
     }
 
+    @Ignore
+    public Tag(String newTagName, int newTagColor, String substring) {
+        this(0, newTagName, newTagColor, substring);
+    }
+
     public int getColor() {
         return color;
+    }
+
+    public String getSubstring() {
+        return substring;
     }
 
     public long getId() {

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int MAGICCONST = 30;
     private final static int CAMERA_REQUEST = 1;
+    private final static int CHART_TAGS_CODE = 15325;
     private final static int CHECK_REQUEST = 42;
 
     private FragmentManager fragmentManager;
@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Check not received", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == CHART_TAGS_CODE) {
+            long[] ids = data.getLongArrayExtra("tag ids");
+            //(todo) update chart
         }
     }
 
@@ -90,14 +93,29 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, TagListActivity.class);
                 startActivity(intent);
                 return true;
+
             case R.id.putin:
                 startActivity(new Intent(this, LoginActivity.class));
+                break;
             case R.id.putout:
-                ChecksRoller.clearAccountInfo();
-
+                ChecksRoller.getInstance().clearAccountInfo();
+                break;
+            case R.id.pie_chart_item:
+                Log.i(ChecksRoller.LOG_TAG, "pie chart");
+                break;
+            case R.id.donut_chart_item:
+                Log.i(ChecksRoller.LOG_TAG, "donut chart");
+                break;
+            case R.id.line_graph_item:
+                Log.i(ChecksRoller.LOG_TAG, "line graph");
+                break;
+            case R.id.tags_for_chart:
+                startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
 
@@ -106,9 +124,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        ChecksRoller.init(this);
-
-        Log.i(ChecksRoller.LOG_TAG, "KEK");
+        ChecksRoller.getInstance().init(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -134,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
                 clickCounter = 0;
             }
         });
-        statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
+
+        statistics.setImageResource(R.drawable.piechart_chosen);
 
         list.setOnClickListener(v -> {
             final Intent intentShowList = new Intent(MainActivity.this, ListActivity.class);

@@ -19,6 +19,13 @@
     </item>
 
     <item
+        android:title="tags"
+        app:showAsAction="always"
+        android:id="@+id/tags_for_chart"
+        android:icon="@android:drawable/ic_menu_edit">
+    </item>
+
+    <item
         android:title="login"
         app:showAsAction="never"
         android:id="@+id/putin">
@@ -30,6 +37,25 @@
         android:id="@+id/putout">
     </item>
 
+    <item
+        android:title="chart type"
+        app:showAsAction="always"
+        android:id="@+id/chart_type"
+        android:icon="@drawable/stats">
+        <menu
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item android:id="@+id/pie_chart_item"
+                android:title="pie chart" />
+
+            <item android:id="@+id/donut_chart_item"
+                android:title="donut chart" />
+
+            <item android:id="@+id/line_graph_item"
+                android:title="line graph" />
+
+        </menu>
+    </item>
 
 
 </menu>

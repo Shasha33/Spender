@@ -13,7 +13,7 @@ public class NetworkException extends Exception {
         return (response != null)? response.code() : -1;
     }
 
-    public String getMasage() {
+    public String cleverGetMessage() {
         return (response != null)? response.message() : "-1";
     }
 

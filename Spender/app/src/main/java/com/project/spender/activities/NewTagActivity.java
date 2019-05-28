@@ -13,11 +13,15 @@ import com.project.spender.data.entities.Tag;
 
 import java.util.Random;
 
+import com.mattyork.colours.Colour;
+import com.mattyork.colours.Colour.ColorScheme;
 
 public class NewTagActivity extends AppCompatActivity {
 
-    private static final Integer[] DEFAULT_COLOR = {Color.RED, Color.GRAY, Color.GREEN, Color.BLACK,
-    Color.BLUE, Color.CYAN, Color.YELLOW, Color.MAGENTA, Color.DKGRAY};
+    private static final int[] DEFAULT_COLOR = {Colour.strawberryColor(),
+            Colour.maroonColor(), Colour.waveColor(), Colour.limeColor(), Colour.grapeColor(),
+            Colour.hollyGreenColor(), Colour.mandarinColor(), Colour.coffeeColor(), Colour.crimsonColor(),
+            Colour.pinkLipstickColor()};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,8 @@ public class NewTagActivity extends AppCompatActivity {
         Button enter = findViewById(R.id.enter_new_tag_info);
         TextInputEditText name = findViewById(R.id.new_tag_name);
         TextInputEditText color = findViewById(R.id.new_tag_color);
+        TextInputEditText substring = findViewById(R.id.new_tag_substring);
+
         enter.setOnClickListener(v -> {
             int newTagColor;
             String newTagName = name.getText().toString();
@@ -39,7 +45,9 @@ public class NewTagActivity extends AppCompatActivity {
                 newTagColor = Integer.parseInt(color.getText().toString());
             }
 
-            ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertTag(new Tag(newTagName, newTagColor));
+            String newSubstring = substring.getText().toString();
+
+            ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertTag(new Tag(newTagName, newTagColor, newSubstring));
             finish();
         });
     }

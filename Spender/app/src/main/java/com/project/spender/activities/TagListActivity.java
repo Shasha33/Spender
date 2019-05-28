@@ -38,7 +38,6 @@ public class TagListActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
         listView.invalidateViews();
     }
 
@@ -66,6 +65,7 @@ public class TagListActivity extends AppCompatActivity {
                 return true;
             case R.id.tag_list_delete:
                 ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteTagById(tag.getId());
+                tags.remove(tag);
                 updateList();
                 return true;
             default:
