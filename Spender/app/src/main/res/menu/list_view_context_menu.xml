@@ -10,4 +10,7 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:title="remove tag" />
 
+    <item android:id="@+id/remove_check"
+        android:title="remove" />
+
 </menu>
