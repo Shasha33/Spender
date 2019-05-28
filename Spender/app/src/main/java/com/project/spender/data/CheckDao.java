@@ -15,6 +15,7 @@ import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.ProductWithTags;
 import com.project.spender.data.entities.Tag;
 import com.project.spender.data.entities.TagWithSum;
+import com.project.spender.data.entities.TagWithSumAndDate;
 
 import java.util.List;
 
@@ -218,6 +219,12 @@ public abstract class CheckDao {
      */
     @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
     public abstract List<Check> getChecksByDate(String start, String finish);
+
+    @Query("SELECT tag.id, tag.name, tag.color, SUM(product.sum) as sum, date " +
+            "FROM tag, product_tag_join, product, `check` " +
+            "WHERE tag.id = tag_id AND product_id == product.id AND product.check_id == `check`.id " +
+            "GROUP BY tag.id, date")
+    public abstract LiveData<List<TagWithSumAndDate>> getTagsWithSumAndDate();
 
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.

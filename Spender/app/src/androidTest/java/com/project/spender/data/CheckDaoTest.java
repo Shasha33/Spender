@@ -51,8 +51,8 @@ public class CheckDaoTest {
     public  void createChecksAndProducts() {
         cList = new ArrayList<>(3);
         cList.add(new Check("One", 25250, "lol", "2007-05-18T22:05:00"));
-        cList.add(new Check("Two", 26250, "kek", "2007-05-18T22:05:00"));
-        cList.add(new Check("Three", 410000, "cheburek", "2007-05-18T22:05:00"));
+        cList.add(new Check("Two", 26250, "kek", "2006-05-18T22:05:00"));
+        cList.add(new Check("Three", 410000, "cheburek", "2005-05-18T22:05:00"));
         cList.add(new Check("MMM", 1000000000, "MMM", "1994-05-18T22:05:00"));
 
         pList = new ArrayList<>(3);
@@ -273,6 +273,23 @@ public class CheckDaoTest {
         assertEquals(2, checkDao.getChecksByDate(date3, now).size());
         String mid = "2005-01-01";
         assertEquals(1, checkDao.getChecksByDate(date3, mid).size());
+    }
+
+    @Test
+    public void getTagsWithSumAndDateTest() throws InterruptedException {
+        for (int t = 0; t < 2; t++) {
+            CheckWithProducts cwp = cwpList.get(t);
+            checkDao.insertCheckWithProducts(cwp);
+            long product0Id = cwp.getProducts().get(0).getId();
+            long product1Id = cwp.getProducts().get(1).getId();
+            checkDao.insertTagForProduct(tList.get(0), product0Id);
+            checkDao.insertTagForProduct(tList.get(1), product1Id);
+            pList.forEach(product -> product.setId(0));
+        }
+        TestObserver.test(checkDao.getTagsWithSumAndDate())
+                .awaitValue()
+                .assertValue(value ->value.size() == 4);
+
     }
 
 }
