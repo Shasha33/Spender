@@ -7,11 +7,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.project.spender.data.entities.Tag;
 import com.project.spender.data.entities.TagWithSumAndDate;
@@ -41,7 +45,6 @@ public class LineChartController {
 
     private void lineChartSetup() {
         lineChart.getDescription().setEnabled(false);
-        lineChart.setDrawGridBackground(false);
 
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
@@ -52,6 +55,28 @@ public class LineChartController {
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setDrawInside(false);
+
+        ValueFormatter valueFormatter = new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis((long) value);
+                long year = calendar.get(Calendar.YEAR);
+                long month = calendar.get(Calendar.MONTH);
+                long day = calendar.get(Calendar.DAY_OF_MONTH);
+                return day + "." + month + "." + year ;
+            }
+        };
+
+        lineChart.getXAxis().setValueFormatter(valueFormatter);
+        lineChart.setDrawGridBackground(true);
+        lineChart.getXAxis().setDrawAxisLine(true);
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getAxisRight().setDrawGridLines(true);
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM) ;
+//        lineChart.getXAxis().setGranularity(10000f);
+
+//        lineChart.getXAxis().setDrawAxisLine(true);
     }
 
     public void setDataSource(LiveData<List<TagWithSumAndDate>> data) {
@@ -98,7 +123,7 @@ public class LineChartController {
                 Log.wtf("PARSER", "Cannot parse date from string. Exception: " + e.getMessage());
             }
 
-            entries.add(new Entry(tagWithSumAndDate.sum, calendar.getTimeInMillis()));
+            entries.add(new Entry(calendar.getTimeInMillis(), tagWithSumAndDate.sum/100f));
         }
 
         LineData data = new LineData(dataSets);
