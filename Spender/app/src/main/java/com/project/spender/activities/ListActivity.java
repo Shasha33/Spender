@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.project.spender.CheckListHolder;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 
@@ -117,9 +118,11 @@ public class ListActivity extends AppCompatActivity {
         listView = findViewById(R.id.productsList);
         listView.setAdapter(new ListAdapter(this, holder.getList()));
         listView.setOnItemClickListener((parent, view, position, id) -> {
+            CheckWithProducts check = holder.getList().get(position);
             Intent intent = new Intent(ListActivity.this, CheckShowActivity.class);
             intent.putParcelableArrayListExtra("products",
-                    (ArrayList<Product>) holder.getList().get(position).getProducts());
+                    (ArrayList<Product>) check.getProducts());
+            intent.putExtra("check id", check.getCheck().getId());
             startActivity(intent);
         });
         registerForContextMenu(listView);

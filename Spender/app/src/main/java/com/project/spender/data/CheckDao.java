@@ -234,7 +234,7 @@ public abstract class CheckDao {
     public abstract List<CheckWithProducts> getChecksWithProductsByDateAndRegEx(String regEx, String start, String finish);
 
     @Query("SELECT * FROM Product WHERE name LIKE :exp AND check_id = :checkId")
-    public abstract List<Product> getProductByRegEx(long checkId, String exp);
+    public abstract List<Product> getProductByRegEx(String exp, long checkId);
 
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.

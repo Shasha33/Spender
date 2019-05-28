@@ -178,7 +178,10 @@ public class ChecksRoller {
     }
 
     public List<Product> findProductsInCheckBySubstring(long checkId, String substring) {
-        return null;
+        Log.i(LOG_TAG, substring + "");
+        List<Product> list = appDatabase.getCheckDao().getProductByRegEx("%" + substring + "%", checkId);
+        Log.i(LOG_TAG, list.size() + "");
+        return list;
     }
 
     public void onRemoveAllClicked() {

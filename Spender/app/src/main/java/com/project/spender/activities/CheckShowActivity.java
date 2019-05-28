@@ -1,5 +1,6 @@
 package com.project.spender.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -122,6 +125,7 @@ public class CheckShowActivity extends AppCompatActivity {
 
         products = getIntent().getParcelableArrayListExtra("products");
         long checkId = getIntent().getLongExtra("check id", -1);
+        Log.i(ChecksRoller.LOG_TAG, checkId + "");
         productsForAction = new HashSet<>();
 
         listView = findViewById(R.id.productsList);
@@ -141,8 +145,16 @@ public class CheckShowActivity extends AppCompatActivity {
         search.setOnEditorActionListener((v, actionId, event) -> {
             products.clear();
             products.addAll(ChecksRoller.getInstance().findProductsInCheckBySubstring(checkId, search.getText().toString()));
+            hideKeyboard(v);
             listView.invalidateViews();
             return true;
         });
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 }
