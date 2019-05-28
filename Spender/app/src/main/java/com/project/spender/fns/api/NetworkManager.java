@@ -7,6 +7,7 @@ import com.project.spender.ScanResult;
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.NewUser;
+import com.project.spender.fns.api.data.Phone;
 import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.exception.NetworkException;
 
@@ -232,7 +233,7 @@ public class NetworkManager {
      * @throws IOException кидается при проблемах соединения с сервером.
      */
     public int restorePasswordSync(String phone) throws IOException {
-        return fns.restore(phone).execute().code();
+        return fns.restore(new Phone(phone)).execute().code();
     }
 
     /**
