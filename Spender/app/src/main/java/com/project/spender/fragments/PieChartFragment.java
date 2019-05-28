@@ -23,7 +23,7 @@ public class PieChartFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PieChartFragment newInstance(String param1, String param2) {
+    public static PieChartFragment newInstance() {
         return new PieChartFragment();
     }
 
