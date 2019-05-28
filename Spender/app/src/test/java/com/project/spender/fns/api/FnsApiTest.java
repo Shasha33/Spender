@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import okhttp3.Credentials;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -80,6 +81,15 @@ class FnsApiTest {
         System.out.println(res.code());
         System.out.println(res.message());
         System.out.println(res.body().getData().items.get(0).name);
+        assertTrue(res.isSuccessful());
+    }
+
+    @Test
+    void getRaw() throws IOException {
+        Response resExist = fns.isCheckExist(fn2, fd2, fiscalSign2, date2, sum2).execute();
+        Response<ResponseBody> res = fns.getRawCheck(loginPassword, "", "",
+                fn2, fd2, fiscalSign2, "no").execute();
+        System.out.println(res.body().string());
         assertTrue(res.isSuccessful());
     }
 }

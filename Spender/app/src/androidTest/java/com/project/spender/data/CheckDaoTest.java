@@ -21,6 +21,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -48,10 +50,10 @@ public class CheckDaoTest {
     @Before
     public  void createChecksAndProducts() {
         cList = new ArrayList<>(3);
-        cList.add(new Check("One", 25250, "lol", "1.1.2007"));
-        cList.add(new Check("Two", 26250, "kek", "2.2.2007"));
-        cList.add(new Check("Three", 410000, "cheburek", "3.3.2007"));
-        cList.add(new Check("MMM", 1000000000, "MMM", "1.2.1994"));
+        cList.add(new Check("One", 25250, "lol", "2007-05-18T22:05:00"));
+        cList.add(new Check("Two", 26250, "kek", "2007-05-18T22:05:00"));
+        cList.add(new Check("Three", 410000, "cheburek", "2007-05-18T22:05:00"));
+        cList.add(new Check("MMM", 1000000000, "MMM", "1994-05-18T22:05:00"));
 
         pList = new ArrayList<>(3);
         pList.add(new Product("dumplings", 20000, 20000, 1, 0));
@@ -178,9 +180,9 @@ public class CheckDaoTest {
         checkDao.insertTagsForProduct(tList, product1.getId());
         checkDao.insertTagsForProduct(tList, product2.getId());
 
-        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product1.getId()).toArray()));
-        assertThat(tList, containsInAnyOrder(checkDao.getTagsByProductId(product2.getId()).toArray()));
-        assertThat(tList, containsInAnyOrder(checkDao.getTagsByCheckId(check.getId()).toArray()));
+        assertThat(tList, containsInAnyOrder(Objects.requireNonNull(checkDao.getTagsByProductId(product1.getId()).toArray())));
+        assertThat(tList, containsInAnyOrder(Objects.requireNonNull(checkDao.getTagsByProductId(product2.getId()).toArray())));
+        assertThat(tList, containsInAnyOrder(Objects.requireNonNull(checkDao.getTagsByCheckId(check.getId()).toArray())));
     }
 
     @Test
@@ -258,6 +260,13 @@ public class CheckDaoTest {
                 .awaitValue()
                 .assertValue(tags -> Arrays.equals(tags.stream().map(tag -> tag.sum).sorted().toArray(), new Long[]{sum0, sum1}));
 
+    }
+
+    @Test
+    public void getTimeTest() {
+        checkDao.insertCheck(cList.get(0));
+        checkDao.insertCheck(cList.get(3));
+        assertThat(checkDao.getAllChecks().stream().map(Check::getYear).collect(Collectors.toList()), containsInAnyOrder( 2007, 1994));
     }
 
 }

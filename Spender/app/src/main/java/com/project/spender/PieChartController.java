@@ -24,6 +24,7 @@ public class PieChartController {
         pieChart.getDescription().setEnabled(false);
         pieChart.setEntryLabelTextSize(18f);
         pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.getLegend().setEnabled(false);
     }
 
     public void setData(List<TagWithSum> tagsWithSum) {
@@ -45,8 +46,10 @@ public class PieChartController {
         data.setValueFormatter(new PercentFormatter(pieChart));
 
         pieChart.setData(data);
-        pieChart.animateXY(speed, speed);
-
         pieChart.invalidate();
+    }
+
+    public void animate() {
+        pieChart.animateXY(speed, speed);
     }
 }
