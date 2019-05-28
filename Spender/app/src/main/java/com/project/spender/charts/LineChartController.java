@@ -69,8 +69,10 @@ public class LineChartController {
         List<Entry> entries = new ArrayList<>();
 
 
+        TagWithSumAndDate endTag = new TagWithSumAndDate();
+        tagsWithSum.add(endTag);
+
         Tag currentTag = tagsWithSum.get(0).tag;
-        tagsWithSum.add(new TagWithSumAndDate());
 
         for (TagWithSumAndDate tagWithSumAndDate : tagsWithSum)
         {

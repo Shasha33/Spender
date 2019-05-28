@@ -9,4 +9,8 @@ public class TagWithSumAndDate {
     public Tag tag;
     public long sum;
     public String date;
+
+    public TagWithSumAndDate() {
+        tag = new Tag(0, "");
+    }
 }
