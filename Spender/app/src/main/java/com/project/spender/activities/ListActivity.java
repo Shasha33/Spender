@@ -4,36 +4,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.CheckResult;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.project.spender.CheckListHolder;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.data.AppDatabase;
-import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
-import com.project.spender.data.entities.ProductTagJoin;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ListActivity extends AppCompatActivity {
@@ -108,7 +100,7 @@ public class ListActivity extends AppCompatActivity {
         scan = findViewById(R.id.scan);
         statistics = findViewById(R.id.statistics);
         list = findViewById(R.id.list);
-        list.setBackgroundColor(Color.argb(40, 255, 0, 0));
+        list.setImageResource(R.drawable.history_chosen);
 
         statistics.setOnClickListener(v -> {
             Intent intent = new Intent(ListActivity.this, MainActivity.class);

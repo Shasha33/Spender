@@ -5,15 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -26,7 +22,6 @@ import com.project.spender.PieChartController;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
 import com.project.spender.data.CheckDao;
-import com.project.spender.data.entities.CheckWithProducts;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -154,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        statistics.setBackgroundColor(Color.argb(40, 255, 0, 0));
+        statistics.setImageResource(R.drawable.piechart_chosen);
 
         list.setOnClickListener(v -> {
             final Intent intentShowList = new Intent(MainActivity.this, ListActivity.class);
