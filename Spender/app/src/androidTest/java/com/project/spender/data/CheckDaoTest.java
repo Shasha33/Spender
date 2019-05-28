@@ -275,4 +275,12 @@ public class CheckDaoTest {
         assertEquals(1, checkDao.getChecksByDate(date3, mid).size());
     }
 
+    @Test
+    public void getProductByRegExTest() {
+        checkDao.insertCheckWithProducts(cwpList.get(0));
+        long checkId = cwpList.get(0).getCheck().getId();
+        assertEquals(2, checkDao.getProductByRegEx(checkId, "%s%").size());
+        assertEquals(1, checkDao.getProductByRegEx(checkId, "%d%").size());
+    }
+
 }
