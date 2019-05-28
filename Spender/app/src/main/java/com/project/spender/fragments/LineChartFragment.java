@@ -30,7 +30,7 @@ public class LineChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
 
-        lineChartController = new LineChartController(getViewLifecycleOwner(), view.findViewById(R.id.pieChart));
+        lineChartController = new LineChartController(getViewLifecycleOwner(), view.findViewById(R.id.lineChart));
         CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
         lineChartController.setDataSource(checkDao.getTagsWithSumAndDate());
 

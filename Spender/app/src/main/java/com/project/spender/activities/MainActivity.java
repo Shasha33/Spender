@@ -20,7 +20,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.project.spender.ChecksRoller;
+import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private PieChartFragment pieFragment;
+    private LineChartFragment lineFragment;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         switch (item.getItemId()) {
             case R.id.action_cheese:
                 ChecksRoller.getInstance().cheese();
@@ -102,12 +106,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
+                fragmentTransaction.replace(R.id.fragmentHolder, pieFragment);
                 break;
             case R.id.donut_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "donut chart");
                 break;
             case R.id.line_graph_item:
                 Log.i(ChecksRoller.LOG_TAG, "line graph");
+                fragmentTransaction.replace(R.id.fragmentHolder, lineFragment);
                 break;
             case R.id.tags_for_chart:
                 startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
@@ -115,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+        fragmentTransaction.commit();
         return true;
     }
 
@@ -168,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         fragmentManager = getSupportFragmentManager();
-        pieFragment = new PieChartFragment();
+        pieFragment = PieChartFragment.newInstance();
+        lineFragment = LineChartFragment.newInstance();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
         fragmentTransaction.commit();

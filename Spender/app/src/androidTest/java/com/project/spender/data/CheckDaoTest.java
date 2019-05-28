@@ -279,8 +279,8 @@ public class CheckDaoTest {
     public void getProductByRegExTest() {
         checkDao.insertCheckWithProducts(cwpList.get(0));
         long checkId = cwpList.get(0).getCheck().getId();
-        assertEquals(2, checkDao.getProductByRegEx(checkId, "%s%").size());
-        assertEquals(1, checkDao.getProductByRegEx(checkId, "%d%").size());
+        assertEquals(2, checkDao.getProductByRegEx("%s%", checkId).size());
+        assertEquals(1, checkDao.getProductByRegEx("%d%", checkId).size());
     }
 
     @Test
