@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton secret;
     private int clickCounter;
 
-    private final static int MAGICCONST = 30;
+    private final static int MAGIC_CONST = 30;
     private final static int CAMERA_REQUEST = 1;
     private final static int CHART_TAGS_CODE = 15325;
     private final static int CHECK_REQUEST = 42;
@@ -152,9 +152,11 @@ public class MainActivity extends AppCompatActivity {
         secret = findViewById(R.id.secret);
         secret.setOnClickListener(view -> {
             clickCounter++;
-            if (clickCounter > MAGICCONST) {
+            if (clickCounter > MAGIC_CONST) {
                 secret.setBackgroundResource(R.drawable.clevercat);
                 clickCounter = 0;
+            } else {
+                secret.setImageResource(R.drawable.cat);
             }
         });
 
