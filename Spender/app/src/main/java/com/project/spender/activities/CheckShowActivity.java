@@ -25,6 +25,8 @@ import com.project.spender.data.entities.ProductTagJoin;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static com.project.spender.charts.ChartsController.hideKeyboard;
+
 public class CheckShowActivity extends AppCompatActivity {
 
     private ArrayList<Product> products;
@@ -152,10 +154,4 @@ public class CheckShowActivity extends AppCompatActivity {
         });
     }
 
-    private void hideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
-    }
 }

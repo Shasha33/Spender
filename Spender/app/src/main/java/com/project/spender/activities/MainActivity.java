@@ -8,9 +8,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +24,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.project.spender.ChecksRoller;
+import com.project.spender.charts.ChartsController;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
@@ -32,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton statistics;
     private ImageButton secret;
     private int clickCounter;
+    private EditText begin;
+    private EditText end;
+
+    private ChartsController chartsController;
 
     private final static int MAGIC_CONST = 30;
     private final static int CAMERA_REQUEST = 1;
@@ -52,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Check not received", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == CHART_TAGS_CODE) {
+            //tags for chart
             long[] ids = data.getLongArrayExtra("tag ids");
-            //(todo) update chart
+            chartsController.setIds(ids);
         }
     }
 
@@ -102,12 +111,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
+                //choose pie chart (todo) your code here
                 break;
             case R.id.donut_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "donut chart");
+                //choose donut chart (todo) your code here
                 break;
             case R.id.line_graph_item:
                 Log.i(ChecksRoller.LOG_TAG, "line graph");
+                //choose line graph (todo) your code here
                 break;
             case R.id.tags_for_chart:
                 startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
@@ -166,6 +178,14 @@ public class MainActivity extends AppCompatActivity {
 
             startActivityForResult(intent, CHECK_REQUEST);
         });
+
+        begin = findViewById(R.id.begin_date_for_chart);
+        end = findViewById(R.id.end_date_for_chart);
+
+        //
+        chartsController = new ChartsController();
+        chartsController.setBeginDateInput(begin);
+        chartsController.setEndDateInput(end);
 
         fragmentManager = getSupportFragmentManager();
         pieFragment = new PieChartFragment();

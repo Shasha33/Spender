@@ -28,6 +28,8 @@ import com.project.spender.data.entities.Product;
 
 import java.util.ArrayList;
 
+import static com.project.spender.charts.ChartsController.hideKeyboard;
+
 
 public class ListActivity extends AppCompatActivity {
 
@@ -170,10 +172,4 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
-    private void hideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
-    }
 }
