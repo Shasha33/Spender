@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ public class CheckShowActivity extends AppCompatActivity {
 
     private ArrayList<Product> products;
     private ListView listView;
+    private EditText search;
+
 
     private static final int ADDING_CODE = 20;
     private static final int REMOVING_CODE = 40;
@@ -116,13 +119,13 @@ public class CheckShowActivity extends AppCompatActivity {
 
 
         products = getIntent().getParcelableArrayListExtra("products");
+        long checkId = getIntent().getLongExtra("check id", -1);
         productsForAction = new HashSet<>();
 
         listView = findViewById(R.id.productsList);
         listView.setAdapter(new ItemAdapter(this, products));
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            System.out.println("Clicked " + position);
             if (productsForAction.contains(products.get(position))) {
                 productsForAction.remove(products.get(position));
                 view.setBackgroundColor(Color.WHITE);
@@ -130,6 +133,14 @@ public class CheckShowActivity extends AppCompatActivity {
                 productsForAction.add(products.get(position));
                 view.setBackgroundColor(SELECTED_ITEM);
             }
+        });
+
+        search = findViewById(R.id.search_in_check);
+        search.setOnEditorActionListener((v, actionId, event) -> {
+            products.clear();
+            products.addAll(ChecksRoller.getInstance().findProductsInCheckBySubstring(checkId, search.getText().toString()));
+            listView.invalidateViews();
+            return true;
         });
     }
 }
