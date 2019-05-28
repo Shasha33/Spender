@@ -1,7 +1,5 @@
-package com.project.spender;
+package com.project.spender.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.project.spender.charts.PieChartController;
+import com.project.spender.ChecksRoller;
+import com.project.spender.R;
 import com.project.spender.data.CheckDao;
 
 
@@ -38,10 +39,10 @@ public class PieChartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pie_chart, container, false);
 
         //Pie
-        pieChartController = new PieChartController(view.findViewById(R.id.pieChart));
+        pieChartController = new PieChartController(getViewLifecycleOwner(), view.findViewById(R.id.pieChart));
         CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
+        pieChartController.setDataSource(checkDao.getTagsWithSum());
         pieChartController.animate();
-        checkDao.getTagsWithSum().observe(this, pieChartController::setData);
 
         // Inflate the layout for this fragment
         return view;
