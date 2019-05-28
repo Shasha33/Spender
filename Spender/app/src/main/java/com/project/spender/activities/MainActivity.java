@@ -184,7 +184,8 @@ public class MainActivity extends AppCompatActivity {
         begin = findViewById(R.id.begin_date_for_chart);
         end = findViewById(R.id.end_date_for_chart);
 
-        //
+        //it is not necessary, probably
+        //but wont delete yet
         chartsStateHolder = new ChartsStateHolder();
         chartsStateHolder.setBeginDateInput(begin);
         chartsStateHolder.setEndDateInput(end);
