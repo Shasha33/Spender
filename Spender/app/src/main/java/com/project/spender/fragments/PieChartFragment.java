@@ -48,4 +48,7 @@ public class PieChartFragment extends Fragment {
         return view;
     }
 
+    public PieChartController getPieChartController() {
+        return pieChartController;
+    }
 }
