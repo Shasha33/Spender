@@ -1,5 +1,7 @@
 package com.project.spender.charts;
 
+import android.util.Log;
+
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -7,12 +9,22 @@ import androidx.lifecycle.Observer;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.project.spender.data.entities.Tag;
 import com.project.spender.data.entities.TagWithSumAndDate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class LineChartController {
     private final LineChart lineChart;
@@ -20,8 +32,6 @@ public class LineChartController {
     private LiveData<List<TagWithSumAndDate>> dataSource;
     private Observer<List<TagWithSumAndDate>> observer = this::setData;
     private LifecycleOwner owner;
-
-    private final int speed = 1400;
 
     public LineChartController(LifecycleOwner owner, LineChart lineChart) {
         this.lineChart = lineChart;
@@ -53,28 +63,44 @@ public class LineChartController {
     }
 
     private void setData(List<TagWithSumAndDate> tagsWithSum) {
+
         List<ILineDataSet> dataSets = new ArrayList<>();
 
-//        for (TagWithSumAndDate twsd : tagsWithSum) {
-//            List<Entry> entries = new ArrayList<>();
-//            entries.add(new Entry(tws.sum, tws.tag.getName()));
-//            colors.add(tws.tag.getColor());
-//        }
-//
-//        PieDataSet dataSet = new PieDataSet(entries, "Tags");
-//        dataSet.setColors(colors);
-////        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-//        dataSet.setSliceSpace(3f);
-//
-//        PieData data = new PieData(dataSet);
-//        data.setValueTextSize(20f);
-//        data.setValueFormatter(new PercentFormatter(lineChart));
-//
-//        lineChart.setData(data);
-//        lineChart.invalidate();
-    }
+        List<Entry> entries = new ArrayList<>();
 
-    public void animate() {
-        lineChart.animateXY(speed, speed);
+
+        Tag currentTag = tagsWithSum.get(0).tag;
+        tagsWithSum.add(new TagWithSumAndDate());
+
+        for (TagWithSumAndDate tagWithSumAndDate : tagsWithSum)
+        {
+            if (currentTag.getId() != tagWithSumAndDate.tag.getId()) {
+
+                LineDataSet data = new LineDataSet(entries, currentTag.getName());
+                data.setCircleColor(currentTag.getColor());
+                data.setColor(currentTag.getColor());
+                dataSets.add(data);
+                entries = new ArrayList<>();
+                currentTag = tagWithSumAndDate.tag;
+            }
+
+            if (tagWithSumAndDate.tag.getId() == 0) {
+                continue;
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss", Locale.ROOT);
+                calendar.setTime(format.parse(tagWithSumAndDate.date));
+            } catch (ParseException e) {
+                Log.wtf("PARSER", "Cannot parse date from string. Exception: " + e.getMessage());
+            }
+
+            entries.add(new Entry(tagWithSumAndDate.sum, calendar.getTimeInMillis()));
+        }
+
+        LineData data = new LineData(dataSets);
+        lineChart.setData(data);
+        lineChart.invalidate();
     }
 }

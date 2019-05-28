@@ -223,7 +223,8 @@ public abstract class CheckDao {
     @Query("SELECT tag.id, tag.name, tag.color, SUM(product.sum) as sum, date " +
             "FROM tag, product_tag_join, product, `check` " +
             "WHERE tag.id = tag_id AND product_id == product.id AND product.check_id == `check`.id " +
-            "GROUP BY tag.id, date")
+            "GROUP BY tag.id, date " +
+            "ORDER BY tag.id")
     public abstract LiveData<List<TagWithSumAndDate>> getTagsWithSumAndDate();
 
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
