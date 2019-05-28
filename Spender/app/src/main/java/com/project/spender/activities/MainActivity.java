@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private final static int MAGICCONST = 30;
     private final static int CAMERA_REQUEST = 1;
     private final static int CHECK_REQUEST = 42;//okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-
+    private final static int CHART_TAGS_CODE = 15325;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_REQUEST) {
@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Check not received", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == CHART_TAGS_CODE) {
+            long[] ids = data.getLongArrayExtra("tag ids");
+            //(todo) update chart
         }
     }
 
@@ -107,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.line_graph_item:
                 Log.i(ChecksRoller.LOG_TAG, "line graph");
                 break;
-
+            case R.id.tags_for_chart:
+                startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
