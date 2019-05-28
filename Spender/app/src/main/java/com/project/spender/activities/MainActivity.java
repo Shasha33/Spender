@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.putout:
-                ChecksRoller.clearAccountInfo();
+                ChecksRoller.getInstance().clearAccountInfo();
                 break;
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
@@ -120,9 +120,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        ChecksRoller.init(this);
-
-        Log.i(ChecksRoller.LOG_TAG, "KEK");
+        ChecksRoller.getInstance().init(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {

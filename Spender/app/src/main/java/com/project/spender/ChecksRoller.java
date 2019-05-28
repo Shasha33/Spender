@@ -30,25 +30,28 @@ import java.util.List;
 
 public class ChecksRoller {
 
+    private static class CheckRollerHolder {
+        private static ChecksRoller checksRoller = new ChecksRoller();
+    }
+
+    private NetworkManager networkManager;
+    private AppDatabase appDatabase;
 
     public static final String LOG_TAG = "KITPRIVIT";
-    private static ChecksRoller checksRoller;
-    private static NetworkManager networkManager;
-    private static AppDatabase appDatabase;
     private static final String DATABASE = "DataBase";
-    private Context context;
     public static final String ACCOUNT_INFO = "settings";
     public static final String ACCOUNT_LOGIN = "login";
     public static final String ACCOUNT_PASSWORD = "password";
     private static SharedPreferences accountInfo;
-    private static String number;
-    private static String password;
+
+    private String number;
+    private String password;
 
     /**
      * Saves new number and password.
      * If parameter did not change put null to it
      */
-    public static void saveAccountInfo(@Nullable String name, @Nullable String password) {
+    public void saveAccountInfo(@Nullable String name, @Nullable String password) {
         SharedPreferences.Editor editor = accountInfo.edit();
         if (name != null) {
             editor.putString(ACCOUNT_LOGIN, name);
@@ -59,12 +62,12 @@ public class ChecksRoller {
         editor.apply();
     }
 
-    public static void clearAccountInfo() {
+    public void clearAccountInfo() {
         SharedPreferences.Editor editor = accountInfo.edit();
         editor.clear();
     }
 
-    public static int remindPassword(@NonNull String number) {
+    public int remindPassword(@NonNull String number) {
         try {
             return networkManager.restorePasswordSync(number);
         } catch (IOException e) {
@@ -76,7 +79,7 @@ public class ChecksRoller {
         return 125125;
     }
 
-    private static void updateLoginInfo() {
+    private void updateLoginInfo() {
         number = accountInfo.getString(ACCOUNT_LOGIN, null);
         password = accountInfo.getString(ACCOUNT_PASSWORD, null);
     }
@@ -85,17 +88,11 @@ public class ChecksRoller {
         return appDatabase;
     }
 
-    private ChecksRoller(Context context) {
-        this.context = context;
+    public void init(Context context) {
+        accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
         networkManager = NetworkManager.getInstance();
         appDatabase = Room.databaseBuilder(context,
                 AppDatabase.class, DATABASE).allowMainThreadQueries().fallbackToDestructiveMigration().build();
-        checksRoller = this;
-    }
-
-    public static void init(Context context) {
-        accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
-        checksRoller = new ChecksRoller(context);
         updateLoginInfo();
         if (number == null || password == null) {
             Toast.makeText(context,
@@ -104,7 +101,7 @@ public class ChecksRoller {
     }
 
     public static ChecksRoller getInstance() {
-        return checksRoller;
+        return CheckRollerHolder.checksRoller;
     }
 
     public void cheese() {
@@ -118,7 +115,7 @@ public class ChecksRoller {
 
     }
 
-    public static int register(@NonNull String name, @NonNull String email, @NonNull String number) throws IOException {
+    public int register(@NonNull String name, @NonNull String email, @NonNull String number) throws IOException {
         return networkManager.registrationSync(new NewUser(name, email, number));
     }
 

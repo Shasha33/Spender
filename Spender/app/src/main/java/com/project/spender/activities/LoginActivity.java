@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
             int result;
             try {
-                result = ChecksRoller.register(newName, newEmail, newNumber);
+                result = ChecksRoller.getInstance().register(newName, newEmail, newNumber);
             } catch (IOException e) {
                 Toast.makeText(LoginActivity.this, "Failed connect to server", Toast.LENGTH_LONG).show();
                 Log.i(ChecksRoller.LOG_TAG, "Failed connect to server");
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
             if (newNumber == null && newPassword == null) {
                 Toast.makeText(LoginActivity.this, "At least one field must be filled", Toast.LENGTH_SHORT).show();
             } else {
-                ChecksRoller.saveAccountInfo(newNumber, newPassword);
+                ChecksRoller.getInstance().saveAccountInfo(newNumber, newPassword);
                 finish();
             }
         });
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Empty number field", Toast.LENGTH_SHORT).show();
                 return;
             }
-            int res = ChecksRoller.remindPassword(num);
+            int res = ChecksRoller.getInstance().remindPassword(num);
             Log.i(ChecksRoller.LOG_TAG, "Trying to restore password, answer is" + res);
             switch (res) {
                 case -100:
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         number = findViewById(R.id.number);
         catButton = findViewById(R.id.im_cat);
         catButton.setOnClickListener(v -> {
-            ChecksRoller.saveAccountInfo(NetworkManager.DEFAULT_LOGIN, NetworkManager.DEFAULT_PASSWORD);
+            ChecksRoller.getInstance().saveAccountInfo(NetworkManager.DEFAULT_LOGIN, NetworkManager.DEFAULT_PASSWORD);
             finish();
         });
 

@@ -68,6 +68,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
 
+    //Colors
+    implementation 'com.github.matthewyork:ColoursLibrary:1.0.+@aar'
+
     // Room db
     def room_version = "2.1.0-beta01"
     implementation "androidx.room:room-runtime:$room_version"

@@ -13,11 +13,15 @@ import com.project.spender.data.entities.Tag;
 
 import java.util.Random;
 
+import com.mattyork.colours.Colour;
+import com.mattyork.colours.Colour.ColorScheme;
 
 public class NewTagActivity extends AppCompatActivity {
 
-    private static final Integer[] DEFAULT_COLOR = {Color.RED, Color.GRAY, Color.GREEN, Color.BLACK,
-    Color.BLUE, Color.CYAN, Color.YELLOW, Color.MAGENTA, Color.DKGRAY};
+    private static final int[] DEFAULT_COLOR = {Colour.strawberryColor(),
+            Colour.maroonColor(), Colour.waveColor(), Colour.limeColor(), Colour.grapeColor(),
+            Colour.hollyGreenColor(), Colour.mandarinColor(), Colour.coffeeColor(), Colour.crimsonColor(),
+            Colour.pinkLipstickColor()};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
