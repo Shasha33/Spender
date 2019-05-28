@@ -60,7 +60,7 @@ public class CheckListHolder {
         } else {
             this.begin = dateConvert(begin);
         }
-        updateStateByTime();
+        updateState();
     }
 
     public void setEnd(@NonNull String end) {
@@ -69,13 +69,13 @@ public class CheckListHolder {
         } else {
             this.end = dateConvert(end);
         }
-        updateStateByTime();
+        updateState();
     }
 
     public void setSubstring( String substring) {
         Log.i(ChecksRoller.LOG_TAG, substring + "");
         regEx = "%" + substring + "%";
-        updateStateBySubstring();
+        updateState();
     }
 
     private void updateStateBySubstring() {

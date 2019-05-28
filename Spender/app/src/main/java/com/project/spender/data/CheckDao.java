@@ -230,7 +230,7 @@ public abstract class CheckDao {
      */
 
     @Query("SELECT * FROM `Check` WHERE  name LIKE :regEx AND datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
-    public abstract List<CheckWithProducts> getChecksWithProductsByDateAndRegEx(String start, String finish, String regEx);
+    public abstract List<CheckWithProducts> getChecksWithProductsByDateAndRegEx(String regEx, String start, String finish);
 
 
 
