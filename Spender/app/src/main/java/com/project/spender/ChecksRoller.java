@@ -105,7 +105,7 @@ public class ChecksRoller {
     }
 
     public void cheese() {
-        Check check = new Check(0, "Typical",300000, "Auchan", "11.11.1111");
+        Check check = new Check(0, "Typical",300000, "Auchan", "2007-05-18T22:05:00");
         Product product1 = new Product("Lambert", 100000, 150000, 100, 0);
         Product product2 = new Product("Oltermanni", 100000, 100000, 100, 0);
         Product product3 = new Product("Larec", 100000, 70000, 100, 0);

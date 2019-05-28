@@ -1,6 +1,5 @@
 package com.project.spender.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,8 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +22,7 @@ import com.project.spender.data.entities.ProductTagJoin;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.project.spender.charts.ChartsController.hideKeyboard;
+import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 
 public class CheckShowActivity extends AppCompatActivity {
 

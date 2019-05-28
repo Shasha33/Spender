@@ -11,7 +11,7 @@ import com.project.spender.DataHelper;
 
 import java.security.InvalidParameterException;
 
-public class ChartsController {
+public class ChartsStateHolder {
 
     private String beginDate;
     private String endDate;
