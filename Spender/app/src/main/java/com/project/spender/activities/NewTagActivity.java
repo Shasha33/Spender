@@ -1,14 +1,19 @@
 package com.project.spender.activities;
 
+import android.content.Context;
 import android.graphics.Color;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.TagStateHolder;
 import com.project.spender.data.entities.Tag;
 
 import java.util.Random;
@@ -17,11 +22,6 @@ import com.mattyork.colours.Colour;
 import com.mattyork.colours.Colour.ColorScheme;
 
 public class NewTagActivity extends AppCompatActivity {
-
-    private static final int[] DEFAULT_COLOR = {Colour.strawberryColor(),
-            Colour.maroonColor(), Colour.waveColor(), Colour.limeColor(), Colour.grapeColor(),
-            Colour.hollyGreenColor(), Colour.mandarinColor(), Colour.coffeeColor(), Colour.crimsonColor(),
-            Colour.pinkLipstickColor()};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,23 +33,37 @@ public class NewTagActivity extends AppCompatActivity {
         TextInputEditText color = findViewById(R.id.new_tag_color);
         TextInputEditText substring = findViewById(R.id.new_tag_substring);
 
+        TagStateHolder tagStateHolder = new TagStateHolder();
+
+        name.setOnEditorActionListener((textView, i, keyEvent) -> {
+            tagStateHolder.setName(name.getText().toString());
+            hideKeyboard(textView);
+            return true;
+        });
+
+        color.setOnEditorActionListener((textView, i, keyEvent) -> {
+            tagStateHolder.setName(color.getText().toString());
+            hideKeyboard(textView);
+            return true;
+        });
+
+        substring.setOnEditorActionListener((textView, i, keyEvent) -> {
+            tagStateHolder.setRegEx(substring.getText().toString());
+            hideKeyboard(textView);
+            return true;
+        });
+
         enter.setOnClickListener(v -> {
-            int newTagColor;
-            String newTagName = name.getText().toString();
-            if (color.getText().toString().equals("")) {
-
-                Random random = new Random();
-                int index = random.nextInt(DEFAULT_COLOR.length);
-                newTagColor = DEFAULT_COLOR[index];
-            } else {
-                newTagColor = Integer.parseInt(color.getText().toString());
-            }
-
-            String newSubstring = substring.getText().toString();
-
-            ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertTag(new Tag(newTagName, newTagColor, newSubstring));
+            tagStateHolder.createTag();
             finish();
         });
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 }
 
