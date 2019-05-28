@@ -122,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
         ChecksRoller.init(this);
 
-        Log.i(ChecksRoller.LOG_TAG, "KEK");
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
