@@ -129,7 +129,6 @@ public abstract class CheckDao {
     }
 
     // GET
-    // todo getByTag and getByTime
 
     /**
      * Метод получает все товары из бд без информации о чеках.

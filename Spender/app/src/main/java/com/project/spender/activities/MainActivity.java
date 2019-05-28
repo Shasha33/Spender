@@ -19,8 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.project.spender.ChecksRoller;
 import com.project.spender.PieChartController;
+import com.project.spender.PieChartFragment;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
 import com.project.spender.data.CheckDao;
@@ -33,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton secret;
     private int clickCounter;
 
-    private PieChartController pieChartController;
-
     private final static int MAGICCONST = 30;
     private final static int CAMERA_REQUEST = 1;
-    private final static int CHECK_REQUEST = 42;//okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+    private final static int CHECK_REQUEST = 42;
+
+    private FragmentManager fragmentManager;
+    private PieChartFragment pieFragment;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -146,11 +152,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, CHECK_REQUEST);
         });
 
-        //Pie
-        pieChartController = new PieChartController(findViewById(R.id.pieChart));
-        CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
-        pieChartController.animate();
-        checkDao.getTagsWithSum().observe(this, pieChartController::setData);
+        fragmentManager = getSupportFragmentManager();
+        pieFragment = new PieChartFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
+        fragmentTransaction.commit();
     }
 
 }
