@@ -10,8 +10,8 @@
     <item
         android:id="@+id/remove"
         android:title="remove selected"
-        app:showAsAction="never"/>
-    <!--  todo maybe it should be represented as big plus on the appBar -->
+        android:icon="@drawable/delete"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/new_tag"
