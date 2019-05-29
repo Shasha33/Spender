@@ -44,6 +44,7 @@ public class ListActivity extends AppCompatActivity {
     private EditText endDate;
 
     private static final int CHOOSE_TAG_CODE = 124;
+    private static final int CHOOSE_TAG_FOR_SHOW = 125;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -61,6 +62,9 @@ public class ListActivity extends AppCompatActivity {
                 } else if (type == R.id.remove_tag_for_check) {
                     holder.removeTags(pos, tagIds);
                 }
+            } else if (requestCode == CHOOSE_TAG_FOR_SHOW) {
+                long[] tagIds = data.getLongArrayExtra("tag ids");
+                holder.setTags(tagIds);
             }
         }
     }
@@ -113,6 +117,9 @@ public class ListActivity extends AppCompatActivity {
                     endDate.setVisibility(View.VISIBLE);
                 }
                 break;
+            case R.id.set_tags_for_list:
+                Intent intent = new Intent(this, TagChoiceActivity.class);
+                startActivityForResult(intent, CHOOSE_TAG_FOR_SHOW);
             default:
                 return super.onOptionsItemSelected(item);
         }

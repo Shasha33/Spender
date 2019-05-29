@@ -232,10 +232,12 @@ public abstract class CheckDao {
     public abstract List<CheckWithProducts> getChecksWithProductsByDate(String start, String finish);
 
 
+
     /**
      * Trying to add little update
      * Returns list of checks in given (as only russian say) period matching regular expression
      */
+
     @Transaction
     @Query("SELECT * FROM `Check` WHERE  name LIKE :regEx AND datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
     public abstract List<CheckWithProducts> getChecksWithProductsByDateAndRegEx(String regEx, String start, String finish);

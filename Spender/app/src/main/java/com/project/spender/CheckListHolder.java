@@ -8,14 +8,18 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.vision.L;
 import com.project.spender.activities.CheckShowActivity;
 import com.project.spender.activities.ItemAdapter;
 import com.project.spender.activities.ListAdapter;
+import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
+import com.project.spender.data.entities.Tag;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.project.spender.DataHelper.dateConvert;
@@ -29,6 +33,7 @@ public class CheckListHolder {
     private List<Product> productList;
     private boolean isProductMode = false;
     private ListView listView;
+    private List<Long> tags;
     private ListAdapter checksAdapter;
     private ItemAdapter productsAdapter;
 
@@ -36,6 +41,7 @@ public class CheckListHolder {
     public CheckListHolder(ListView listView, Context context) {
         begin = DataHelper.DEFAULT_BEGIN;
         end = DataHelper.DEFAULT_END;
+        regEx = "%%";
         list = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAll();
         productList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllProducts();
 
@@ -96,6 +102,16 @@ public class CheckListHolder {
         listView.invalidateViews();
     }
 
+    //its terrible (todo) fix it
+    public void setTags(long[] ids) {
+        tags = new ArrayList<>();
+        for (long id : ids) {
+            Log.i(ChecksRoller.LOG_TAG, id + "");
+            tags.add(id);
+        }
+        updateState();
+    }
+
     public boolean getMode() {
         return isProductMode;
     }
@@ -107,7 +123,19 @@ public class CheckListHolder {
         }
         Log.i(ChecksRoller.LOG_TAG, "Looking for checks between " + begin + " " + end + " by " + regEx);
         List<CheckWithProducts> list1 = ChecksRoller.getInstance().findChecksByTimePeriodAndRegEx(begin, end, regEx);
-        list.addAll(list1);
+        if (tags == null) {
+            list.addAll(list1);
+            return;
+        }
+        for (CheckWithProducts check : list1) {
+            List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(check.getCheck().getId());
+            for (Tag tag : tagList) {
+                if (tags.contains(tag)) {
+                    list.add(check);
+                    break;
+                }
+            }
+        }
     }
 
     private void updateStateProduct() {
@@ -117,7 +145,20 @@ public class CheckListHolder {
         }
         Log.i(ChecksRoller.LOG_TAG, "Looking for products between " + begin + " " + end + " by " + regEx);
         List<Product> list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
-        productList.addAll(list1);
+        if (tags == null) {
+            productList.addAll(list1);
+            return;
+        }
+        for (Product product : list1) {
+            List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(product.getId());
+
+            for (Tag tag : tagList) {
+                if (tags.contains(tag)) {
+                    productList.add(product);
+                    break;
+                }
+            }
+        }
     }
 
     public void addTags(int position, long[] tagIds) {
