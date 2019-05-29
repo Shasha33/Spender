@@ -55,7 +55,7 @@ public class PieChartFragment extends ChartFragment {
     }
 
     public void drawHole(boolean status) {
-        pieChartController.drawHole(false);
+        pieChartController.drawHole(status);
         pieChartController.invalidate();
     }
 

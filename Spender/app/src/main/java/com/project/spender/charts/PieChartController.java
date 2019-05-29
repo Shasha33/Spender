@@ -51,6 +51,9 @@ public class PieChartController {
         List<Integer> colors = new ArrayList<>();
 
         for (TagWithSum tws : tagsWithSum) {
+            if (whiteIdList != null && !whiteIdList.contains(tws.tag.getId())) {
+                continue;
+            }
             entries.add(new PieEntry(tws.sum, tws.tag.getName()));
             colors.add(tws.tag.getColor());
         }
