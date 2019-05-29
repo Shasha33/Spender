@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.project.spender.CheckListHolder;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.ScanResult;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 
@@ -45,9 +46,19 @@ public class ListActivity extends AppCompatActivity {
 
     private static final int CHOOSE_TAG_CODE = 124;
     private static final int CHOOSE_TAG_FOR_SHOW = 125;
+    private static final int SCAN_CODE = 42;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SCAN_CODE) {
+            if (requestCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "Scanned", Toast.LENGTH_SHORT).show();
+            } else if (requestCode == ScanResult.NOT_ENOUGH_DATA) {
+                Toast.makeText(this, "Authorization required", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Error, cant scan", Toast.LENGTH_SHORT).show();
+            }
+        }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CHOOSE_TAG_CODE) {
                 int type = data.getIntExtra("op type", -1);
@@ -147,7 +158,7 @@ public class ListActivity extends AppCompatActivity {
             final Intent intent = new Intent(ListActivity.this, ScanActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            startActivityForResult(intent, 42);
+            startActivityForResult(intent, SCAN_CODE);
         });
 
         listView = findViewById(R.id.productsList);

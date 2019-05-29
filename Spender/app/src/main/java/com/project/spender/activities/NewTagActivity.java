@@ -39,7 +39,7 @@ public class NewTagActivity extends AppCompatActivity {
         });
 
         color.setOnEditorActionListener((textView, i, keyEvent) -> {
-            tagStateHolder.setName(color.getText().toString());
+            tagStateHolder.setColor(color.getText().toString());
             hideKeyboard(textView);
             return true;
         });
