@@ -7,6 +7,7 @@ import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.jraska.livedata.TestObserver;
+import com.project.spender.charts.PieChartController;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;

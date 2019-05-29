@@ -113,10 +113,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
                 fragmentTransaction.replace(R.id.fragmentHolder, pieFragment);
+                pieFragment.getPieChartController().drawHole(false);
+                pieFragment.getPieChartController().invalidate();
                 break;
             case R.id.donut_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "donut chart");
-                //choose donut chart (todo) your code here
+                fragmentTransaction.replace(R.id.fragmentHolder, pieFragment);
+                pieFragment.getPieChartController().drawHole(true);
+                pieFragment.getPieChartController().invalidate();
                 break;
             case R.id.line_graph_item:
                 Log.i(ChecksRoller.LOG_TAG, "line graph");

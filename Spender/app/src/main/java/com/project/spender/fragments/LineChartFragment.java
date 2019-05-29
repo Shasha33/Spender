@@ -37,4 +37,7 @@ public class LineChartFragment extends Fragment {
         return view;
     }
 
+    public LineChartController getLineChartController() {
+        return lineChartController;
+    }
 }

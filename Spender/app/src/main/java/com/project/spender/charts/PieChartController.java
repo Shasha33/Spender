@@ -68,4 +68,12 @@ public class PieChartController {
     public void animate() {
         pieChart.animateXY(speed, speed);
     }
+
+    public void drawHole(boolean enable) {
+        pieChart.setDrawHoleEnabled(enable);
+    }
+
+    public void invalidate() {
+        pieChart.invalidate();
+    }
 }
