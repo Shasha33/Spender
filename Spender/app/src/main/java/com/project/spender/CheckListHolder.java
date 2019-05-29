@@ -96,8 +96,14 @@ public class CheckListHolder {
     private void updateState() {
         if (isProductMode) {
             updateStateProduct();
+            for (Product p : productList) {
+                Log.i(ChecksRoller.LOG_TAG, "" + p.getName());
+            }
         } else {
             updateStateCheck();
+            for (CheckWithProducts p : list) {
+                Log.i(ChecksRoller.LOG_TAG, "" + p.getCheck().getName());
+            }
         }
         listView.invalidateViews();
     }
@@ -118,11 +124,13 @@ public class CheckListHolder {
 
     private void updateStateCheck() {
         list.clear();
+        List<CheckWithProducts> list1;
         if (regEx.equals("%%") && begin.equals(DataHelper.DEFAULT_BEGIN) && end.equals(DataHelper.DEFAULT_END)) {
-            list.addAll(ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAll());
+            list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAll();
+        } else {
+            Log.i(ChecksRoller.LOG_TAG, "Looking for checks between " + begin + " " + end + " by " + regEx);
+            list1 = ChecksRoller.getInstance().findChecksByTimePeriodAndRegEx(begin, end, regEx);
         }
-        Log.i(ChecksRoller.LOG_TAG, "Looking for checks between " + begin + " " + end + " by " + regEx);
-        List<CheckWithProducts> list1 = ChecksRoller.getInstance().findChecksByTimePeriodAndRegEx(begin, end, regEx);
         if (tags == null) {
             list.addAll(list1);
             return;
@@ -130,7 +138,7 @@ public class CheckListHolder {
         for (CheckWithProducts check : list1) {
             List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(check.getCheck().getId());
             for (Tag tag : tagList) {
-                if (tags.contains(tag)) {
+                if (tags.contains(tag.getId())) {
                     list.add(check);
                     break;
                 }
@@ -140,20 +148,21 @@ public class CheckListHolder {
 
     private void updateStateProduct() {
         productList.clear();
+        List<Product> list1;
         if (regEx.equals("%%")) {
-            productList.addAll(ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllProducts());
+            list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllProducts();
+        } else {
+            Log.i(ChecksRoller.LOG_TAG, "Looking for products between " + begin + " " + end + " by " + regEx);
+            list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
         }
-        Log.i(ChecksRoller.LOG_TAG, "Looking for products between " + begin + " " + end + " by " + regEx);
-        List<Product> list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
         if (tags == null) {
             productList.addAll(list1);
             return;
         }
         for (Product product : list1) {
-            List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(product.getId());
-
+            List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
             for (Tag tag : tagList) {
-                if (tags.contains(tag)) {
+                if (tags.contains(tag.getId())) {
                     productList.add(product);
                     break;
                 }
