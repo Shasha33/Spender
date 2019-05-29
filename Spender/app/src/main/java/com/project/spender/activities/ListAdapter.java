@@ -69,7 +69,7 @@ public class ListAdapter extends BaseAdapter {
         }
 
 
-        ((TextView) view.findViewById(R.id.name)).setText(check.getName());
+        ((TextView) view.findViewById(R.id.name)).setText(check.getName() + " from " + check.getShop());
         ((TextView) view.findViewById(R.id.sum)).setText("Total: "  +
                 String.format("%.2f", check.getTotalSum() / 100.0));
         ((TextView) view.findViewById(R.id.data)).setText("Time: " + check.getDate());

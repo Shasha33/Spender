@@ -161,9 +161,7 @@ public class CheckListHolder {
         }
         for (Product product : list1) {
             List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
-            Log.i(ChecksRoller.LOG_TAG, product.getName() + "" );
             for (Tag tag : tagList) {
-                Log.i(ChecksRoller.LOG_TAG, tag.getName());
                 if (tags.contains(tag.getId())) {
                     productList.add(product);
                     break;

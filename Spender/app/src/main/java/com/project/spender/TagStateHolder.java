@@ -1,6 +1,11 @@
 package com.project.spender;
 
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
 import com.mattyork.colours.Colour;
+import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.Tag;
 
 import java.util.Random;
@@ -13,7 +18,7 @@ public class TagStateHolder {
             Colour.pinkLipstickColor()};
 
     private String name;
-    private String regEx;
+    @Nullable private String regEx;
     private Integer color;
 
     public void setName(String name) {
@@ -29,6 +34,7 @@ public class TagStateHolder {
     }
 
     public void setRegEx(String regEx) {
+        Log.i(ChecksRoller.LOG_TAG, "TRYING TO ADD NEW TAF " + regEx);
         this.regEx = regEx;
     }
 

@@ -50,6 +50,13 @@ public class Check {
     @Ignore
     public Check(CheckJson checkJson) {
         this(checkJson.getData().user, checkJson.getData().totalSum, checkJson.getData().retailPlaceAddress, checkJson.getData().dateTime);
+        if (name == null) {
+            name = "mini-market Dawn";
+        }
+
+        if (shop == null) {
+            shop = "st. Pushkina-Kukushkina";
+        }
     }
 
     @Override
