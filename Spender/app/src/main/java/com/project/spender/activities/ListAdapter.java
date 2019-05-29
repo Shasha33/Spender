@@ -22,7 +22,7 @@ public class ListAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     List<CheckWithProducts> checkList;
 
-    ListAdapter(Context context, List<CheckWithProducts> list) {
+    public ListAdapter(Context context, List<CheckWithProducts> list) {
         this.context = context;
         checkList = list;
         layoutInflater = (LayoutInflater) context
