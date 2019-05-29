@@ -113,19 +113,23 @@ public class MainActivity extends AppCompatActivity {
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
                 fragmentTransaction.replace(R.id.fragmentHolder, pieFragment);
+                fragmentTransaction.commit();
                 chartsStateHolder.setChartFragment(pieFragment);
                 pieFragment.drawHole(false);
                 break;
             case R.id.donut_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "donut chart");
                 fragmentTransaction.replace(R.id.fragmentHolder, pieFragment);
+                fragmentTransaction.commit();
                 chartsStateHolder.setChartFragment(pieFragment);
                 pieFragment.drawHole(true);
                 break;
             case R.id.line_graph_item:
                 Log.i(ChecksRoller.LOG_TAG, "line graph");
                 fragmentTransaction.replace(R.id.fragmentHolder, lineFragment);
+                fragmentTransaction.commit();
                 chartsStateHolder.setChartFragment(lineFragment);
+                lineFragment.invalidate();
                 break;
             case R.id.tags_for_chart:
                 startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
@@ -133,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-        fragmentTransaction.commit();
         return true;
     }
 

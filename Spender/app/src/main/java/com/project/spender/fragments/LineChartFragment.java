@@ -15,6 +15,8 @@ import com.project.spender.charts.LineChartController;
 import com.project.spender.data.CheckDao;
 import com.project.spender.data.entities.TagWithSumAndDate;
 
+import java.util.Set;
+
 public class LineChartFragment extends ChartFragment {
 
     private LineChartController lineChartController;
@@ -33,17 +35,30 @@ public class LineChartFragment extends ChartFragment {
         View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
 
         lineChartController = new LineChartController(getViewLifecycleOwner(), view.findViewById(R.id.lineChart));
+        lineChartController.setWhiteIdList(whiteIdList);
+        resetData();
 
         return view;
     }
 
-    public LineChartController getLineChartController() {
-        return lineChartController;
+    @Override
+    public void setWhiteIdList(Set<Long> whiteIdList) {
+        super.setWhiteIdList(whiteIdList);
+        if (lineChartController != null) {
+            lineChartController.setWhiteIdList(whiteIdList);
+        }
     }
-
 
     @Override
     public void resetData() {
-        lineChartController.setDataSource(checkDao.getTagsWithSumAndDate());
+        if (lineChartController != null) {
+            lineChartController.setDataSource(checkDao.getTagsWithSumAndDate());
+        }
+    }
+
+    public void invalidate() {
+        if (lineChartController != null) {
+            lineChartController.invalidate();
+        }
     }
 }

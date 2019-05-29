@@ -102,6 +102,12 @@ public class LineChartController {
 
         for (TagWithSumAndDate tagWithSumAndDate : tagsWithSum)
         {
+            if (whiteIdList != null
+                    && tagWithSumAndDate.tag.getId() != 0
+                    && !whiteIdList.contains(tagWithSumAndDate.tag.getId())) {
+                continue;
+            }
+            
             if (currentTag.getId() != tagWithSumAndDate.tag.getId()) {
 
                 LineDataSet data = new LineDataSet(entries, currentTag.getName());
@@ -134,5 +140,9 @@ public class LineChartController {
 
     public void setWhiteIdList(Set<Long> whiteIdList) {
         this.whiteIdList = whiteIdList;
+    }
+
+    public void invalidate() {
+        lineChart.invalidate();
     }
 }
