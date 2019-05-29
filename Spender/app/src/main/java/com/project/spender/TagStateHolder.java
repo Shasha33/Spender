@@ -12,10 +12,11 @@ import java.util.Random;
 
 public class TagStateHolder {
 
-    private static final int[] DEFAULT_COLOR = {Colour.strawberryColor(),
-            Colour.maroonColor(), Colour.waveColor(), Colour.cactusGreenColor(), Colour.grapeColor(),
-            Colour.hollyGreenColor(), Colour.mandarinColor(), Colour.coffeeColor(), Colour.crimsonColor(),
-            Colour.pinkLipstickColor()};
+    private static final int[] DEFAULT_COLOR = {Colour.watermelonColor(),
+            Colour.maroonColor(), Colour.waveColor(), Colour.goldenrodColor(), Colour.grapeColor(),
+            Colour.linenColor(), Colour.mandarinColor(), Colour.coffeeColor(), Colour.crimsonColor(),
+            Colour.pinkLipstickColor(), Colour.hollyGreenColor(), Colour.chiliPowderColor(),
+            Colour.indigoColor(), Colour.raspberryColor(), Colour.orchidColor(), Colour.buttermilkColor()};
 
     private String name;
     @Nullable private String regEx;
