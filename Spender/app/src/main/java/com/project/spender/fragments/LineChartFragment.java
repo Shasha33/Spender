@@ -52,7 +52,7 @@ public class LineChartFragment extends ChartFragment {
     @Override
     public void resetData() {
         if (lineChartController != null) {
-            lineChartController.setDataSource(checkDao.getTagsWithSumAndDate());
+            lineChartController.setDataSource(checkDao.getTagsWithSumAndDateByDate(leftDate, rightDate));
         }
     }
 

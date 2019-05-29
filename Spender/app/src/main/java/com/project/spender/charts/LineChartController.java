@@ -107,7 +107,7 @@ public class LineChartController {
                     && !whiteIdList.contains(tagWithSumAndDate.tag.getId())) {
                 continue;
             }
-            
+
             if (currentTag.getId() != tagWithSumAndDate.tag.getId()) {
 
                 LineDataSet data = new LineDataSet(entries, currentTag.getName());

@@ -225,15 +225,26 @@ public abstract class CheckDao {
      * @param finish
      * @return все чеки попадающие в отрезок.
      */
+    @Transaction
     @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
     public abstract List<Check> getChecksByDate(String start, String finish);
 
+    @Transaction
     @Query("SELECT tag.id, tag.name, tag.color, tag.substring, SUM(product.sum) as sum, date " +
             "FROM tag, product_tag_join, product, `check` " +
             "WHERE tag.id = tag_id AND product_id == product.id AND product.check_id == `check`.id " +
             "GROUP BY tag.id, date " +
             "ORDER BY tag.id")
     public abstract LiveData<List<TagWithSumAndDate>> getTagsWithSumAndDate();
+
+    @Transaction
+    @Query("SELECT tag.id, tag.name, tag.color, tag.substring, SUM(product.sum) as sum, date " +
+            "FROM tag, product_tag_join, product, `check` " +
+            "WHERE tag.id = tag_id AND product_id == product.id AND product.check_id == `check`.id " +
+            "AND datetime(`check`.date) BETWEEN datetime(:start) AND datetime(:finish)" +
+            "GROUP BY tag.id, date " +
+            "ORDER BY tag.id")
+    public abstract LiveData<List<TagWithSumAndDate>> getTagsWithSumAndDateByDate(String start, String finish);
 
     @Transaction
     @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
