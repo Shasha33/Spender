@@ -2,6 +2,8 @@ package com.project.spender.activities;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -77,6 +79,7 @@ public class TagListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_list);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
 

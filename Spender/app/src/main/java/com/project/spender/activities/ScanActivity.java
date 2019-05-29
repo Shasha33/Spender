@@ -1,6 +1,7 @@
 package com.project.spender.activities;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,6 +19,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void onCreate(Bundle state) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(state);
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);

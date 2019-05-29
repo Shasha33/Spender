@@ -2,6 +2,8 @@ package com.project.spender.activities;
 
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -16,6 +18,8 @@ public class NewTagActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tag);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Button enter = findViewById(R.id.enter_new_tag_info);
         TextInputEditText name = findViewById(R.id.new_tag_name);
