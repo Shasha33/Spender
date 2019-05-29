@@ -8,7 +8,7 @@ import java.util.Random;
 public class TagStateHolder {
 
     private static final int[] DEFAULT_COLOR = {Colour.strawberryColor(),
-            Colour.maroonColor(), Colour.waveColor(), Colour.limeColor(), Colour.grapeColor(),
+            Colour.maroonColor(), Colour.waveColor(), Colour.cactusGreenColor(), Colour.grapeColor(),
             Colour.hollyGreenColor(), Colour.mandarinColor(), Colour.coffeeColor(), Colour.crimsonColor(),
             Colour.pinkLipstickColor()};
 
