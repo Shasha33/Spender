@@ -113,18 +113,19 @@ public class MainActivity extends AppCompatActivity {
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
                 fragmentTransaction.replace(R.id.fragmentHolder, pieFragment);
-                pieFragment.getPieChartController().drawHole(false);
-                pieFragment.getPieChartController().invalidate();
+                chartsStateHolder.setChartFragment(pieFragment);
+                pieFragment.drawHole(false);
                 break;
             case R.id.donut_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "donut chart");
                 fragmentTransaction.replace(R.id.fragmentHolder, pieFragment);
-                pieFragment.getPieChartController().drawHole(true);
-                pieFragment.getPieChartController().invalidate();
+                chartsStateHolder.setChartFragment(pieFragment);
+                pieFragment.drawHole(true);
                 break;
             case R.id.line_graph_item:
                 Log.i(ChecksRoller.LOG_TAG, "line graph");
                 fragmentTransaction.replace(R.id.fragmentHolder, lineFragment);
+                chartsStateHolder.setChartFragment(lineFragment);
                 break;
             case R.id.tags_for_chart:
                 startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
@@ -188,18 +189,21 @@ public class MainActivity extends AppCompatActivity {
         begin = findViewById(R.id.begin_date_for_chart);
         end = findViewById(R.id.end_date_for_chart);
 
+        fragmentManager = getSupportFragmentManager();
+        pieFragment = PieChartFragment.newInstance();
+        lineFragment = LineChartFragment.newInstance();
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
+        fragmentTransaction.commit();
+
         //it is not necessary, probably
         //but wont delete yet
         chartsStateHolder = new ChartsStateHolder();
         chartsStateHolder.setBeginDateInput(begin);
         chartsStateHolder.setEndDateInput(end);
+        chartsStateHolder.setChartFragment(pieFragment);
 
-        fragmentManager = getSupportFragmentManager();
-        pieFragment = PieChartFragment.newInstance();
-        lineFragment = LineChartFragment.newInstance();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
-        fragmentTransaction.commit();
     }
 
 }

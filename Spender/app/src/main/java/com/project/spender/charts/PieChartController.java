@@ -15,6 +15,7 @@ import com.project.spender.data.entities.TagWithSum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class PieChartController {
     private final PieChart pieChart;
@@ -24,6 +25,8 @@ public class PieChartController {
     private LifecycleOwner owner;
 
     private final int speed = 1400;
+
+    private Set<Long> whiteIdList;
 
     public PieChartController(LifecycleOwner owner, PieChart pieChart) {
         this.pieChart = pieChart;
@@ -54,7 +57,6 @@ public class PieChartController {
 
         PieDataSet dataSet = new PieDataSet(entries, "Tags");
         dataSet.setColors(colors);
-//        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         dataSet.setSliceSpace(3f);
 
         PieData data = new PieData(dataSet);
@@ -75,5 +77,9 @@ public class PieChartController {
 
     public void invalidate() {
         pieChart.invalidate();
+    }
+
+    public void setWhiteIdList(Set<Long> whiteIdList) {
+        this.whiteIdList = whiteIdList;
     }
 }

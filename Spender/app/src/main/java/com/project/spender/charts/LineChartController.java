@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.gms.vision.L;
 import com.project.spender.data.entities.Tag;
 import com.project.spender.data.entities.TagWithSumAndDate;
 
@@ -29,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class LineChartController {
     private final LineChart lineChart;
@@ -36,6 +38,8 @@ public class LineChartController {
     private LiveData<List<TagWithSumAndDate>> dataSource;
     private Observer<List<TagWithSumAndDate>> observer = this::setData;
     private LifecycleOwner owner;
+
+    private Set<Long> whiteIdList;
 
     public LineChartController(LifecycleOwner owner, LineChart lineChart) {
         this.lineChart = lineChart;
@@ -74,9 +78,6 @@ public class LineChartController {
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisRight().setDrawGridLines(true);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM) ;
-//        lineChart.getXAxis().setGranularity(10000f);
-
-//        lineChart.getXAxis().setDrawAxisLine(true);
     }
 
     public void setDataSource(LiveData<List<TagWithSumAndDate>> data) {
@@ -129,5 +130,9 @@ public class LineChartController {
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
         lineChart.invalidate();
+    }
+
+    public void setWhiteIdList(Set<Long> whiteIdList) {
+        this.whiteIdList = whiteIdList;
     }
 }

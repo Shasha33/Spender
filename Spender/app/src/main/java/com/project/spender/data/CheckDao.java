@@ -192,6 +192,14 @@ public abstract class CheckDao {
             "GROUP BY tag.id")
     public abstract LiveData<List<TagWithSum>> getTagsWithSum();
 
+    @Transaction
+    @Query("SELECT tag.id, tag.name, tag.color, tag.substring, SUM(product.sum) as sum " +
+            "FROM tag, product_tag_join, product, `check` " +
+            "WHERE tag.id = tag_id AND product_id == product.id AND  product.check_id == `check`.id " +
+            "AND datetime(`check`.date) BETWEEN datetime(:start) AND datetime(:finish)" +
+            "GROUP BY tag.id")
+    public abstract LiveData<List<TagWithSum>> getTagsWithSumByData(String start, String finish);
+
     /**
      * Получает последний вставленный id.
      *

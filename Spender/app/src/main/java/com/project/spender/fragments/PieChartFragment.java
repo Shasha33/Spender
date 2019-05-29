@@ -3,19 +3,18 @@ package com.project.spender.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.project.spender.charts.PieChartController;
-import com.project.spender.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.data.CheckDao;
+
+import java.util.Set;
 
 
-public class PieChartFragment extends Fragment {
+public class PieChartFragment extends ChartFragment {
 
     private PieChartController pieChartController;
 
@@ -40,15 +39,31 @@ public class PieChartFragment extends Fragment {
 
         //Pie
         pieChartController = new PieChartController(getViewLifecycleOwner(), view.findViewById(R.id.pieChart));
-        CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
-        pieChartController.setDataSource(checkDao.getTagsWithSum());
-        pieChartController.animate();
+        pieChartController.setWhiteIdList(whiteIdList);
+        resetData();
 
         // Inflate the layout for this fragment
         return view;
     }
 
-    public PieChartController getPieChartController() {
-        return pieChartController;
+    @Override
+    public void setWhiteIdList(Set<Long> whiteIdList) {
+        super.setWhiteIdList(whiteIdList);
+        if (pieChartController != null) {
+            pieChartController.setWhiteIdList(whiteIdList);
+        }
+    }
+
+    public void drawHole(boolean status) {
+        pieChartController.drawHole(false);
+        pieChartController.invalidate();
+    }
+
+    @Override
+    public void resetData() {
+        if (pieChartController != null) {
+            pieChartController.setDataSource(checkDao.getTagsWithSumByData(leftDate, rightDate));
+            pieChartController.animate();
+        }
     }
 }
