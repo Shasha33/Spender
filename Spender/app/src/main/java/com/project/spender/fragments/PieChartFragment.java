@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.project.spender.charts.PieChartController;
 import com.project.spender.R;
 
