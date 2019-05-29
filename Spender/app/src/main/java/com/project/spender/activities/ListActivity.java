@@ -6,9 +6,11 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +34,9 @@ public class ListActivity extends AppCompatActivity {
 
     private ListView listView;
     private EditText request;
+
     private CheckListHolder holder;
+
     private ImageButton scan;
     private ImageButton list;
     private ImageButton statistics;
@@ -40,6 +44,7 @@ public class ListActivity extends AppCompatActivity {
     private EditText endDate;
 
     private static final int CHOOSE_TAG_CODE = 124;
+    private static final int CHOOSE_TAG_FOR_SHOW = 125;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -57,6 +62,9 @@ public class ListActivity extends AppCompatActivity {
                 } else if (type == R.id.remove_tag_for_check) {
                     holder.removeTags(pos, tagIds);
                 }
+            } else if (requestCode == CHOOSE_TAG_FOR_SHOW) {
+                long[] tagIds = data.getLongArrayExtra("tag ids");
+                holder.setTags(tagIds);
             }
         }
     }
@@ -90,12 +98,40 @@ public class ListActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_view_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_bar_switch:
+                holder.changeMode();
+                item.setChecked(holder.getMode());
+                if (holder.getMode()) {
+                    beginDate.setVisibility(View.GONE);
+                    endDate.setVisibility(View.GONE);
+                } else {
+                    beginDate.setVisibility(View.VISIBLE);
+                    endDate.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.set_tags_for_list:
+                Intent intent = new Intent(this, TagChoiceActivity.class);
+                startActivityForResult(intent, CHOOSE_TAG_FOR_SHOW);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
-        holder = new CheckListHolder();
 
         scan = findViewById(R.id.scan);
         statistics = findViewById(R.id.statistics);
@@ -115,16 +151,9 @@ public class ListActivity extends AppCompatActivity {
         });
 
         listView = findViewById(R.id.productsList);
-        listView.setAdapter(new ListAdapter(this, holder.getList()));
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            CheckWithProducts check = holder.getList().get(position);
-            Intent intent = new Intent(ListActivity.this, CheckShowActivity.class);
-            intent.putParcelableArrayListExtra("products",
-                    (ArrayList<Product>) check.getProducts());
-            intent.putExtra("check id", check.getCheck().getId());
-            startActivity(intent);
-        });
         registerForContextMenu(listView);
+
+        holder = new CheckListHolder(listView, this);
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener((v, actionId, event) -> {

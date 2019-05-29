@@ -23,7 +23,7 @@ public class ItemAdapter extends BaseAdapter {
     LayoutInflater lInflater;
     List<Product> productList;
 
-    ItemAdapter(Context context, List<Product> products) {
+    public ItemAdapter(Context context, List<Product> products) {
         this.context = context;
         productList = products;
         lInflater = (LayoutInflater) context
