@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == CHART_TAGS_CODE) {
             //tags for chart
             long[] ids = data.getLongArrayExtra("tag ids");
+            if (ids == null) {
+                return;
+            }
             chartsStateHolder.setIds(ids);
         }
     }

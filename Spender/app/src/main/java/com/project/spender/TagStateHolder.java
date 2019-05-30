@@ -1,21 +1,53 @@
 package com.project.spender;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.mattyork.colours.Colour;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.Tag;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class TagStateHolder {
 
-    private static final int[] DEFAULT_COLOR = {Colour.strawberryColor(),
-            Colour.maroonColor(), Colour.waveColor(), Colour.cactusGreenColor(), Colour.grapeColor(),
-            Colour.hollyGreenColor(), Colour.mandarinColor(), Colour.coffeeColor(), Colour.crimsonColor(),
-            Colour.pinkLipstickColor()};
+    private static final List<Integer> DEFAULT_COLOR = new ArrayList<>();
+
+    static {
+        for (int i : ColorTemplate.VORDIPLOM_COLORS) {
+            DEFAULT_COLOR.add(i);
+        }
+
+        for (int i : ColorTemplate.MATERIAL_COLORS) {
+            DEFAULT_COLOR.add(i);
+        }
+
+        for (int i : ColorTemplate.JOYFUL_COLORS) {
+            DEFAULT_COLOR.add(i);
+        }
+
+        for (int i : ColorTemplate.LIBERTY_COLORS) {
+            DEFAULT_COLOR.add(i);
+        }
+
+        for (int i : ColorTemplate.COLORFUL_COLORS) {
+            DEFAULT_COLOR.add(i);
+        }
+
+        for (int i : ColorTemplate.PASTEL_COLORS) {
+            DEFAULT_COLOR.add(i);
+        }
+
+
+    }
 
     private String name;
     @Nullable private String regEx;
@@ -27,7 +59,7 @@ public class TagStateHolder {
 
     public void setColor(String color) {
         try {
-            this.color = Integer.parseInt(color);
+            this.color = Color.parseColor(color);
         } catch (Exception e) {
             this.color = null;
         }
@@ -41,8 +73,8 @@ public class TagStateHolder {
     public void createTag() {
         if (color == null) {
             Random random = new Random();
-            int index = random.nextInt(DEFAULT_COLOR.length);
-            color = DEFAULT_COLOR[index];
+            int index = random.nextInt(DEFAULT_COLOR.size());
+            color = DEFAULT_COLOR.get(index);
         }
 
         ChecksRoller.getInstance().getAppDatabase()
