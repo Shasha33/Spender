@@ -2,9 +2,15 @@ package com.project.spender.activities;
 
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
+import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.TagStateHolder;
 
@@ -16,6 +22,8 @@ public class NewTagActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tag);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Button enter = findViewById(R.id.enter_new_tag_info);
         TextInputEditText name = findViewById(R.id.new_tag_name);
@@ -31,7 +39,7 @@ public class NewTagActivity extends AppCompatActivity {
         });
 
         color.setOnEditorActionListener((textView, i, keyEvent) -> {
-            tagStateHolder.setName(color.getText().toString());
+            tagStateHolder.setColor(color.getText().toString());
             hideKeyboard(textView);
             return true;
         });
@@ -44,6 +52,7 @@ public class NewTagActivity extends AppCompatActivity {
 
         enter.setOnClickListener(v -> {
             tagStateHolder.createTag();
+            setResult(Activity.RESULT_OK);
             finish();
         });
     }

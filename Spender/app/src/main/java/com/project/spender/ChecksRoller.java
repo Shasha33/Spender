@@ -124,7 +124,6 @@ public class ChecksRoller {
         appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
         for (Product i : newCheck.getProducts()) {
             for (Tag j : appDatabase.getCheckDao().getAllTags()) {
-                Log.i(LOG_TAG, j.getName() + " " + j.getSubstring());
                 if (j.getSubstring() != null && i.getName().matches(".*" + j.getSubstring() + ".*")) {
                     appDatabase.getCheckDao().insertTagForProduct(j, i.getId());
                 }
@@ -172,7 +171,7 @@ public class ChecksRoller {
     }
 
     public List<CheckWithProducts> findChecksByTimePeriodAndRegEx(String begin, String end, String regEx) {
-        return appDatabase.getCheckDao().getChecksWithProductsByDateAndRegEx(begin, end, regEx);
+        return appDatabase.getCheckDao().getChecksWithProductsByDateAndRegEx(regEx, begin, end);
     }
 
     public List<Product> findProductsInCheckBySubstring(long checkId, String substring) {

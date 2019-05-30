@@ -1,5 +1,13 @@
 package com.project.spender;
 
+import android.util.Log;
+
+import com.project.spender.data.entities.Check;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public abstract class DataHelper {
 
 
@@ -8,25 +16,16 @@ public abstract class DataHelper {
 
     /**
      * Converts date from DD.MM.YYYY to YYYY-MM-DD
-     * terrible code (todo) fix it
      */
     public static String dateConvert(String date) throws IllegalArgumentException {
-        String[] args = date.split("\\.");
-
-        if (args.length != 3) {
-            throw new IllegalArgumentException();
+        SimpleDateFormat formatInput = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatResult = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Log.i(ChecksRoller.LOG_TAG, formatResult.format(formatInput.parse(date)));
+            return formatResult.format(formatInput.parse(date));
+        } catch (ParseException e) {
+            return null;
         }
 
-        //:(
-        String tmp = args[0];
-        args[0] =  args[2];
-        args[2] = tmp;
-
-        if (!args[2].matches("[0-9]{2}") || !args[1].matches("[0-9]{2}")
-                || !args[0].matches("[0-9]{4}")) {
-            throw new IllegalArgumentException();
-        }
-
-        return args[0] + "-" + args[1] + "-" + args[2];
     }
 }

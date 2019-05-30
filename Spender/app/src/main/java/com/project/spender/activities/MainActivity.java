@@ -33,14 +33,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton scan;
     private ImageButton list;
     private ImageButton statistics;
-    private ImageButton secret;
-    private int clickCounter;
     private EditText begin;
     private EditText end;
 
     private ChartsStateHolder chartsStateHolder;
 
-    private final static int MAGIC_CONST = 30;
     private final static int CAMERA_REQUEST = 1;
     private final static int CHART_TAGS_CODE = 15325;
     private final static int CHECK_REQUEST = 42;
@@ -166,17 +163,6 @@ public class MainActivity extends AppCompatActivity {
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
-
-        secret = findViewById(R.id.secret);
-        secret.setOnClickListener(view -> {
-            clickCounter++;
-            if (clickCounter > MAGIC_CONST) {
-                secret.setBackgroundResource(R.drawable.clevercat);
-                clickCounter = 0;
-            } else {
-                secret.setImageResource(R.drawable.cat);
-            }
-        });
 
         statistics.setImageResource(R.drawable.piechart_chosen);
 

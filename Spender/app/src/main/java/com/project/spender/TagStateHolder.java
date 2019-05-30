@@ -19,6 +19,7 @@ import java.util.Random;
 
 public class TagStateHolder {
 
+<<<<<<< HEAD
     private static final List<Integer> DEFAULT_COLOR = new ArrayList<>();
 
     static {

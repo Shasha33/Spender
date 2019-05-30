@@ -64,7 +64,7 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:ems="10"
-        android:hint="start of time period"
+        android:hint="begin DD.MM.YYYY"
         android:layout_marginTop="10dp"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
         android:layout_gravity="center"
         android:ems="10"
         android:inputType="date"
-        android:hint="end of time period"
+        android:hint="end DD.MM.YYYY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/request" />
