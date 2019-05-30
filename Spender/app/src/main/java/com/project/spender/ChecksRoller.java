@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.room.Room;
@@ -43,6 +44,7 @@ public class ChecksRoller {
     public static final String ACCOUNT_LOGIN = "login";
     public static final String ACCOUNT_PASSWORD = "password";
     private static SharedPreferences accountInfo;
+    private LifecycleOwner owner;
 
     private String number;
     private String password;
@@ -65,19 +67,9 @@ public class ChecksRoller {
     public void clearAccountInfo() {
         SharedPreferences.Editor editor = accountInfo.edit();
         editor.clear();
+        editor.apply();
     }
 
-    public int remindPassword(@NonNull String number) {
-        try {
-            return networkManager.restorePasswordSync(number);
-        } catch (IOException e) {
-            //(todo) introduce constant
-            return -100;
-        } catch (Throwable e) {
-            System.out.println(e.getMessage());
-        }
-        return 125125;
-    }
 
     private void updateLoginInfo() {
         number = accountInfo.getString(ACCOUNT_LOGIN, null);
@@ -89,6 +81,7 @@ public class ChecksRoller {
     }
 
     public void init(Context context) {
+        owner = (LifecycleOwner) context;
         accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
         networkManager = NetworkManager.getInstance();
         appDatabase = Room.databaseBuilder(context,
@@ -115,19 +108,68 @@ public class ChecksRoller {
 
     }
 
-    public int register(@NonNull String name, @NonNull String email, @NonNull String number) throws IOException {
-        return networkManager.registrationSync(new NewUser(name, email, number));
+    public String restore(String number) {
+        if (number == null) {
+            return "Empty number field";
+        }
+        int res = 0;
+
+        try {
+            res = networkManager.restorePasswordSync(number);
+        } catch (IOException e) {
+            return "Failed to connect server";
+        }
+
+        Log.i(ChecksRoller.LOG_TAG, "Trying to restore password, answer is" + res);
+        switch (res) {
+            case 204:
+                return "Success\nWait for sms";
+            case 404:
+                return  "Unknown or incorrect number";
+            default:
+                return "Unknown error";
+        }
+    }
+
+    public String register(String name, String email, String number) {
+
+        int result;
+        try {
+            result = networkManager.registrationSync(new NewUser(name, email, number));
+        } catch (IOException e) {
+            return  "Failed connect to server";
+        }
+        //(todo) introduce constants
+
+        Log.i(ChecksRoller.LOG_TAG, "Try to register, answer is" + result);
+        switch (result) {
+            case 204:
+                return  "Success";
+            case 409:
+                return  "Such a user already exist";
+            case 500:
+                return "Incorrect number";
+            case 400:
+                return "Incorrect email";
+            default:
+                return "Unknown error\n Try again later";
+        }
+    }
+
+    private void addTagsIfMatch(Product product, List<Tag> tags) {
+        for (Tag j : tags) {
+            if (j.getSubstring() != null && product.getName().matches(".*" + j.getSubstring() + ".*")) {
+                appDatabase.getCheckDao().insertTagForProduct(j, product.getId());
+            }
+        }
     }
 
     public synchronized void putCheck(CheckJson check) {
         CheckWithProducts newCheck = new CheckWithProducts(check);
         appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
         for (Product i : newCheck.getProducts()) {
-            for (Tag j : appDatabase.getCheckDao().getAllTags()) {
-                if (j.getSubstring() != null && i.getName().matches(".*" + j.getSubstring() + ".*")) {
-                    appDatabase.getCheckDao().insertTagForProduct(j, i.getId());
-                }
-            }
+            LiveData<List<Tag>> tags = appDatabase.getCheckDao().getAllTags();
+            tags.observe(owner, tags1 -> addTagsIfMatch(i, tags1));
         }
     }
 
@@ -156,11 +198,11 @@ public class ChecksRoller {
         return 0;
     }
 
-    public List<CheckWithProducts> findCheckBySubstring(String regEx) {
+    public LiveData<List<CheckWithProducts>> findCheckBySubstring(String regEx) {
         return appDatabase.getCheckDao().getCheckByRegEx("%" + regEx + "%");
     }
 
-    public List<CheckWithProducts> findCheckByTimePeriod(String begin, String end) {
+    public LiveData<List<CheckWithProducts>> findCheckByTimePeriod(String begin, String end) {
 
         List<Check> list = appDatabase.getCheckDao().getChecksByDate(begin, end);
         for (Check c : list) {
@@ -170,15 +212,13 @@ public class ChecksRoller {
         return appDatabase.getCheckDao().getChecksWithProductsByDate(begin, end);
     }
 
-    public List<CheckWithProducts> findChecksByTimePeriodAndRegEx(String begin, String end, String regEx) {
+
+    public LiveData<List<CheckWithProducts>> findChecksByTimePeriodAndRegEx(String begin, String end, String regEx) {
         return appDatabase.getCheckDao().getChecksWithProductsByDateAndRegEx(regEx, begin, end);
     }
 
-    public List<Product> findProductsInCheckBySubstring(long checkId, String substring) {
-        Log.i(LOG_TAG, substring + "");
-        List<Product> list = appDatabase.getCheckDao().getProductByRegEx("%" + substring + "%", checkId);
-        Log.i(LOG_TAG, list.size() + "");
-        return list;
+    public LiveData<List<Product>> findProductsInCheckBySubstring(long checkId, String substring) {
+        return appDatabase.getCheckDao().getProductByRegEx("%" + substring + "%", checkId);
     }
 
     public void onRemoveAllClicked() {

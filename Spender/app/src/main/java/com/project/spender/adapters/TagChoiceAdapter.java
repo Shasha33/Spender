@@ -1,4 +1,4 @@
-package com.project.spender.activities;
+package com.project.spender.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ public class TagChoiceAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     List<Tag> tagList;
 
-    TagChoiceAdapter(Context context, List<Tag> list) {
+    public TagChoiceAdapter(Context context, List<Tag> list) {
         this.context = context;
         tagList = list;
         layoutInflater = (LayoutInflater) context

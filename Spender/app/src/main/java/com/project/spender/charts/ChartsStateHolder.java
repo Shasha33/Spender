@@ -7,17 +7,11 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.common.util.ArrayUtils;
 import com.project.spender.DataHelper;
 import com.project.spender.fragments.ChartFragment;
 
-import java.security.InvalidParameterException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 public class ChartsStateHolder {
 
@@ -82,5 +76,4 @@ public class ChartsStateHolder {
         chartFragment.setWhiteIdList(whiteList);
         chartFragment.resetData();
     }
-    //(todo) your code here
 }

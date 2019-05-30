@@ -3,16 +3,18 @@ package com.project.spender;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
-import com.google.android.gms.vision.L;
 import com.project.spender.activities.CheckShowActivity;
-import com.project.spender.activities.ItemAdapter;
-import com.project.spender.activities.ListAdapter;
-import com.project.spender.data.entities.Check;
+import com.project.spender.activities.LoginActivity;
+import com.project.spender.adapters.ItemAdapter;
+import com.project.spender.adapters.ListAdapter;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
@@ -20,8 +22,8 @@ import com.project.spender.data.entities.Tag;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.project.spender.DataHelper.dateConvert;
 
@@ -35,16 +37,21 @@ public class CheckListHolder {
     private boolean isProductMode = false;
     private ListView listView;
     private List<Long> tags;
+    private int chosenPos;
     private ListAdapter checksAdapter;
     private ItemAdapter productsAdapter;
+
+    LifecycleOwner owner;
 
 
     public CheckListHolder(ListView listView, Context context) {
         begin = DataHelper.DEFAULT_BEGIN;
         end = DataHelper.DEFAULT_END;
         regEx = "%%";
-        list = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAll();
-        productList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllProducts();
+        list = new ArrayList<>();
+        productList = new ArrayList<>();
+
+        owner = (LifecycleOwner) context;
 
         this.listView = listView;
         checksAdapter = new ListAdapter(context, list);
@@ -59,10 +66,30 @@ public class CheckListHolder {
             context.startActivity(intent);
         });
 
+        updateState();
+    }
+
+    public void chooseItem(int index) {
+        chosenPos = index;
+    }
+
+    public void addTagsForCheck(long[] ids) {
+        if (chosenPos == -1) {
+            return;
+        }
+        addTags(chosenPos, ids);
+    }
+
+    public void removeTagsForCheck(long[] ids) {
+        if (chosenPos == -1) {
+            return;
+        }
+        removeTags(chosenPos, ids);
     }
 
     public void changeMode() {
         isProductMode = !isProductMode;
+        chosenPos = -1;
         if (isProductMode) {
             listView.setAdapter(productsAdapter);
         } else {
@@ -124,55 +151,51 @@ public class CheckListHolder {
         return isProductMode;
     }
 
-    private void updateStateCheck() {
-        list.clear();
-        List<CheckWithProducts> list1;
-        if (regEx.equals("%%") && begin.equals(DataHelper.DEFAULT_BEGIN) && end.equals(DataHelper.DEFAULT_END)) {
-            list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAll();
-        } else {
-            Log.i(ChecksRoller.LOG_TAG, "Looking for checks between " + begin + " " + end + " by " + regEx);
-            list1 = ChecksRoller.getInstance().findChecksByTimePeriodAndRegEx(begin, end, regEx);
+    private <T> void addIfContain(List<T> list1, List<Tag> tags, T o) {
+        for (Tag tag : tags) {
+            if (tags.contains(tag.getId())) {
+                list1.add(o);
+                break;
+            }
         }
+    }
+
+    private void updateStateCheckByList(List<CheckWithProducts> list1) {
         if (tags == null) {
             list.addAll(list1);
             return;
         }
         for (CheckWithProducts check : list1) {
-            List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(check.getCheck().getId());
-            for (Tag tag : tagList) {
-                if (tags.contains(tag.getId())) {
-                    list.add(check);
-                    break;
-                }
-            }
+            LiveData<List<Tag>> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(check.getCheck().getId());
+            tagList.observe(owner, tags -> addIfContain(list1, tags, check));
         }
     }
 
-    private void updateStateProduct() {
-        productList.clear();
-        List<Product> list1;
-        if (regEx.equals("%%")) {
-            list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllProducts();
-        } else {
-            Log.i(ChecksRoller.LOG_TAG, "Looking for products between " + begin + " " + end + " by " + regEx);
-            list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
-        }
+    private void updateStateProductByList(List<Product> list1) {
         if (tags == null) {
             productList.addAll(list1);
             return;
         }
-        for (Product product : list1) {
-            List<Tag> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
-            for (Tag tag : tagList) {
-                if (tags.contains(tag.getId())) {
-                    productList.add(product);
-                    break;
-                }
-            }
+        for (Product product: list1) {
+            LiveData<List<Tag>> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
+            tagList.observe(owner, tags -> addIfContain(list1, tags, product));
         }
     }
 
-    public void addTags(int position, long[] tagIds) {
+    private void updateStateCheck() {
+        list.clear();
+        LiveData<List<CheckWithProducts>> list1 = ChecksRoller.getInstance().findChecksByTimePeriodAndRegEx(begin, end, regEx);
+        list1.observe(owner, this::updateStateCheckByList);
+    }
+
+    private void updateStateProduct() {
+        productList.clear();
+        LiveData<List<Product>> list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
+
+        list1.observe(owner, this::updateStateProductByList);
+    }
+
+    private void addTags(int position, long[] tagIds) {
         for (long id : tagIds) {
             if (isProductMode) {
                 addTagForProduct(position, id);
@@ -194,7 +217,7 @@ public class CheckListHolder {
                     .getCheckDao().insertExistingTagForProduct(tagId, productList.get(position).getId());
     }
 
-    public void removeTags(int position, long[] tagIds) {
+    private void removeTags(int position, long[] tagIds) {
         for (long id : tagIds) {
             removeTag(position, id);
         }

@@ -35,40 +35,19 @@ public class LoginActivity extends AppCompatActivity {
         name.setVisibility(View.VISIBLE);
         email.setVisibility(View.VISIBLE);
         restore.setVisibility(View.GONE);
+
         enter.setOnClickListener(v -> {
             String newEmail = email.getText().toString();
             String newNumber = number.getText().toString();
             String newName = name.getText().toString();
-
-            int result;
-            try {
-                result = ChecksRoller.getInstance().register(newName, newEmail, newNumber);
-            } catch (IOException e) {
-                Toast.makeText(LoginActivity.this, "Failed connect to server", Toast.LENGTH_LONG).show();
-                Log.i(ChecksRoller.LOG_TAG, "Failed connect to server");
-                return;
-            }
-            //(todo) introduce constants
-            Log.i(ChecksRoller.LOG_TAG, "Try to register, answer is" + result);
-            switch (result) {
-                case 204:
-                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_LONG).show();
-                    setRegisterMode();
-                    break;
-                case 409:
-                    Toast.makeText(LoginActivity.this, "Such a user already exist", Toast.LENGTH_LONG).show();
-                    break;
-                case 500:
-                    Toast.makeText(LoginActivity.this, "Incorrect number", Toast.LENGTH_LONG).show();
-                    break;
-                case 400:
-                    Toast.makeText(LoginActivity.this, "Incorrect email", Toast.LENGTH_LONG).show();
-                    break;
-                default:
-                    Toast.makeText(LoginActivity.this, "Unknown error\n Try again later", Toast.LENGTH_LONG).show();
+            String result = ChecksRoller.getInstance().register(newName, newNumber, newEmail);
+            Toast.makeText(this, result, Toast.LENGTH_SHORT);
+            if (result.equals("Success")) {
+                setLoginMode();
             }
         });
     }
+
 
     private void setLoginMode() {
         catButton.setVisibility(View.VISIBLE);
@@ -82,35 +61,16 @@ public class LoginActivity extends AppCompatActivity {
             String newNumber = number.getText().toString();
 
             if (newNumber == null && newPassword == null) {
-                Toast.makeText(LoginActivity.this, "At least one field must be filled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Both fields must be filled", Toast.LENGTH_SHORT).show();
             } else {
                 ChecksRoller.getInstance().saveAccountInfo(newNumber, newPassword);
                 finish();
             }
         });
+
         restore.setOnClickListener(v -> {
             String num = number.getText().toString();
-            System.out.println(num);
-            if (num == null) {
-                Toast.makeText(LoginActivity.this, "Empty number field", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            int res = ChecksRoller.getInstance().remindPassword(num);
-            Log.i(ChecksRoller.LOG_TAG, "Trying to restore password, answer is" + res);
-            switch (res) {
-                case -100:
-                    Toast.makeText(LoginActivity.this, "Failed to connect server", Toast.LENGTH_SHORT).show();
-                    break;
-                case 204:
-                    Toast.makeText(LoginActivity.this, "Success\nWait for sms", Toast.LENGTH_SHORT).show();
-                    break;
-                case 404:
-                    Toast.makeText(LoginActivity.this, "Unknown or incorrect number", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    Toast.makeText(LoginActivity.this, "Unknown error", Toast.LENGTH_SHORT).show();
-                    break;
-            }
+            Toast.makeText(this, ChecksRoller.getInstance().restore(num), Toast.LENGTH_SHORT);
         });
     }
 

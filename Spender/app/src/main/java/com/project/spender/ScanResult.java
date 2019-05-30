@@ -1,5 +1,8 @@
 package com.project.spender;
 
+import android.app.Activity;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,17 @@ public class ScanResult {
             }
         }
         return res;
+    }
+
+    public static String explain(int code) {
+        switch (code) {
+            case Activity.RESULT_OK:
+                return "Scanned";
+            case NOT_ENOUGH_DATA:
+                return "Authorization required to continue";
+            default:
+                return "Didnt scan";
+        }
     }
 
     public String getDate() {

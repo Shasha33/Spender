@@ -1,25 +1,38 @@
 package com.project.spender.activities;
 
-import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.project.spender.ChecksRoller;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
+
 import com.project.spender.R;
-import com.project.spender.data.entities.Tag;
+import com.project.spender.controllers.TagChoiceController;
 
-import java.util.ArrayList;
-import java.util.List;
+public class TagChoiceActivity extends AppCompatActivity implements LifecycleOwner {
 
-public class TagChoiceActivity extends AppCompatActivity {
+    private TagChoiceController controller;
+    private ListView listView;
+    private Button enter;
+    private LifecycleRegistry lifecycleRegistry;
 
-    private List<Tag> clickedTags;
+    @Override
+    public void onStart() {
+        super.onStart();
+        lifecycleRegistry.markState(Lifecycle.State.STARTED);
+    }
+
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,44 +40,15 @@ public class TagChoiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tag_choice);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        clickedTags = new ArrayList<>();
+        lifecycleRegistry = new LifecycleRegistry(this);
+        lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
-        ListView list = findViewById(R.id.tag_list);
+        listView = findViewById(R.id.tag_list);
+        controller = new TagChoiceController(this, listView);
 
-        int type = getIntent().getIntExtra("op type", -1);
-        int pos = getIntent().getIntExtra("position", -2);
-
-        List<Tag> tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
-
-        list.setOnItemClickListener((parent, view, position, id) -> {
-            Tag current = tags.get(position);
-            if (clickedTags.contains(current)) {
-                clickedTags.remove(current);
-                view.setBackgroundColor(Color.WHITE);
-            } else {
-                clickedTags.add(current);
-                view.setBackgroundColor(CheckShowActivity.SELECTED_ITEM);
-            }
-        });
-
-        list.setAdapter(new TagChoiceAdapter(this, tags));
-
-        Button enter = findViewById(R.id.enter_tag_set);
+        enter = findViewById(R.id.enter_tag_set);
         enter.setOnClickListener(view -> {
-            Intent resultIntent = new Intent();
-            int size = clickedTags.size();
-            long[] ids = new long[size];
-            for (int i = 0; i < size; i++) {
-                ids[i] = clickedTags.get(i).getId();
-            }
-            resultIntent.putExtra("tag ids", ids);
-            if (type != -1) {
-                resultIntent.putExtra("position", pos);
-            }
-            if (type != -1) {
-                resultIntent.putExtra("op type", type);
-            }
-            setResult(RESULT_OK, resultIntent);
+            setResult(RESULT_OK, controller.resultIntent());
             finish();
         });
     }

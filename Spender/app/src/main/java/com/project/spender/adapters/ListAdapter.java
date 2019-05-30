@@ -1,4 +1,4 @@
-package com.project.spender.activities;
+package com.project.spender.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
@@ -21,10 +24,13 @@ public class ListAdapter extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     List<CheckWithProducts> checkList;
+    LinearLayout layout;
+    LifecycleOwner owner;
 
     public ListAdapter(Context context, List<CheckWithProducts> list) {
         this.context = context;
         checkList = list;
+        owner = (LifecycleOwner) context;
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -55,18 +61,10 @@ public class ListAdapter extends BaseAdapter {
         Check check = getCheck(position);
 
 
-        List<Tag> tags = ChecksRoller.getInstance().getAppDatabase()
+        LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase()
                 .getCheckDao().getTagsByCheckId(check.getId());
-        LinearLayout layout = view.findViewById(R.id.check_tag_list);
-        Adapter adapter = new TagAdapter(context, tags);
-        layout.removeAllViews();
-        for (int i = 0; i < tags.size(); i++) {
-            View child = adapter.getView(i, null, null);
-            child.setBackgroundColor(tags.get(i).getColor());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50, 30);
-            params.setMargins(5, 0, 5, 0);
-            layout.addView(child, params);
-        }
+        layout = view.findViewById(R.id.check_tag_list);
+        tags.observe(owner, this::updateTags);
 
 
         ((TextView) view.findViewById(R.id.name)).setText(check.getName() + " from " + check.getShop());
@@ -81,5 +79,17 @@ public class ListAdapter extends BaseAdapter {
         return ((CheckWithProducts) getItem(position)).getCheck()   ;
     }
 
+    private void updateTags(List<Tag> tags) {
+        Adapter adapter = new TagAdapter(context, tags);
+        layout.removeAllViews();
+        for (int i = 0; i < tags.size(); i++) {
+            View child = adapter.getView(i, null, null);
+            child.setBackgroundColor(tags.get(i).getColor());
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
+            params.setMargins(5, 0, 5, 0);
+            layout.addView(child, params);
+        }
+    }
 }
 

@@ -14,12 +14,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.charts.ChartsStateHolder;
@@ -28,13 +32,15 @@ import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ImageButton scan;
     private ImageButton list;
     private ImageButton statistics;
     private EditText begin;
     private EditText end;
+
+    private LifecycleRegistry lifecycleRegistry;
 
     private ChartsStateHolder chartsStateHolder;
 
@@ -49,15 +55,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "Scanned", Toast.LENGTH_SHORT).show();
-            } else if (requestCode == ScanResult.NOT_ENOUGH_DATA) {
-                Toast.makeText(this, "Authorization required", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Check not received", Toast.LENGTH_SHORT).show();
-            }
+
+            Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_SHORT).show();
+
         } else if (requestCode == CHART_TAGS_CODE) {
-            //tags for chart
+
             if (data == null) {
                 return;
             }
@@ -143,11 +145,27 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        lifecycleRegistry.markState(Lifecycle.State.STARTED);
+    }
+
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        lifecycleRegistry = new LifecycleRegistry(this);
+        lifecycleRegistry.markState(Lifecycle.State.CREATED);
+
 
         ChecksRoller.getInstance().init(this);
 
@@ -192,8 +210,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
         fragmentTransaction.commit();
 
-        //it is not necessary, probably
-        //but wont delete yet
         chartsStateHolder = new ChartsStateHolder();
         chartsStateHolder.setBeginDateInput(begin);
         chartsStateHolder.setEndDateInput(end);

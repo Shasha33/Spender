@@ -2,11 +2,15 @@ package com.project.spender.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,19 +18,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.ScanResult;
+import com.project.spender.adapters.TagChoiceAdapter;
+import com.project.spender.controllers.TagListController;
 import com.project.spender.data.entities.Tag;
 
 import java.util.List;
 
-public class TagListActivity extends AppCompatActivity {
+public class TagListActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ListView listView;
     private List<Tag> tags;
+
+    TagListController controller;
+
+    private LifecycleRegistry lifecycleRegistry;
 
     private final int NEW_TAG_CODE = 76;
 
@@ -35,9 +43,21 @@ public class TagListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == NEW_TAG_CODE) {
-                updateList();
+                controller.update(this);
             }
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        lifecycleRegistry.markState(Lifecycle.State.STARTED);
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
     }
 
     @Override
@@ -55,11 +75,6 @@ public class TagListActivity extends AppCompatActivity {
         return true;
     }
 
-    private void updateList() {
-        tags.clear();
-        tags.addAll(ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags());
-        listView.invalidateViews();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -77,15 +92,9 @@ public class TagListActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Tag tag = tags.get(info.position);
         switch(item.getItemId()) {
-            case R.id.tag_list_edit:
-                // (todo)
-                return true;
             case R.id.tag_list_delete:
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteTagById(tag.getId());
-                tags.remove(tag);
-                updateList();
+                controller.remove(info.position);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -98,11 +107,12 @@ public class TagListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tag_list);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
+        lifecycleRegistry = new LifecycleRegistry(this);
+        lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
         listView = findViewById(R.id.tag_list_menu);
         registerForContextMenu(listView);
 
-        listView.setAdapter(new TagChoiceAdapter(this, tags));
+        controller = new TagListController(this, listView);
     }
 }
