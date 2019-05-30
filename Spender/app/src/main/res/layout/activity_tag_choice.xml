@@ -8,6 +8,17 @@
     android:gravity="top"
     tools:context=".activities.TagChoiceActivity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:textSize="32dp"
+        android:textColor="@color/hollyGreenColor"
+        android:text="select tags" />
+
     <ListView
         android:id="@+id/tag_list"
         android:layout_width="match_parent"

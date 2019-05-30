@@ -18,6 +18,7 @@ import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.Tag;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,19 +71,20 @@ public class CheckListHolder {
     }
 
     public void setBegin(@NonNull String begin) {
-        if (begin.equals("")) {
-            this.begin = DataHelper.DEFAULT_BEGIN;
-        } else {
+        try {
             this.begin = dateConvert(begin);
+        } catch (ParseException e) {
+            this.begin = DataHelper.DEFAULT_BEGIN;
         }
         updateState();
     }
 
     public void setEnd(@NonNull String end) {
-        if (end.equals("")) {
-            this.end = DataHelper.DEFAULT_END;
-        } else {
+        try {
+
             this.end = dateConvert(end);
+        } catch (ParseException e) {
+            this.end = DataHelper.DEFAULT_END;
         }
         updateState();
     }

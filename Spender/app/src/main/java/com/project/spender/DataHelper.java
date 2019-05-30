@@ -17,15 +17,13 @@ public abstract class DataHelper {
     /**
      * Converts date from DD.MM.YYYY to YYYY-MM-DD
      */
-    public static String dateConvert(String date) throws IllegalArgumentException {
+    public static String dateConvert(String date) throws IllegalArgumentException, ParseException {
         SimpleDateFormat formatInput = new SimpleDateFormat("dd.MM.yyyy");
         SimpleDateFormat formatResult = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Log.i(ChecksRoller.LOG_TAG, formatResult.format(formatInput.parse(date)));
-            return formatResult.format(formatInput.parse(date));
-        } catch (ParseException e) {
-            return null;
-        }
+
+        Log.i(ChecksRoller.LOG_TAG, formatResult.format(formatInput.parse(date)));
+        return formatResult.format(formatInput.parse(date));
+
 
     }
 }

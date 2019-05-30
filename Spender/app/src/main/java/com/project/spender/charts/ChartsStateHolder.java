@@ -31,9 +31,8 @@ public class ChartsStateHolder {
         editText.setOnEditorActionListener((textView, i, keyEvent) -> {
             try {
                 beginDate = DataHelper.dateConvert(textView.getText().toString());
-            } catch (InvalidParameterException e) {
+            } catch (Exception e) {
                 beginDate = DataHelper.DEFAULT_BEGIN;
-                return false;
             }
             hideKeyboard(textView);
             updateFragment();
@@ -45,9 +44,8 @@ public class ChartsStateHolder {
         editText.setOnEditorActionListener((textView, i, keyEvent) -> {
             try {
                 endDate = DataHelper.dateConvert(textView.getText().toString());
-            } catch (InvalidParameterException e) {
+            } catch (Exception e) {
                 endDate = DataHelper.DEFAULT_END;
-                return false;
             }
             hideKeyboard(textView);
             updateFragment();
