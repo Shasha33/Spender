@@ -1,6 +1,7 @@
 package com.project.spender;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
@@ -88,8 +89,10 @@ public class ChecksRoller {
                 AppDatabase.class, DATABASE).allowMainThreadQueries().fallbackToDestructiveMigration().build();
         updateLoginInfo();
         if (number == null || password == null) {
+            Intent intent = new Intent(context, LoginActivity.class);
             Toast.makeText(context,
                     "Authorization required to receive checks", Toast.LENGTH_LONG).show();
+            context.startActivity(intent);
         }
     }
 
@@ -133,12 +136,15 @@ public class ChecksRoller {
 
     public String register(String name, String email, String number) {
 
+        Log.i(ChecksRoller.LOG_TAG, name + " " + email + " " + number);
+
         int result;
         try {
             result = networkManager.registrationSync(new NewUser(name, email, number));
         } catch (IOException e) {
             return  "Failed connect to server";
         }
+
         //(todo) introduce constants
 
         Log.i(ChecksRoller.LOG_TAG, "Try to register, answer is" + result);
@@ -152,7 +158,7 @@ public class ChecksRoller {
             case 400:
                 return "Incorrect email";
             default:
-                return "Unknown error\n Try again later";
+                return "Unknown error\nTry again later";
         }
     }
 
@@ -175,9 +181,10 @@ public class ChecksRoller {
 
     public synchronized int requestCheck(ScanResult result){
         updateLoginInfo();
+        Log.i(ChecksRoller.LOG_TAG, number + " " + password);
         if (number == null || password == null) {
             Log.i(LOG_TAG, "Missing user info to get checks");
-            return ScanResult.NOT_ENOUGH_DATA;
+            return -1;
         }
 
         LiveData<CheckJsonWithStatus> liveData = networkManager.getCheckAsync(number, password, result);

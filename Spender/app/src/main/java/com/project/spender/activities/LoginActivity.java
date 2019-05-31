@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             String newNumber = number.getText().toString();
             String newName = name.getText().toString();
             String result = ChecksRoller.getInstance().register(newName, newNumber, newEmail);
-            Toast.makeText(this, result, Toast.LENGTH_SHORT);
+            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             if (result.equals("Success")) {
                 setLoginMode();
             }
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
         restore.setOnClickListener(v -> {
             String num = number.getText().toString();
-            Toast.makeText(this, ChecksRoller.getInstance().restore(num), Toast.LENGTH_SHORT);
+            Toast.makeText(this, ChecksRoller.getInstance().restore(num), Toast.LENGTH_SHORT).show();
         });
     }
 
