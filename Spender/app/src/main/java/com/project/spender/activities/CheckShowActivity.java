@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
+import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.controllers.CheckShowController;
 import com.project.spender.controllers.TagChoiceController;
@@ -56,8 +58,9 @@ public class CheckShowActivity extends AppCompatActivity implements LifecycleOwn
             return;
         }
 
-        if (requestCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ADDING_CODE) {
+                Log.i(ChecksRoller.LOG_TAG, "here");
                 controller.addTags(tags);
             } else if (requestCode == REMOVING_CODE) {
                 controller.removeTags(tags);
@@ -75,11 +78,6 @@ public class CheckShowActivity extends AppCompatActivity implements LifecycleOwn
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_tag:
-                Intent intent = new Intent(this, NewTagActivity.class);
-                startActivity(intent);
-                return true;
-
             case R.id.remove:
                 controller.removeProducts();
                 return true;

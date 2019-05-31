@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -77,18 +78,20 @@ public class CheckShowController {
 
     private void clearSelected() {
         for (int i : productsForAction) {
-            listView.getAdapter().getView(i, null, listView).setBackgroundColor(UNSELECTED_ITEM);
+            listView.getChildAt(i). setBackgroundColor(UNSELECTED_ITEM);
         }
         productsForAction.clear();
+        listView.invalidateViews();
     }
 
     public void addTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertExistingTagForProduct(j,products.get(i).getId());
+                ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertExistingTagForProduct(j, products.get(i).getId());
             }
         }
         //(todo) make sure about auto updating
+        Log.i(ChecksRoller.LOG_TAG, "jere");
         clearSelected();
     }
 
