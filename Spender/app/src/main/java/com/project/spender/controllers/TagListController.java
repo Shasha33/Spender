@@ -10,6 +10,7 @@ import com.project.spender.ChecksRoller;
 import com.project.spender.adapters.TagChoiceAdapter;
 import com.project.spender.data.entities.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TagListController {
@@ -19,7 +20,9 @@ public class TagListController {
 
     public TagListController(Context context, ListView listView) {
         this.listView = listView;
+        tags = new ArrayList<>();
         listView.setAdapter(new TagChoiceAdapter(context, tags));
+        update((LifecycleOwner) context);
     }
 
     public void remove(int i) {

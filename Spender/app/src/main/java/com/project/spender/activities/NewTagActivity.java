@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.TagStateHolder;
+import com.project.spender.data.entities.Check;
 
 import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 
@@ -33,6 +34,7 @@ public class NewTagActivity extends AppCompatActivity {
         TagStateHolder tagStateHolder = new TagStateHolder();
 
         name.setOnEditorActionListener((textView, i, keyEvent) -> {
+            Log.i(ChecksRoller.LOG_TAG, name.getText().toString() + "");
             tagStateHolder.setName(name.getText().toString());
             hideKeyboard(textView);
             return true;

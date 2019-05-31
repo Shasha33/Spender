@@ -25,9 +25,11 @@ import com.project.spender.CheckListHolder;
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
+import com.project.spender.controllers.TagChoiceController;
 import com.project.spender.data.entities.CheckWithProducts;
 
 import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
+import static com.project.spender.controllers.TagChoiceController.TAG_ID_LIST;
 
 
 public class ListActivity extends AppCompatActivity implements LifecycleOwner {
@@ -62,7 +64,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
 
         if (resultCode == Activity.RESULT_OK) {
 
-            long[] tagIds = data.getLongArrayExtra("tag ids");
+            long[] tagIds = data.getLongArrayExtra(TAG_ID_LIST);
 
             if (requestCode == CHOOSE_TAG_FOR_SHOW) {
                 holder.setTags(tagIds);

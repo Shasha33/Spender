@@ -27,10 +27,13 @@ import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.charts.ChartsStateHolder;
+import com.project.spender.controllers.TagChoiceController;
 import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
+
+import static com.project.spender.controllers.TagChoiceController.TAG_ID_LIST;
 
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
             if (data == null) {
                 return;
             }
-            long[] ids = data.getLongArrayExtra("tag ids");
+            long[] ids = data.getLongArrayExtra(TAG_ID_LIST);
             if (ids == null) {
                 return;
             }

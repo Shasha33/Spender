@@ -24,6 +24,7 @@ public class TagChoiceController {
     private List<Tag> tags;
     private ListView listView;
 
+    public static final String TAG_ID_LIST = "vlad molodec";
 
     public TagChoiceController(Context context, ListView listView) {
         this.listView = listView;
@@ -61,7 +62,7 @@ public class TagChoiceController {
         for (int i = 0; i < clickedTags.size(); i++) {
             ids[i] = clickedTags.get(i).getId();
         }
-        intent.putExtra("tags id", ids);
+        intent.putExtra(TAG_ID_LIST, ids);
         return intent;
     }
 

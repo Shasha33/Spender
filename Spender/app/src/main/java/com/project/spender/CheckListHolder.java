@@ -7,6 +7,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -15,6 +16,7 @@ import com.project.spender.activities.CheckShowActivity;
 import com.project.spender.activities.LoginActivity;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.adapters.ListAdapter;
+import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
@@ -138,7 +140,7 @@ public class CheckListHolder {
     }
 
     //its terrible (todo) fix it
-    public void setTags(long[] ids) {
+    public void setTags(@NonNull long[] ids) {
         tags = new ArrayList<>();
         for (long id : ids) {
             Log.i(ChecksRoller.LOG_TAG, id + "");
@@ -151,34 +153,38 @@ public class CheckListHolder {
         return isProductMode;
     }
 
-    private <T> void addIfContain(List<T> list1, List<Tag> tags, T o) {
-        for (Tag tag : tags) {
+    private <T> void addIfContain(List<T> list1, List<Tag> tags1, T o) {
+        for (Tag tag : tags1) {
             if (tags.contains(tag.getId())) {
                 list1.add(o);
                 break;
             }
         }
+        listView.invalidateViews();
     }
 
     private void updateStateCheckByList(List<CheckWithProducts> list1) {
         if (tags == null) {
             list.addAll(list1);
+            listView.invalidateViews();
             return;
         }
         for (CheckWithProducts check : list1) {
             LiveData<List<Tag>> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(check.getCheck().getId());
-            tagList.observe(owner, tags -> addIfContain(list1, tags, check));
+//            Log.i(ChecksRoller.LogG_TAG, );
+            tagList.observe(owner, tags -> addIfContain(list, tags, check));
         }
     }
 
     private void updateStateProductByList(List<Product> list1) {
         if (tags == null) {
             productList.addAll(list1);
+            listView.invalidateViews();
             return;
         }
         for (Product product: list1) {
             LiveData<List<Tag>> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
-            tagList.observe(owner, tags -> addIfContain(list1, tags, product));
+            tagList.observe(owner, tags -> addIfContain(productList, tags, product));
         }
     }
 
@@ -191,7 +197,6 @@ public class CheckListHolder {
     private void updateStateProduct() {
         productList.clear();
         LiveData<List<Product>> list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
-
         list1.observe(owner, this::updateStateProductByList);
     }
 

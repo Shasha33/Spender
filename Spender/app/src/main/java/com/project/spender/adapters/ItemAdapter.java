@@ -73,12 +73,12 @@ public class ItemAdapter extends BaseAdapter {
 
         LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
 //        Log.i(ChecksRoller.LOG_TAG, product.getName());
+        final LinearLayout linearLayout = layout;
         tags.observe(owner, tags1 -> {
-            updateTags(tags1);
+            updateTags(tags1, linearLayout);
             for (Tag t : tags1) {
                 Log.i(ChecksRoller.LOG_TAG, product.getName() + " " + t);
             }
-            layout.invalidate();
         });
 
 
@@ -90,18 +90,19 @@ public class ItemAdapter extends BaseAdapter {
         return (Product) getItem(position);
     }
 
-    private void updateTags(List<Tag> tags) {
+    private void updateTags(List<Tag> tags, LinearLayout layout1) {
 
         Adapter adapter = new TagAdapter(context, tags);
-        layout.removeAllViews();
+        layout1.removeAllViews();
         for (int i = 0; i < tags.size(); i++) {
             View child = adapter.getView(i, null, null);
             child.setBackgroundColor(tags.get(i).getColor());
 //            Log.i(ChecksRoller.LOG_TAG, "" + tags.get(i));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
             params.setMargins(5, 0, 5, 0);
-            layout.addView(child, params);
+            layout1.addView(child, params);
         }
+        layout1.invalidate();
     }
 
 }

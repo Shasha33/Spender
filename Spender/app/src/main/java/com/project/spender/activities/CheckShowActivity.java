@@ -18,6 +18,9 @@ import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.R;
 import com.project.spender.controllers.CheckShowController;
+import com.project.spender.controllers.TagChoiceController;
+
+import static com.project.spender.controllers.TagChoiceController.TAG_ID_LIST;
 
 public class CheckShowActivity extends AppCompatActivity implements LifecycleOwner {
 
@@ -48,7 +51,7 @@ public class CheckShowActivity extends AppCompatActivity implements LifecycleOwn
             return;
         }
 
-        long[] tags = data.getLongArrayExtra("tag ids");
+        long[] tags = data.getLongArrayExtra(TAG_ID_LIST);
         if (tags == null) {
             return;
         }
