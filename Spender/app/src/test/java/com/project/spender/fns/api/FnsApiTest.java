@@ -41,7 +41,7 @@ class FnsApiTest {
                 .baseUrl("https://proverkacheka.nalog.ru:9999") //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()).build(); //Конвертер, необходимый для преобразования JSON'а в объекты
         fns =retrofit.create(FnsApi.class);
-        loginPassword = Credentials.basic("+79112813247","882107");
+        loginPassword = Credentials.basic("+79112813247","389067");
         fn = "9286000100242530";
         fd = "27641";
         fiscalSign = "124643923";
