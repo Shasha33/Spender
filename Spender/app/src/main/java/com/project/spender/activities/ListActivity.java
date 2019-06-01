@@ -166,6 +166,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
         list.setImageResource(R.drawable.history_chosen);
 
         statistics.setOnClickListener(v -> {
+            finish();
             Intent intent = new Intent(ListActivity.this, MainActivity.class);
             startActivity(intent);
         });
