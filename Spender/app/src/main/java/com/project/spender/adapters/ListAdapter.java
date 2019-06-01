@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer;
 
 import com.project.spender.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.controllers.TagListController;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Tag;
@@ -69,10 +70,11 @@ public class ListAdapter extends BaseAdapter {
         tags.observe(owner, tags1 -> updateTags(tags1, linearLayout));
 
 
-        ((TextView) view.findViewById(R.id.name)).setText(check.getName() + " from " + check.getShop());
+        ((TextView) view.findViewById(R.id.name)).setText(check.getName());
         ((TextView) view.findViewById(R.id.sum)).setText("Total: "  +
                 String.format("%.2f", check.getTotalSum() / 100.0));
-        ((TextView) view.findViewById(R.id.data)).setText("Time: " + check.getDate());
+        ((TextView) view.findViewById(R.id.data)).setText("Time: " + check.getDate().replace("T", " "));
+        ((TextView) view.findViewById(R.id.shop)).setText("Shop: " + check.getShop());
 
         return view;
     }
@@ -88,9 +90,7 @@ public class ListAdapter extends BaseAdapter {
             View child = adapter.getView(i, null, null);
             child.setBackgroundColor(tags.get(i).getColor());
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
-            params.setMargins(5, 0, 5, 0);
-            layout1.addView(child, params);
+            layout1.addView(child, TagListController.tagParams());
         }
         layout1.invalidate();
     }
