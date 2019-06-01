@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class LineChartController {
     private final LineChart lineChart;
@@ -53,6 +54,7 @@ public class LineChartController {
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
+        lineChart.setDrawGridBackground(false);
 
         Legend legend = lineChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -61,23 +63,26 @@ public class LineChartController {
         legend.setDrawInside(false);
 
         ValueFormatter valueFormatter = new ValueFormatter() {
+
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM", Locale.ROOT);
+
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis((long) value);
-                long year = calendar.get(Calendar.YEAR);
-                long month = calendar.get(Calendar.MONTH);
-                long day = calendar.get(Calendar.DAY_OF_MONTH);
-                return day + "." + month + "." + year ;
+                long millis = TimeUnit.HOURS.toMillis((long)value);
+                return mFormat.format(millis);
             }
         };
 
-        lineChart.getXAxis().setValueFormatter(valueFormatter);
-        lineChart.setDrawGridBackground(true);
-        lineChart.getXAxis().setDrawAxisLine(true);
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.getAxisRight().setDrawGridLines(true);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM) ;
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setGranularity(24f);
+        xAxis.setValueFormatter(valueFormatter);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setTextSize(10f);
+        xAxis.setDrawGridLines(true);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        lineChart.getAxisRight().setEnabled(false);
     }
 
     public void setDataSource(LiveData<List<TagWithSumAndDate>> data) {
@@ -88,7 +93,13 @@ public class LineChartController {
         dataSource.observe(owner, observer);
     }
 
+    /**
+     * @param tagsWithSum список отсортированный по tag.id
+     */
     private void setData(List<TagWithSumAndDate> tagsWithSum) {
+        if (tagsWithSum.isEmpty()) {
+            return;
+        }
 
         List<ILineDataSet> dataSets = new ArrayList<>();
 
@@ -130,7 +141,7 @@ public class LineChartController {
                 Log.wtf("PARSER", "Cannot parse date from string. Exception: " + e.getMessage());
             }
 
-            entries.add(new Entry(calendar.getTimeInMillis(), tagWithSumAndDate.sum/100f));
+            entries.add(new Entry(TimeUnit.MILLISECONDS.toHours(calendar.getTimeInMillis()), tagWithSumAndDate.sum/100f));
         }
 
         LineData data = new LineData(dataSets);

@@ -75,9 +75,12 @@ public class StackedBarChartController {
     }
 
     private void setData(List<TagWithSumAndDate> data) {
-//        List<BarEntry> entries = new ArrayList<>();
 //        List<Integer> colors = new ArrayList<>();
 //
+        List<BarEntry> entries = new ArrayList<>();
+        for (int i = 0;;) {
+            while(entries : )
+        }
 //        BarDataSet set1;
 //        if (barChart.getData() != null &&
 //                barChart.getData().getDataSetCount() > 0) {
