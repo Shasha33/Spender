@@ -1,6 +1,7 @@
 package com.project.spender.controllers;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -38,5 +39,11 @@ public class TagListController {
         tags.clear();
         tags.addAll(list);
         listView.invalidateViews();
+    }
+
+    public static LinearLayout.LayoutParams tagParams() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50, 30);
+        params.setMargins(5, 0, 5, 0);
+        return params;
     }
 }
