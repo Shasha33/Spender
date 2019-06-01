@@ -1,29 +1,30 @@
 package com.project.spender.charts;
 
-import android.graphics.Color;
+import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.StackedValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.project.spender.data.entities.TagWithSum;
 import com.project.spender.data.entities.TagWithSumAndDate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class StackedBarChartController {
     private final BarChart barChart;
@@ -33,6 +34,7 @@ public class StackedBarChartController {
     private LifecycleOwner owner;
 
     private final int speed = 1400;
+    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss", Locale.ROOT);
 
     private Set<Long> whiteIdList;
 
@@ -74,36 +76,63 @@ public class StackedBarChartController {
         dataSource.observe(owner, observer);
     }
 
+    private Calendar getTagDate(TagWithSumAndDate tagWSD) throws ParseException {
+        Calendar tagTime = Calendar.getInstance();
+        tagTime.setTime(format.parse(tagWSD.date));
+        return tagTime;
+    }
+
+    /**
+     * @param data отсортирован по дате
+     */
     private void setData(List<TagWithSumAndDate> data) {
-//        List<Integer> colors = new ArrayList<>();
-//
-        List<BarEntry> entries = new ArrayList<>();
-        for (int i = 0;;) {
-            while(entries : )
+        if (data.isEmpty()) {
+            return;
         }
-//        BarDataSet set1;
-//        if (barChart.getData() != null &&
-//                barChart.getData().getDataSetCount() > 0) {
-//            set1 = (BarDataSet) barChart.getData().getDataSetByIndex(0);
-//            set1.setValues(values);
-//            barChart.getData().notifyDataChanged();
-//            barChart.notifyDataSetChanged();
-//        } else {
-//            set1 = new BarDataSet(values, "Statistics Vienna 2014");
-//            set1.setDrawIcons(false);
-//            set1.setColors(getColors());
-//            set1.setStackLabels(new String[]{"Births", "Divorces", "Marriages"});
-//
-//            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-//            dataSets.add(set1);
-//
-//            BarData data = new BarData(dataSets);
-//            data.setValueFormatter(new StackedValueFormatter(false, "", 1));
-//            data.setValueTextColor(Color.WHITE);
-//
-//            barChart.setData(data);
-//        }
-//        this.barChart.invalidate();
+
+        List<IBarDataSet> dataSets = new ArrayList<>();
+        int num = 0;
+        for (ListIterator<TagWithSumAndDate> iter = data.listIterator(); iter.hasNext();) {
+            Calendar time = Calendar.getInstance();
+            TagWithSumAndDate currTagWSD = iter.next();
+            try {
+                time = getTagDate(currTagWSD);
+            } catch (ParseException e) {
+                Log.e("PARSER", "Parser error", e);
+            }
+            List<Float> values = new ArrayList<>();
+            List<Integer> colors = new ArrayList<>();
+            values.add(currTagWSD.sum/100f);
+            colors.add(currTagWSD.tag.getColor());
+            while (iter.hasNext()) {
+                currTagWSD = iter.next();
+                try {
+                    if (getTagDate(currTagWSD).getTimeInMillis() != time.getTimeInMillis()) {
+                        iter.previous();
+                        break;
+                    }
+                } catch (ParseException e) {
+                    Log.e("PARSER", "Parser error", e);
+                }
+                values.add(currTagWSD.sum/100f);
+                colors.add(currTagWSD.tag.getColor());
+            }
+
+            float[] arrValues = new float[values.size()];
+            int i = 0;
+            for (Float v : values) {
+                arrValues[i++] = v;
+            }
+            BarEntry barEntry = new BarEntry(num++, arrValues);
+            BarDataSet dataSet = new BarDataSet(Collections.singletonList(barEntry), data.toString());
+            dataSet.setColors(colors);
+            dataSets.add(dataSet);
+        }
+        BarData barData = new BarData(dataSets);
+        barData.setValueFormatter(new StackedValueFormatter(false,"",1));
+        barChart.setData(barData);
+        barChart.setFitBars(true);
+        barChart.invalidate();
     }
 
     public void animate() {

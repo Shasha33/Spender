@@ -27,6 +27,7 @@ import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.R;
 import com.project.spender.ScanResult;
+import com.project.spender.fragments.StackedBarChartFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private PieChartFragment pieFragment;
     private LineChartFragment lineFragment;
+    private StackedBarChartFragment barFragment;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -131,6 +133,12 @@ public class MainActivity extends AppCompatActivity {
                 chartsStateHolder.setChartFragment(lineFragment);
                 lineFragment.invalidate();
                 break;
+            case R.id.bar_graph_item:
+                Log.i(ChecksRoller.LOG_TAG, "bar graph");
+                fragmentTransaction.replace(R.id.fragmentHolder, barFragment);
+                fragmentTransaction.commit();
+                chartsStateHolder.setChartFragment(barFragment);
+                break;
             case R.id.tags_for_chart:
                 startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
                 break;
@@ -195,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         pieFragment = PieChartFragment.newInstance();
         lineFragment = LineChartFragment.newInstance();
+        barFragment = StackedBarChartFragment.newInstance();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
