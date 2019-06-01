@@ -20,7 +20,7 @@ public class NetworkManagerTest {
 
     // все сломается если я поменяю пароль
     private String defaultLogin = "+79112813247";
-    private String defaultPassword = "882107";
+    private String defaultPassword = "389067";
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
