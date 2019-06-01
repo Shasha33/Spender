@@ -69,10 +69,11 @@ public class ListAdapter extends BaseAdapter {
         tags.observe(owner, tags1 -> updateTags(tags1, linearLayout));
 
 
-        ((TextView) view.findViewById(R.id.name)).setText(check.getName() + " from " + check.getShop());
+        ((TextView) view.findViewById(R.id.name)).setText(check.getName());
         ((TextView) view.findViewById(R.id.sum)).setText("Total: "  +
                 String.format("%.2f", check.getTotalSum() / 100.0));
-        ((TextView) view.findViewById(R.id.data)).setText("Time: " + check.getDate());
+        ((TextView) view.findViewById(R.id.data)).setText("Time: " + check.getDate().replace("T", " "));
+        ((TextView) view.findViewById(R.id.shop)).setText("Shop: " + check.getShop());
 
         return view;
     }

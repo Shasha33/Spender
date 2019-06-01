@@ -65,9 +65,9 @@ public class ItemAdapter extends BaseAdapter {
         Product product = getProduct(position);
 
         ((TextView) view.findViewById(R.id.name)).setText(product.getName());
-        ((TextView) view.findViewById(R.id.price)).setText("price: "  +
+        ((TextView) view.findViewById(R.id.price)).setText("Price: "  +
                 String.format("%.2f", product.getPrice() / 100.0));
-        ((TextView) view.findViewById(R.id.count)).setText("quantity: " + product.getQuantity());
+        ((TextView) view.findViewById(R.id.count)).setText("Quantity: " + product.getQuantity());
 
         layout = view.findViewById(R.id.linear_layout);
 
