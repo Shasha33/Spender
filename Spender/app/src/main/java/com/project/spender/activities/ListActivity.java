@@ -167,8 +167,6 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
 
         statistics.setOnClickListener(v -> {
             finish();
-            Intent intent = new Intent(ListActivity.this, MainActivity.class);
-            startActivity(intent);
         });
 
         scan.setOnClickListener(v -> {
