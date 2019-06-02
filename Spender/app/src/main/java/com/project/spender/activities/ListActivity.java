@@ -58,6 +58,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
         }
 
         if (data == null) {
+            holder.setNullTags();
             return;
         }
 
