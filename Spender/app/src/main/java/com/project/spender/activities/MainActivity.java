@@ -29,7 +29,7 @@ import com.project.spender.charts.ChartsStateHolder;
 import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.R;
-import com.project.spender.controllers.ScanResult;
+import com.project.spender.data.ScanResult;
 
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 

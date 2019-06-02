@@ -1,6 +1,6 @@
 package com.project.spender.fns.api;
 
-import com.project.spender.controllers.ScanResult;
+import com.project.spender.data.ScanResult;
 import com.project.spender.fns.api.exception.NetworkException;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 

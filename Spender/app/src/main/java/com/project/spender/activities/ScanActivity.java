@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.Result;
 import com.project.spender.controllers.ChecksRoller;
-import com.project.spender.controllers.ScanResult;
+import com.project.spender.data.ScanResult;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 

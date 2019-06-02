@@ -2,7 +2,7 @@ package com.project.spender.fns.api;
 
 import androidx.lifecycle.LiveData;
 
-import com.project.spender.controllers.ScanResult;
+import com.project.spender.data.ScanResult;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Status;
 

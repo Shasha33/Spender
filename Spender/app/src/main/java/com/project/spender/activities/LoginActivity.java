@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
             String newEmail = email.getText().toString();
             String newNumber = number.getText().toString();
             String newName = name.getText().toString();
-            String result = ChecksRoller.getInstance().register(newName, newNumber, newEmail);
+            String result = ChecksRoller.getInstance().register(newName, newEmail, newNumber);
             Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             if (result.equals("Success")) {
                 setLoginMode();

@@ -91,6 +91,7 @@ public class CheckListHolder {
         } else {
             listView.setAdapter(checksAdapter);
         }
+        updateState();
     }
 
     public void setBegin(@NonNull String begin) {

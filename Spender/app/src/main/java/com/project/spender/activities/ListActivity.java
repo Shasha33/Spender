@@ -24,7 +24,7 @@ import androidx.lifecycle.LifecycleRegistry;
 import com.project.spender.controllers.CheckListHolder;
 import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.controllers.ScanResult;
+import com.project.spender.data.ScanResult;
 import com.project.spender.data.entities.CheckWithProducts;
 
 import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
