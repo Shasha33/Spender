@@ -13,6 +13,7 @@ import androidx.room.Room;
 
 import com.project.spender.activities.LoginActivity;
 import com.project.spender.data.AppDatabase;
+import com.project.spender.data.CheckStatus;
 import com.project.spender.data.ScanResult;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
@@ -26,7 +27,9 @@ import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.exception.NetworkException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class ChecksRoller {
@@ -47,6 +50,8 @@ public class ChecksRoller {
     private boolean supercatMode = false;
     private LifecycleOwner owner;
 
+    private HistoryListHolder historyListHolder = new HistoryListHolder();
+
     private String number;
     private String password;
 
@@ -56,6 +61,11 @@ public class ChecksRoller {
 
     public boolean getCatMode() {
         return supercatMode;
+    }
+
+
+    public HistoryListHolder getHistoryListHolder() {
+        return historyListHolder;
     }
 
     /**
@@ -178,7 +188,7 @@ public class ChecksRoller {
         }
     }
 
-    public synchronized void putCheck(CheckJson check) {
+    public synchronized void putCheck(CheckJson check, CheckStatus status) {
         CheckWithProducts newCheck = new CheckWithProducts(check);
         appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
         for (Product i : newCheck.getProducts()) {
@@ -197,16 +207,27 @@ public class ChecksRoller {
 
         LiveData<CheckJsonWithStatus> liveData = networkManager.getCheckAsync(number, password, result);
 
+        CheckStatus status = new CheckStatus(Calendar.getInstance().getTime().toString());
+        historyListHolder.add(status);
         liveData.observeForever(checkJsonWithStatus -> {
+            historyListHolder.update();
             if (checkJsonWithStatus != null) {
                 if (checkJsonWithStatus.getStatus() == Status.ERROR) {
                     NetworkException e = checkJsonWithStatus.getException();
+                    status.settStatus(e.getMessage());
                     Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
                             + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause() + " " + e.getSuppressed());
                 } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
                     Log.i(ChecksRoller.LOG_TAG, "check received");
-                    putCheck(checkJsonWithStatus.getCheckJson());
+                    putCheck(checkJsonWithStatus.getCheckJson(), status);
+                    status.settStatus("Check received");
+                } else if (checkJsonWithStatus.getStatus() == Status.EXIST) {
+                    status.settStatus("Exists, but didnt get yet");
+                } else {
+                    status.settStatus("Waiting for existence check");
                 }
+            } else {
+                status.settStatus("Didnt get yet");
             }
         });
 

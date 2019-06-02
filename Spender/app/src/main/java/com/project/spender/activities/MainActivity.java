@@ -24,6 +24,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
+import com.project.spender.HistoryActivity;
 import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.charts.ChartsStateHolder;
 import com.project.spender.data.entities.Check;
@@ -104,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
             case R.id.action_delete:
                 ChecksRoller.getInstance().onRemoveAllClicked();
+                return true;
+
+            case R.id.receiving_history:
+                startActivity(new Intent(this, HistoryActivity.class));
                 return true;
 
             case R.id.action_tag_list:

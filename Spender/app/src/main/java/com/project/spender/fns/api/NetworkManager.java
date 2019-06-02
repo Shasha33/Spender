@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
     private FnsApi fns;
     public static final String DEFAULT_LOGIN = "+79112813247";
-    public static final String DEFAULT_PASSWORD = "882107";
+    public static final String DEFAULT_PASSWORD = "389067";
     public final static int CHECK_EXISTS = 204;
     public final static int CHECK_NOT_FOUND = 406;
 
@@ -107,7 +107,7 @@ public class NetworkManager {
         String loginPassword = Credentials.basic(phone, password);
         Response responseExist = fns.isCheckExist(fn, fd, fiscalSign, date, sum).execute();
         if (responseExist.code() != 204) {
-            throw new NetworkException("isException return " + responseExist.code(), responseExist);
+            throw new NetworkException("Check doesnt exit, returns " + responseExist.code(), responseExist);
         }
 
         Response<CheckJson> res = fns.getCheck(loginPassword, "", "",
@@ -172,7 +172,7 @@ public class NetworkManager {
                             } else {
                                 liveData.postValue(new CheckJsonWithStatus(
                                         null, Status.ERROR,
-                                        new NetworkException("Check is exist, but getCheck return code " + response.code() + " " + response.message() , response)));
+                                        new NetworkException("Check exists, but getCheck return code " + response.code() + " " + response.message() , response)));
                             }
                         }
 
