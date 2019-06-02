@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -156,6 +157,8 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
+        TextView info = findViewById(R.id.info_about_list);
+
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
@@ -179,7 +182,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
         listView = findViewById(R.id.productsList);
         registerForContextMenu(listView);
 
-        holder = new CheckListHolder(listView, this);
+        holder = new CheckListHolder(listView, this, info);
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener((v, actionId, event) -> {
@@ -187,8 +190,6 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
             holder.setSubstring(request.getText().toString());
 
             hideKeyboard(v);
-
-            listView.invalidateViews();
             return true;
         });
 
@@ -203,8 +204,6 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
             }
             hideKeyboard(v);
-
-            listView.invalidateViews();
             return true;
         });
 
@@ -218,8 +217,6 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
             }
             hideKeyboard(v);
-
-            listView.invalidateViews();
             return true;
         });
     }

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.project.spender.R;
 import com.project.spender.controllers.TagListHelper;
@@ -111,6 +112,8 @@ public class TagListActivity extends AppCompatActivity implements LifecycleOwner
         listView = findViewById(R.id.tag_list_menu);
         registerForContextMenu(listView);
 
-        controller = new TagListHelper(this, listView);
+        TextView textView = findViewById(R.id.info_about_tags);
+
+        controller = new TagListHelper(this, listView, textView);
     }
 }

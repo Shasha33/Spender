@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme"
         tools:replace="android:icon">
-        <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".activities.HistoryActivity"></activity>
         <activity
             android:name=".activities.LoginActivity"
             android:windowSoftInputMode="adjustPan" />

@@ -24,10 +24,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
-import com.project.spender.HistoryActivity;
 import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.charts.ChartsStateHolder;
-import com.project.spender.data.entities.Check;
 import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.R;

@@ -3,7 +3,9 @@ package com.project.spender.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
@@ -36,17 +38,20 @@ public class CheckListHolder {
     private int chosenPos;
     private ListAdapter checksAdapter;
     private ItemAdapter productsAdapter;
+    private TextView info;
 
     LifecycleOwner owner;
 
 
-    public CheckListHolder(ListView listView, Context context) {
+    public CheckListHolder(ListView listView, Context context, TextView textView) {
         begin = DataHelper.DEFAULT_BEGIN;
         end = DataHelper.DEFAULT_END;
         regEx = "%%";
         list = new ArrayList<>();
         productList = new ArrayList<>();
 
+        info = textView;
+        info.setVisibility(View.INVISIBLE);
         owner = (LifecycleOwner) context;
 
         this.listView = listView;
@@ -130,12 +135,16 @@ public class CheckListHolder {
             for (Product p : productList) {
                 Log.i(ChecksRoller.LOG_TAG, "" + p.getName());
             }
+            Log.i(ChecksRoller.LOG_TAG, productList.size() + " is product");
         } else {
             updateStateCheck();
             for (CheckWithProducts p : list) {
                 Log.i(ChecksRoller.LOG_TAG, "" + p.getCheck().getName());
             }
+
+            Log.i(ChecksRoller.LOG_TAG, list.size() + " is check");
         }
+
         listView.invalidateViews();
     }
 
