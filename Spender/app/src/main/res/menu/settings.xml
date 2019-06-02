@@ -2,6 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/receiving_history"
+        android:title="history"
+        android:visible="true"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_cheese"
         android:icon="@drawable/cheese"
         android:title="cheese"

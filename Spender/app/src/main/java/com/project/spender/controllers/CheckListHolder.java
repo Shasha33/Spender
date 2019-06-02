@@ -94,6 +94,11 @@ public class CheckListHolder {
         updateState();
     }
 
+    public void setNullTags() {
+        tags = null;
+        updateState();
+    }
+
     public void setBegin(@NonNull String begin) {
         try {
             this.begin = dateConvert(begin);
@@ -136,6 +141,10 @@ public class CheckListHolder {
 
     //its terrible (todo) fix it
     public void setTags(@NonNull long[] ids) {
+        if (ids.length == 0){
+            tags = null;
+            return;
+        }
         tags = new ArrayList<>();
         for (long id : ids) {
             Log.i(ChecksRoller.LOG_TAG, id + "");
