@@ -40,14 +40,23 @@ public class ChecksRoller {
 
     public static final String LOG_TAG = "KITPRIVIT";
     private static final String DATABASE = "DataBase";
-    public static final String ACCOUNT_INFO = "settings";
-    public static final String ACCOUNT_LOGIN = "login";
-    public static final String ACCOUNT_PASSWORD = "password";
+    private static final String ACCOUNT_INFO = "settings";
+    private static final String ACCOUNT_LOGIN = "login";
+    private static final String ACCOUNT_PASSWORD = "password";
     private static SharedPreferences accountInfo;
+    private boolean supercatMode = false;
     private LifecycleOwner owner;
 
     private String number;
     private String password;
+
+    public void setCatMode() {
+        supercatMode = true;
+    }
+
+    public boolean getCatMode() {
+        return supercatMode;
+    }
 
     /**
      * Saves new number and password.

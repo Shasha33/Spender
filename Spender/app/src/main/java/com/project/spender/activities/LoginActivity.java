@@ -46,7 +46,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setLoginMode() {
-        catButton.setVisibility(View.VISIBLE);
+        if (ChecksRoller.getInstance().getCatMode()) {
+            catButton.setVisibility(View.VISIBLE);
+        } else {
+            catButton.setVisibility(View.GONE);
+        }
+
         register.setVisibility(View.VISIBLE);
         password.setVisibility(View.VISIBLE);
         restore.setVisibility(View.VISIBLE);

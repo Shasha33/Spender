@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.project.spender.activities.MainActivity;
 import com.project.spender.charts.PieChartController;
 import com.project.spender.R;
+import com.project.spender.controllers.ChecksRoller;
 
 import java.util.Set;
 
@@ -47,10 +49,12 @@ public class PieChartFragment extends ChartFragment {
             clickCounter++;
             if (clickCounter > MAGIC_CONST) {
                 secret.setImageResource(R.drawable.clevercat);
-                clickCounter = 0;
+//                clickCounter = 0;
             } else {
                 secret.setImageResource(R.drawable.cat);
             }
+
+            ChecksRoller.getInstance().setCatMode();
         });
 
         //Pie
