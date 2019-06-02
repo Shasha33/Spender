@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.lifecycle.LiveData;
 import com.project.spender.activities.CheckShowActivity;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.adapters.ListAdapter;
+import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
@@ -39,7 +41,7 @@ public class CheckListHolder {
     private ListAdapter checksAdapter;
     private ItemAdapter productsAdapter;
     private TextView info;
-
+    private AdapterView.OnItemClickListener checkListener;
     LifecycleOwner owner;
 
 
@@ -58,14 +60,15 @@ public class CheckListHolder {
         checksAdapter = new ListAdapter(context, list);
         productsAdapter = new ItemAdapter(context, productList);
         listView.setAdapter(checksAdapter);
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            CheckWithProducts check = list.get(position);
+        checkListener = (adapterView, view, i, l) -> {
+            CheckWithProducts check = list.get(i);
             Intent intent = new Intent(context, CheckShowActivity.class);
             intent.putParcelableArrayListExtra("products",
                     (ArrayList<Product>) check.getProducts());
             intent.putExtra("check id", check.getCheck().getId());
             context.startActivity(intent);
-        });
+        };
+        listView.setOnItemClickListener(checkListener);
 
         updateState();
     }
@@ -93,8 +96,10 @@ public class CheckListHolder {
         chosenPos = -1;
         if (isProductMode) {
             listView.setAdapter(productsAdapter);
+            listView.setOnItemClickListener((adapterView, view, i, l) -> {});
         } else {
             listView.setAdapter(checksAdapter);
+            listView.setOnItemClickListener(checkListener);
         }
         updateState();
     }
@@ -158,6 +163,56 @@ public class CheckListHolder {
         for (long id : ids) {
             Log.i(ChecksRoller.LOG_TAG, id + "");
             tags.add(id);
+        }
+        updateState();
+    }
+
+    public void addTagsForItem(long[] ids) {
+        if (chosenPos == -1) {
+            return;
+        }
+
+        if (isProductMode) {
+            Product product = productList.get(chosenPos);
+            for (long i : ids) {
+                ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertExistingTagForProduct(i, product.getId());
+            }
+        } else {
+            addTagsForCheck(ids);
+        }
+
+        chosenPos = -1;
+    }
+
+    public void removeTagsForItem(long[] ids) {
+        if (chosenPos == -1) {
+            return;
+        }
+
+        if (isProductMode) {
+            Product product = productList.get(chosenPos);
+            for (long i : ids) {
+                ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteTagProductRelation(new ProductTagJoin(product.getId(), i));
+            }
+        } else {
+            removeTagsForCheck(ids);
+        }
+        chosenPos = -1;
+    }
+
+    private void removeCheck(int i) {
+        ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteCheckById(list.get(i).getCheck().getId());
+    }
+
+    private void removeProduct(int i) {
+        ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(productList.get(i).getId());
+    }
+
+    public void removeItem(int i) {
+        if (isProductMode) {
+            removeProduct(i);
+        } else {
+            removeCheck(i);
         }
         updateState();
     }

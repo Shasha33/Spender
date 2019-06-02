@@ -21,8 +21,7 @@
         <LinearLayout
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="100dp"
-            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -34,7 +33,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:fontFamily="monospace"
-                android:textColor="#00ff7f"
+                android:textColor="#008000"
                 android:textSize="20dp"
                 android:text="Спасибо, что запустили наше приложение!"/>
 
@@ -47,6 +46,63 @@
                 android:fontFamily="monospace"
                 android:textSize="15dp"
                 android:text="Тут собранны некоторые моменты, которые могут быть неочевидны"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="На странице с котом вы можете указать дату начала и конца временного интервала, по которому будет построен график затрат по тегам. Теги и тип графика можно выбрать на панели сверху"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="На странице со списком можно указать подстроку названия чека, и временной интервал, будут отображаться только чеки и продукты подходящие под условия. Также на панели сверху можно выбрать теги и переключиться на список всех продуктов"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="При нажатии на чек будет показан список входящих товаров. Можно выбрать группу товаров и применить к ним действие добавления тега, удаления или удаления товара"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="При долгом нажатии на чек откроется меню, в котором можно удалить чек и добавить/удалить тег для всех продуктов в чеке"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="При долгом нажатии на продукт, откроет меню, в котором можно добавить/удалить тег или удалить продукт"/>
+
 
             <TextView
                 android:layout_width="match_parent"

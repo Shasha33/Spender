@@ -58,8 +58,8 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
             Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_SHORT).show();
         }
 
+
         if (data == null) {
-            holder.setNullTags();
             return;
         }
 
@@ -70,9 +70,9 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
             if (requestCode == CHOOSE_TAG_FOR_SHOW) {
                 holder.setTags(tagIds);
             } else if (requestCode == CHOOSE_TAG_FOR_ADD) {
-                holder.addTagsForCheck(tagIds);
+                holder.addTagsForItem(tagIds);
             } else if (requestCode == CHOOSE_TAG_FOR_REMOVE) {
-                holder.removeTagsForCheck(tagIds);
+                holder.removeTagsForItem(tagIds);
             }
         }
     }
@@ -99,12 +99,12 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        CheckWithProducts check = holder.getList().get(info.position);
         switch(item.getItemId()) {
             case R.id.add_tag_for_check:
                 Intent intent = new Intent(this, TagChoiceActivity.class);
                 holder.chooseItem(info.position);
                 startActivityForResult(intent, CHOOSE_TAG_FOR_ADD);
+                break;
 
             case R.id.remove_tag_for_check:
                 intent = new Intent(this, TagChoiceActivity.class);
@@ -113,7 +113,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 break;
 
             case R.id.remove_check:
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteCheckById(check.getCheck().getId());
+                holder.removeItem(info.position);
                 break;
 
             default:
