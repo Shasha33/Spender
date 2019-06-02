@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,8 +58,8 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
             Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_SHORT).show();
         }
 
+
         if (data == null) {
-            holder.setNullTags();
             return;
         }
 
@@ -69,9 +70,9 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
             if (requestCode == CHOOSE_TAG_FOR_SHOW) {
                 holder.setTags(tagIds);
             } else if (requestCode == CHOOSE_TAG_FOR_ADD) {
-                holder.addTagsForCheck(tagIds);
+                holder.addTagsForItem(tagIds);
             } else if (requestCode == CHOOSE_TAG_FOR_REMOVE) {
-                holder.removeTagsForCheck(tagIds);
+                holder.removeTagsForItem(tagIds);
             }
         }
     }
@@ -98,12 +99,12 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        CheckWithProducts check = holder.getList().get(info.position);
         switch(item.getItemId()) {
             case R.id.add_tag_for_check:
                 Intent intent = new Intent(this, TagChoiceActivity.class);
                 holder.chooseItem(info.position);
                 startActivityForResult(intent, CHOOSE_TAG_FOR_ADD);
+                break;
 
             case R.id.remove_tag_for_check:
                 intent = new Intent(this, TagChoiceActivity.class);
@@ -112,7 +113,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 break;
 
             case R.id.remove_check:
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteCheckById(check.getCheck().getId());
+                holder.removeItem(info.position);
                 break;
 
             default:
@@ -156,6 +157,8 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
+        TextView info = findViewById(R.id.info_about_list);
+
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
@@ -179,7 +182,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
         listView = findViewById(R.id.productsList);
         registerForContextMenu(listView);
 
-        holder = new CheckListHolder(listView, this);
+        holder = new CheckListHolder(listView, this, info);
 
         request = findViewById(R.id.request);
         request.setOnEditorActionListener((v, actionId, event) -> {
@@ -187,8 +190,6 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
             holder.setSubstring(request.getText().toString());
 
             hideKeyboard(v);
-
-            listView.invalidateViews();
             return true;
         });
 
@@ -203,8 +204,6 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
             }
             hideKeyboard(v);
-
-            listView.invalidateViews();
             return true;
         });
 
@@ -218,8 +217,6 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
             }
             hideKeyboard(v);
-
-            listView.invalidateViews();
             return true;
         });
     }
