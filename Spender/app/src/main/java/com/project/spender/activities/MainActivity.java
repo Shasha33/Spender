@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
             case R.id.action_delete:
                 ChecksRoller.getInstance().onRemoveAllClicked();
                 return true;
+            case R.id.help:
+                startActivity(new Intent(this, HelpActivity.class));
+                return true;
 
             case R.id.receiving_history:
                 startActivity(new Intent(this, HistoryActivity.class));

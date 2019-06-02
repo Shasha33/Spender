@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.HelpActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="100dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:fontFamily="monospace"
+                android:textColor="#00ff7f"
+                android:textSize="20dp"
+                android:text="Спасибо, что запустили наше приложение!"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="Тут собранны некоторые моменты, которые могут быть неочевидны"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="К сожалению, если пароль или логин неверный,то об этом никак не сообщается, и чек скорее всего не будет получен по причине истечения времени"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="Иногда чеки могут не быть получены по причине, не описанной кодами возврата, в таком случае с большой вероятностью, чек можно будет получить позже"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="К сожалению, не все магазины заполняют необходимые поля в кассовых аппаратах. В таком случае имя и адрес магазина будут заменены на значения по-умолчанию"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="История запросов изменит свой вид на более прияный, не переживайте"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="Цвет для тега может указываться в формате RRGGBB или AARRGGBB или в виде названия на английском(ограниченный стандартный набор)"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="Регулярные выражения для тегов будут сопоставляться как подстрока, так как в названии товара часто есть техническая информация, о наличии которой невозможно узнать заранее"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="10dp"
+                android:text="Извините за мой английский, я старалась, но это не помогает."/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:fontFamily="monospace"
+                android:textSize="10dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Слава Арстоцке!!!"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/misha_kot"
+                android:layout_gravity="center"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:text="Миша молодец"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:visibility="gone"
+                android:textSize="10dp"
+                android:textColor="@color/black"
+                android:text="created by mixNIK999 and Shasha33 May 2019"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
