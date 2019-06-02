@@ -19,10 +19,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.project.spender.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.adapters.TagChoiceAdapter;
-import com.project.spender.controllers.TagListController;
+import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Tag;
 
 import java.util.List;
@@ -32,7 +30,7 @@ public class TagListActivity extends AppCompatActivity implements LifecycleOwner
     private ListView listView;
     private List<Tag> tags;
 
-    TagListController controller;
+    TagListHelper controller;
 
     private LifecycleRegistry lifecycleRegistry;
 
@@ -113,6 +111,6 @@ public class TagListActivity extends AppCompatActivity implements LifecycleOwner
         listView = findViewById(R.id.tag_list_menu);
         registerForContextMenu(listView);
 
-        controller = new TagListController(this, listView);
+        controller = new TagListHelper(this, listView);
     }
 }

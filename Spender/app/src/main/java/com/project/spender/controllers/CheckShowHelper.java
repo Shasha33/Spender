@@ -1,6 +1,5 @@
 package com.project.spender.controllers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,15 +11,13 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
 import com.mattyork.colours.Colour;
-import com.project.spender.ChecksRoller;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.data.entities.Product;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class CheckShowController {
+public class CheckShowHelper {
 
     private List<Product> products;
     private HashSet<Integer> productsForAction;
@@ -34,7 +31,7 @@ public class CheckShowController {
     public static final int UNSELECTED_ITEM = Color.WHITE;
 
 
-    public CheckShowController(Context context, ListView listView, Intent intent) {
+    public CheckShowHelper(Context context, ListView listView, Intent intent) {
         productsForAction = new HashSet<>();
         owner = (LifecycleOwner) context;
         this.listView = listView;

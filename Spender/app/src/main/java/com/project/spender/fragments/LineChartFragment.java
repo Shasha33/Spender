@@ -6,14 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 
-import com.project.spender.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.charts.LineChartController;
-import com.project.spender.data.CheckDao;
-import com.project.spender.data.entities.TagWithSumAndDate;
 
 import java.util.Set;
 

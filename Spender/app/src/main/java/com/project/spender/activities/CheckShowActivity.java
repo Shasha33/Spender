@@ -17,18 +17,17 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
-import com.project.spender.ChecksRoller;
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.controllers.CheckShowController;
-import com.project.spender.controllers.TagChoiceController;
+import com.project.spender.controllers.CheckShowHelper;
 
-import static com.project.spender.controllers.TagChoiceController.TAG_ID_LIST;
+import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
 public class CheckShowActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ListView listView;
     private EditText search;
-    private CheckShowController controller;
+    private CheckShowHelper controller;
     private LifecycleRegistry lifecycleRegistry;
 
     @Override
@@ -111,7 +110,7 @@ public class CheckShowActivity extends AppCompatActivity implements LifecycleOwn
         listView = findViewById(R.id.productsList);
         search = findViewById(R.id.search_in_check);
 
-        controller = new CheckShowController(this, listView, getIntent());
+        controller = new CheckShowHelper(this, listView, getIntent());
         controller.setInput(search);
     }
 

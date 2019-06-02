@@ -4,16 +4,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
-import com.project.spender.ChecksRoller;
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.TagStateHolder;
-import com.project.spender.data.entities.Check;
+import com.project.spender.controllers.TagStateHolder;
 
 import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 

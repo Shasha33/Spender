@@ -2,7 +2,6 @@ package com.project.spender.activities;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,12 +9,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.project.spender.ChecksRoller;
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.data.entities.Check;
 import com.project.spender.fns.api.NetworkManager;
-
-import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
             String newEmail = email.getText().toString();
             String newNumber = number.getText().toString();
             String newName = name.getText().toString();
-            String result = ChecksRoller.getInstance().register(newName, newNumber, newEmail);
+            String result = ChecksRoller.getInstance().register(newName, newEmail, newNumber);
             Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             if (result.equals("Success")) {
                 setLoginMode();

@@ -1,22 +1,17 @@
-package com.project.spender;
+package com.project.spender.controllers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import com.project.spender.activities.CheckShowActivity;
-import com.project.spender.activities.LoginActivity;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.adapters.ListAdapter;
-import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
@@ -25,9 +20,8 @@ import com.project.spender.data.entities.Tag;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static com.project.spender.DataHelper.dateConvert;
+import static com.project.spender.controllers.DataHelper.dateConvert;
 
 public class CheckListHolder {
 
@@ -97,6 +91,7 @@ public class CheckListHolder {
         } else {
             listView.setAdapter(checksAdapter);
         }
+        updateState();
     }
 
     public void setBegin(@NonNull String begin) {

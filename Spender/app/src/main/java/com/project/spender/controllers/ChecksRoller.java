@@ -1,4 +1,4 @@
-package com.project.spender;
+package com.project.spender.controllers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,15 +6,14 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.room.Room;
 
 import com.project.spender.activities.LoginActivity;
 import com.project.spender.data.AppDatabase;
+import com.project.spender.data.ScanResult;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;

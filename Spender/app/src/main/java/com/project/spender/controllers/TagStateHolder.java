@@ -1,4 +1,4 @@
-package com.project.spender;
+package com.project.spender.controllers;
 
 import android.graphics.Color;
 import android.util.Log;

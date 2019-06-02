@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -17,11 +16,11 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.R;
-import com.project.spender.controllers.TagChoiceController;
+import com.project.spender.controllers.TagChoiceHelper;
 
 public class TagChoiceActivity extends AppCompatActivity implements LifecycleOwner {
 
-    private TagChoiceController controller;
+    private TagChoiceHelper controller;
     private ListView listView;
     private Button enter;
     private LifecycleRegistry lifecycleRegistry;
@@ -67,7 +66,7 @@ public class TagChoiceActivity extends AppCompatActivity implements LifecycleOwn
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
         listView = findViewById(R.id.tag_list);
-        controller = new TagChoiceController(this, listView);
+        controller = new TagChoiceHelper(this, listView);
 
         enter = findViewById(R.id.enter_tag_set);
         enter.setOnClickListener(view -> {
