@@ -7,19 +7,18 @@ import android.widget.ListView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import com.project.spender.ChecksRoller;
 import com.project.spender.adapters.TagChoiceAdapter;
 import com.project.spender.data.entities.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagListController {
+public class TagListHelper {
 
     private ListView listView;
     private List<Tag> tags;
 
-    public TagListController(Context context, ListView listView) {
+    public TagListHelper(Context context, ListView listView) {
         this.listView = listView;
         tags = new ArrayList<>();
         listView.setAdapter(new TagChoiceAdapter(context, tags));

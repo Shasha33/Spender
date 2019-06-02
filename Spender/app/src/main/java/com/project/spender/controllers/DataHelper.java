@@ -1,12 +1,9 @@
-package com.project.spender;
+package com.project.spender.controllers;
 
 import android.util.Log;
 
-import com.project.spender.data.entities.Check;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public abstract class DataHelper {
 

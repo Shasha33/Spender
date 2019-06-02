@@ -1,4 +1,4 @@
-package com.project.spender;
+package com.project.spender.controllers;
 
 import android.app.Activity;
 import android.widget.Toast;

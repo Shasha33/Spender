@@ -2,7 +2,7 @@ package com.project.spender.fragments;
 
 import androidx.fragment.app.Fragment;
 
-import com.project.spender.ChecksRoller;
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.data.CheckDao;
 
 import java.util.Set;

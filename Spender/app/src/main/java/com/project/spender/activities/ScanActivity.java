@@ -3,13 +3,12 @@ package com.project.spender.activities;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.Result;
-import com.project.spender.ChecksRoller;
-import com.project.spender.ScanResult;
+import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.controllers.ScanResult;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 

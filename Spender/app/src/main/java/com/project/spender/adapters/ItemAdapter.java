@@ -12,12 +12,10 @@ import android.widget.TextView;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
-import com.google.android.gms.vision.L;
-import com.project.spender.ChecksRoller;
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.controllers.TagListController;
+import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.Tag;
 
@@ -99,7 +97,7 @@ public class ItemAdapter extends BaseAdapter {
             View child = adapter.getView(i, null, null);
             child.setBackgroundColor(tags.get(i).getColor());
 //            Log.i(ChecksRoller.LOG_TAG, "" + tags.get(i));
-            layout1.addView(child, TagListController.tagParams());
+            layout1.addView(child, TagListHelper.tagParams());
         }
         layout1.invalidate();
     }

@@ -3,7 +3,7 @@ package com.project.spender.fns.api;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.project.spender.ScanResult;
+import com.project.spender.controllers.ScanResult;
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.NewUser;

@@ -4,21 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.ListView;
 
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import com.project.spender.ChecksRoller;
 import com.project.spender.adapters.TagChoiceAdapter;
 import com.project.spender.data.entities.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.project.spender.controllers.CheckShowController.SELECTED_ITEM;
-import static com.project.spender.controllers.CheckShowController.UNSELECTED_ITEM;
+import static com.project.spender.controllers.CheckShowHelper.SELECTED_ITEM;
+import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
 
-public class TagChoiceController {
+public class TagChoiceHelper {
 
     private List<Tag> clickedTags;
     private List<Tag> tags;
@@ -26,7 +24,7 @@ public class TagChoiceController {
 
     public static final String TAG_ID_LIST = "vlad molodec";
 
-    public TagChoiceController(Context context, ListView listView) {
+    public TagChoiceHelper(Context context, ListView listView) {
         this.listView = listView;
         clickedTags = new ArrayList<>();
         tags = new ArrayList<>();

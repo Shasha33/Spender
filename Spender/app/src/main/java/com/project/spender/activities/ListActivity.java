@@ -21,15 +21,14 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
-import com.project.spender.CheckListHolder;
-import com.project.spender.ChecksRoller;
+import com.project.spender.controllers.CheckListHolder;
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.ScanResult;
-import com.project.spender.controllers.TagChoiceController;
+import com.project.spender.controllers.ScanResult;
 import com.project.spender.data.entities.CheckWithProducts;
 
 import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
-import static com.project.spender.controllers.TagChoiceController.TAG_ID_LIST;
+import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
 
 public class ListActivity extends AppCompatActivity implements LifecycleOwner {

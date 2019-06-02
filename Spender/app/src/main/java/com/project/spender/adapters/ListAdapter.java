@@ -11,11 +11,10 @@ import android.widget.TextView;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
-import com.project.spender.ChecksRoller;
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
-import com.project.spender.controllers.TagListController;
+import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Tag;
@@ -90,7 +89,7 @@ public class ListAdapter extends BaseAdapter {
             View child = adapter.getView(i, null, null);
             child.setBackgroundColor(tags.get(i).getColor());
 
-            layout1.addView(child, TagListController.tagParams());
+            layout1.addView(child, TagListHelper.tagParams());
         }
         layout1.invalidate();
     }
