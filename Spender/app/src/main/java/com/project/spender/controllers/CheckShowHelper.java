@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData;
 import com.mattyork.colours.Colour;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductTagJoin;
 
 import java.util.HashSet;
 import java.util.List;
@@ -95,7 +96,7 @@ public class CheckShowHelper {
     public void removeTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertExistingTagForProduct(j,products.get(i).getId());
+                ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteTagProductRelation(new ProductTagJoin(products.get(i).getId(), j));
             }
         }
         clearSelected();
