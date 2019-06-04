@@ -39,7 +39,7 @@ public class CheckShowHelper {
 
         products = intent.getParcelableArrayListExtra("products");
         checkId = intent.getLongExtra("check id", -1);
-
+        substring = "%%";
 
         listView.setAdapter(new ItemAdapter(context, products));
 
@@ -71,15 +71,24 @@ public class CheckShowHelper {
     private void updateProducts(List<Product> products) {
         this.products.clear();
         this.products.addAll(products);
-        listView.invalidateViews();
+        listView.invalidate();
     }
 
-    private void clearSelected() {
+    private void unColorSelected() {
         for (int i : productsForAction) {
             listView.getChildAt(i). setBackgroundColor(UNSELECTED_ITEM);
         }
+        listView.invalidate();
+    }
+
+    private void clearSelectedSet() {
         productsForAction.clear();
-        listView.invalidateViews();
+    }
+
+    private void clearSelected() {
+
+        unColorSelected();
+        clearSelectedSet();
     }
 
     public void addTags(long[] tags) {
@@ -103,9 +112,11 @@ public class CheckShowHelper {
     }
 
     public void removeProducts() {
+        unColorSelected();
         for (int i : productsForAction) {
             ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(products.get(i).getId());
         }
+        clearSelectedSet();
         update();
     }
 }
