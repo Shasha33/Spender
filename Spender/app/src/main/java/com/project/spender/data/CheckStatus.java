@@ -1,20 +1,23 @@
 package com.project.spender.data;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-
-import com.project.spender.fns.api.data.CheckJsonWithStatus;
-import com.project.spender.fns.api.data.Status;
-
 public class CheckStatus {
 
     private String time;
     private String status;
+    private int counter;
 
     public CheckStatus(String time) {
         this.time = time;
+        counter = 0;
     }
 
+    public synchronized void incCounter() {
+        counter++;
+    }
+
+    public synchronized int getCounter() {
+        return counter;
+    }
 
     public synchronized void settStatus(String status) {
         this.status = status;

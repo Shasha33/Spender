@@ -232,6 +232,20 @@
 
                 android:textColor="@color/black"
                 android:textSize="15dp"
+                android:text="Также по неизвестной причине в ответ на запросы существующих чеков, видимо, иногда приходят пустые пакеты, в таком случае в статусе будет отображаться EOF exception, мы приняли некоторые меры, но если так все же случилось, попробуйте еще через некоторое время"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
                 android:text="Цвет для тега может указываться в формате #RRGGBB или #AARRGGBB или в виде названия на английском(ограниченный стандартный набор)"/>
 
             <TextView

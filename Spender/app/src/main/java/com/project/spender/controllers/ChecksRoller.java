@@ -26,6 +26,7 @@ import com.project.spender.fns.api.data.NewUser;
 import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.exception.NetworkException;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -205,10 +206,18 @@ public class ChecksRoller {
             return -1;
         }
 
-        LiveData<CheckJsonWithStatus> liveData = networkManager.getCheckAsync(number, password, result);
-
         CheckStatus status = new CheckStatus(Calendar.getInstance().getTime().toString());
         historyListHolder.add(status);
+        tryCheck(result, status);
+
+
+        return 0;
+    }
+
+    private synchronized void tryCheck(ScanResult result, CheckStatus status) {
+
+        LiveData<CheckJsonWithStatus> liveData = networkManager.getCheckAsync(number, password, result);
+
         liveData.observeForever(checkJsonWithStatus -> {
             historyListHolder.update();
             if (checkJsonWithStatus != null) {
@@ -218,21 +227,23 @@ public class ChecksRoller {
                     e.printStackTrace();
                     Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
                             + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause() + " " + e.getSuppressed());
+                    if (EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
+                        status.incCounter();
+                        tryCheck(result, status);
+                    }
                 } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
-                    Log.i(ChecksRoller.LOG_TAG, "check received");
+                    Log.i(ChecksRoller.LOG_TAG, "Check received");
                     putCheck(checkJsonWithStatus.getCheckJson());
                     status.settStatus("Check received");
                 } else if (checkJsonWithStatus.getStatus() == Status.EXIST) {
-                    status.settStatus("Exists, but didnt get yet");
+                    status.settStatus("Exists, but not received yet");
                 } else {
                     status.settStatus("Waiting for existence check");
                 }
             } else {
-                status.settStatus("Didnt get yet");
+                status.settStatus("Not received yet");
             }
         });
-
-        return 0;
     }
 
     public LiveData<List<CheckWithProducts>> findCheckBySubstring(String regEx) {
