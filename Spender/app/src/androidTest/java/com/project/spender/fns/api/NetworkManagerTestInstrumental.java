@@ -1,12 +1,15 @@
 package com.project.spender.fns.api;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
 
+import com.jraska.livedata.TestObserver;
 import com.project.spender.data.ScanResult;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Status;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -19,7 +22,10 @@ public class NetworkManagerTestInstrumental {
 
     // все сломается если я поменяю пароль
     private String defaultLogin = "+79112813247";
-    private String defaultPassword = "882107";
+    private String defaultPassword = "583066";
+
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
     public void init() {
@@ -35,19 +41,14 @@ public class NetworkManagerTestInstrumental {
 
     @Test
     public void getCheckAsyncSimpleTest() throws InterruptedException {
-        final CountDownLatch latch = new CountDownLatch(1);
-
         LiveData<CheckJsonWithStatus> liveData = NetworkManager.getInstance()
                 .getCheckAsync(defaultLogin, defaultPassword, scanResult1);
 
 
-        liveData.observeForever(checkJsonWithStatus -> {
-            if (checkJsonWithStatus != null && checkJsonWithStatus.getStatus() == Status.SUCCESS) {
-                latch.countDown();
-            }
-        });
-
-        latch.await();
+        TestObserver.test(liveData)
+                .awaitValue().assertValue(value -> value.getStatus() == Status.SENDING)
+                .awaitNextValue().assertValue(value -> value.getStatus() == Status.EXIST)
+                .awaitNextValue().assertValue(value -> value.getStatus() == Status.SUCCESS);
 
         assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", liveData.getValue().getCheckJson().getData().items.get(0).name);
     }

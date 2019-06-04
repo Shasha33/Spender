@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkManager {
     private FnsApi fns;
     public static final String DEFAULT_LOGIN = "+79112813247";
-    public static final String DEFAULT_PASSWORD = "389067";
+    public static final String DEFAULT_PASSWORD = "583066";
     public final static int CHECK_EXISTS = 204;
     public final static int CHECK_NOT_FOUND = 406;
 
