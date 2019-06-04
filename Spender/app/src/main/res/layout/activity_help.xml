@@ -192,7 +192,21 @@
 
                 android:textColor="@color/black"
                 android:textSize="15dp"
-                android:text="Формат даты DD.MM.YYYY"/>
+                android:text="Формат даты - DD.MM.YYYY"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="После добавление тега с регулярным выражением, он не добавлятся автоматически к уже полученным товарам"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -218,7 +232,7 @@
 
                 android:textColor="@color/black"
                 android:textSize="15dp"
-                android:text="Цвет для тега может указываться в формате RRGGBB или AARRGGBB или в виде названия на английском(ограниченный стандартный набор)"/>
+                android:text="Цвет для тега может указываться в формате #RRGGBB или #AARRGGBB или в виде названия на английском(ограниченный стандартный набор)"/>
 
             <TextView
                 android:layout_width="wrap_content"

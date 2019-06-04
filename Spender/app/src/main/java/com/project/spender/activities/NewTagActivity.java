@@ -51,6 +51,9 @@ public class NewTagActivity extends AppCompatActivity {
         });
 
         enter.setOnClickListener(v -> {
+            tagStateHolder.setName(name.getText().toString());
+            tagStateHolder.setColor(color.getText().toString());
+            tagStateHolder.setRegEx(substring.getText().toString());
             tagStateHolder.createTag();
             setResult(Activity.RESULT_OK);
             finish();
