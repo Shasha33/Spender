@@ -67,7 +67,7 @@
 
     <item
         android:id="@+id/help"
-        android:title="about application"
+        android:title="help"
         android:visible="true"
         app:showAsAction="never"/>
 

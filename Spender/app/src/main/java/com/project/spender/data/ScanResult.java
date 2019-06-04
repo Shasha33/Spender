@@ -39,7 +39,7 @@ public class ScanResult {
             case NOT_ENOUGH_DATA:
                 return "Authorization required to continue";
             default:
-                return "Didnt scan";
+                return "not scanned";
         }
     }
 

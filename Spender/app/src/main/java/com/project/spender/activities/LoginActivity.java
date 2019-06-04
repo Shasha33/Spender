@@ -61,8 +61,10 @@ public class LoginActivity extends AppCompatActivity {
             String newPassword = password.getText().toString();
             String newNumber = number.getText().toString();
 
-            if (newNumber == null && newPassword == null) {
-                Toast.makeText(LoginActivity.this, "Both fields must be filled", Toast.LENGTH_SHORT).show();
+            if (!newNumber.matches("\\+79[0-9]{9}]")) {
+                Toast.makeText(LoginActivity.this, "invalid number format", Toast.LENGTH_SHORT).show();
+            } else if (!newPassword.matches("[0-9]{6}]")) {
+                Toast.makeText(LoginActivity.this, "invalid password format", Toast.LENGTH_SHORT).show();
             } else {
                 ChecksRoller.getInstance().saveAccountInfo(newNumber, newPassword);
                 finish();

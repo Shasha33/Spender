@@ -188,7 +188,7 @@ public class ChecksRoller {
         }
     }
 
-    public synchronized void putCheck(CheckJson check, CheckStatus status) {
+    public synchronized void putCheck(CheckJson check) {
         CheckWithProducts newCheck = new CheckWithProducts(check);
         appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
         for (Product i : newCheck.getProducts()) {
@@ -215,11 +215,12 @@ public class ChecksRoller {
                 if (checkJsonWithStatus.getStatus() == Status.ERROR) {
                     NetworkException e = checkJsonWithStatus.getException();
                     status.settStatus(e.getMessage());
+                    e.printStackTrace();
                     Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
                             + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause() + " " + e.getSuppressed());
                 } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
                     Log.i(ChecksRoller.LOG_TAG, "check received");
-                    putCheck(checkJsonWithStatus.getCheckJson(), status);
+                    putCheck(checkJsonWithStatus.getCheckJson());
                     status.settStatus("Check received");
                 } else if (checkJsonWithStatus.getStatus() == Status.EXIST) {
                     status.settStatus("Exists, but didnt get yet");

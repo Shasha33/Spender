@@ -201,7 +201,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 holder.setBegin(beginDate.getText().toString());
             } catch (IllegalArgumentException e) {
                 Log.i(ChecksRoller.LOG_TAG, "Invalid format ");
-                Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
+                Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT).show();
             }
             hideKeyboard(v);
             return true;
@@ -214,7 +214,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
                 holder.setEnd(endDate.getText().toString());
             } catch (IllegalArgumentException e) {
                 Log.i(ChecksRoller.LOG_TAG, "Invalid format ");
-                Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT);
+                Toast.makeText(ListActivity.this, "invalid data format", Toast.LENGTH_SHORT).show();
             }
             hideKeyboard(v);
             return true;
