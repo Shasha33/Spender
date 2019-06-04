@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "invalid password format", Toast.LENGTH_SHORT).show();
             } else {
                 ChecksRoller.getInstance().saveAccountInfo(newNumber, newPassword);
-                finish();
+                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
             }
         });
 

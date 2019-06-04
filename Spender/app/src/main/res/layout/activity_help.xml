@@ -34,7 +34,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/brickRedColor"
                 android:textSize="20dp"
-                android:text="Спасибо, что запустили наше скучное приложение!"/>
+                android:text="Спасибо, что запустили наше приложение!"/>
 
             <TextView
                 android:layout_width="match_parent"
