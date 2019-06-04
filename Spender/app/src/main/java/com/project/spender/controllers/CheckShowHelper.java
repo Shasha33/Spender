@@ -120,10 +120,8 @@ public class CheckShowHelper {
     public void removeProducts() {
         unColorSelected();
         for (int i : productsForAction) {
-            System.out.println(i);
             ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(products.get(i).getId());
             products.remove(i);
-            System.out.println(products.get(i));
         }
         clearSelectedSet();
         listView.invalidateViews();

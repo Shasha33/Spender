@@ -202,10 +202,12 @@ public class CheckListHolder {
 
     private void removeCheck(int i) {
         ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteCheckById(list.get(i).getCheck().getId());
+        list.remove(i);
     }
 
     private void removeProduct(int i) {
         ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(productList.get(i).getId());
+        productList.remove(i);
     }
 
     public void removeItem(int i) {
@@ -214,14 +216,14 @@ public class CheckListHolder {
         } else {
             removeCheck(i);
         }
-        updateState();
+        listView.invalidateViews();
     }
 
     public boolean getMode() {
         return isProductMode;
     }
 
-    private <T> void addIfContain(List<T> list1, List<Tag> tags1, T o) {
+    private synchronized <T> void addIfContain(List<T> list1, List<Tag> tags1, T o) {
         for (Tag tag : tags1) {
             if (tags.contains(tag.getId())) {
                 list1.add(o);
@@ -231,8 +233,9 @@ public class CheckListHolder {
         listView.invalidateViews();
     }
 
-    private void updateStateCheckByList(List<CheckWithProducts> list1) {
+    private synchronized void updateStateCheckByList(List<CheckWithProducts> list1) {
         if (tags == null) {
+            list.clear();
             list.addAll(list1);
             listView.invalidateViews();
             return;
@@ -244,8 +247,9 @@ public class CheckListHolder {
         }
     }
 
-    private void updateStateProductByList(List<Product> list1) {
+    private synchronized void updateStateProductByList(List<Product> list1) {
         if (tags == null) {
+            productList.clear();
             productList.addAll(list1);
             listView.invalidateViews();
             return;
