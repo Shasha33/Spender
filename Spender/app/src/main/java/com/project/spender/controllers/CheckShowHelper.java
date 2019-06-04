@@ -3,6 +3,7 @@ package com.project.spender.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.renderscript.ScriptIntrinsicYuvToRGB;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -15,6 +16,7 @@ import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -37,7 +39,8 @@ public class CheckShowHelper {
         owner = (LifecycleOwner) context;
         this.listView = listView;
 
-        products = intent.getParcelableArrayListExtra("products");
+//        products = intent.getParcelableArrayListExtra("products");
+        products = new ArrayList<>();
         checkId = intent.getLongExtra("check id", -1);
         substring = "%%";
 
@@ -52,6 +55,9 @@ public class CheckShowHelper {
                 view.setBackgroundColor(SELECTED_ITEM);
             }
         });
+
+
+        update();
     }
 
     public void setInput(EditText editText) {
@@ -71,14 +77,14 @@ public class CheckShowHelper {
     private void updateProducts(List<Product> products) {
         this.products.clear();
         this.products.addAll(products);
-        listView.invalidate();
+        listView.invalidateViews();
     }
 
     private void unColorSelected() {
         for (int i : productsForAction) {
             listView.getChildAt(i). setBackgroundColor(UNSELECTED_ITEM);
         }
-        listView.invalidate();
+        listView.invalidateViews();
     }
 
     private void clearSelectedSet() {
@@ -114,9 +120,12 @@ public class CheckShowHelper {
     public void removeProducts() {
         unColorSelected();
         for (int i : productsForAction) {
+            System.out.println(i);
             ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(products.get(i).getId());
+            products.remove(i);
+            System.out.println(products.get(i));
         }
         clearSelectedSet();
-        update();
+        listView.invalidateViews();
     }
 }
