@@ -1,6 +1,7 @@
 package com.project.spender.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     private final static int CAMERA_REQUEST = 1;
     private final static int CHART_TAGS_CODE = 15325;
     private final static int CHECK_REQUEST = 42;
+    private final static int LOGIN_CODE = 12400;
 
     private FragmentManager fragmentManager;
     private PieChartFragment pieFragment;
@@ -69,12 +72,16 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 return;
             }
             chartsStateHolder.setIds(ids);
+        } else if (requestCode == LOGIN_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_REQUEST) {
             if (grantResults.length == 0
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 return true;
 
             case R.id.putin:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_CODE);
                 break;
             case R.id.putout:
                 ChecksRoller.getInstance().clearAccountInfo();

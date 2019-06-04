@@ -1,5 +1,6 @@
 package com.project.spender.activities;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -60,14 +61,14 @@ public class LoginActivity extends AppCompatActivity {
         enter.setOnClickListener(v -> {
             String newPassword = password.getText().toString();
             String newNumber = number.getText().toString();
-
-            if (!newNumber.matches("\\+79[0-9]{9}]")) {
+            if (!newNumber.matches("\\+\\d{11}")) {
                 Toast.makeText(LoginActivity.this, "invalid number format", Toast.LENGTH_SHORT).show();
-            } else if (!newPassword.matches("[0-9]{6}]")) {
+            } else if (!newPassword.matches("\\d{6}")) {
                 Toast.makeText(LoginActivity.this, "invalid password format", Toast.LENGTH_SHORT).show();
             } else {
                 ChecksRoller.getInstance().saveAccountInfo(newNumber, newPassword);
-                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+                setResult(Activity.RESULT_OK);
+                finish();
             }
         });
 
