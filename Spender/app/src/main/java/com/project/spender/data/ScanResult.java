@@ -1,7 +1,10 @@
 package com.project.spender.data;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.project.spender.controllers.ChecksRoller;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -69,7 +72,10 @@ public class ScanResult {
 
     public ScanResult(String result) {
         List<String> resultNumbers = parseNumbers(result);
-        if (resultNumbers.size() != 5) {
+        for (String i : resultNumbers) {
+            Log.i(ChecksRoller.LOG_TAG, i);
+        }
+        if (resultNumbers.size() < 5) {
             throw new InvalidParameterException();
         }
         fn = resultNumbers.get(2);
