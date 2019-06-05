@@ -55,7 +55,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SCAN_CODE) {
-            Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_LONG).show();
         }
 
 

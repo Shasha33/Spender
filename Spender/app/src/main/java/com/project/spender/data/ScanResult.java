@@ -3,6 +3,7 @@ package com.project.spender.data;
 import android.app.Activity;
 import android.widget.Toast;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class ScanResult {
 
     //(todo) come up with natural clear name
     public static final int NOT_ENOUGH_DATA = -10;
+    public static final int WRONG_CODE = -20;
 
     private final String fn;
     private final String fd;
@@ -17,7 +19,7 @@ public class ScanResult {
     private final String date;
     private final String sum;
 
-    public List<String> parseNumbers(String content) {
+    private List<String> parseNumbers(String content) {
         List<String> res = new ArrayList<>();
         System.out.println(content);
         for (String i : content.split("[&|=|a-z]")) {
@@ -38,6 +40,8 @@ public class ScanResult {
                 return "Scanned";
             case NOT_ENOUGH_DATA:
                 return "Authorization required to continue";
+            case WRONG_CODE:
+                return "Content of the code does not match the format of checks codes";
             default:
                 return "not scanned";
         }
@@ -65,6 +69,9 @@ public class ScanResult {
 
     public ScanResult(String result) {
         List<String> resultNumbers = parseNumbers(result);
+        if (resultNumbers.size() != 5) {
+            throw new InvalidParameterException();
+        }
         fn = resultNumbers.get(2);
         fd = resultNumbers.get(3);
         fp = resultNumbers.get(4);

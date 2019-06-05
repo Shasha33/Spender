@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_REQUEST) {
 
-            Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_LONG).show();
 
         } else if (requestCode == CHART_TAGS_CODE) {
 
