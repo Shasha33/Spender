@@ -58,7 +58,7 @@ public class CheckListHolder {
 
         this.listView = listView;
         checksAdapter = new ListAdapter(context, list);
-        productsAdapter = new ItemAdapter(context, productList);
+        productsAdapter = new ItemAdapter(context, productList, null);
         listView.setAdapter(checksAdapter);
         checkListener = (adapterView, view, i, l) -> {
             CheckWithProducts check = list.get(i);

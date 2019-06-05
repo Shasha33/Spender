@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.renderscript.ScriptIntrinsicYuvToRGB;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -44,14 +45,16 @@ public class CheckShowHelper {
         checkId = intent.getLongExtra("check id", -1);
         substring = "%%";
 
-        listView.setAdapter(new ItemAdapter(context, products));
+        listView.setAdapter(new ItemAdapter(context, products, productsForAction));
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (productsForAction.contains(position)) {
                 productsForAction.remove(position);
+//                getItemView(position).setBackgroundColor(UNSELECTED_ITEM);
                 view.setBackgroundColor(UNSELECTED_ITEM);
             } else {
                 productsForAction.add(position);
+//                getItemView(position).setBackgroundColor(SELECTED_ITEM);
                 view.setBackgroundColor(SELECTED_ITEM);
             }
         });
@@ -80,9 +83,22 @@ public class CheckShowHelper {
         listView.invalidateViews();
     }
 
+    private View getItemView(int position) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (position < firstListItemPosition || position > lastListItemPosition ) {
+            return listView.getAdapter().getView(position, null, listView);
+        } else {
+            final int childIndex = position - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
+    
     private void unColorSelected() {
         for (int i : productsForAction) {
-            listView.getChildAt(i). setBackgroundColor(UNSELECTED_ITEM);
+            System.out.println(i);
+            getItemView(i).setBackgroundColor(UNSELECTED_ITEM);
         }
         listView.invalidateViews();
     }

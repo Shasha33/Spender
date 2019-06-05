@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
@@ -19,18 +20,23 @@ import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.Tag;
 
+import java.util.HashSet;
 import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.project.spender.controllers.CheckShowHelper.SELECTED_ITEM;
+import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
 
 public class ItemAdapter extends BaseAdapter {
-    Context context;
-    LayoutInflater lInflater;
-    List<Product> productList;
-    LinearLayout layout;
-    LifecycleOwner owner;
+    private Context context;
+    private LayoutInflater lInflater;
+    private List<Product> productList;
+    private LinearLayout layout;
+    private LifecycleOwner owner;
+    @Nullable private HashSet<Integer> chosen;
 
-    public ItemAdapter(Context context, List<Product> products) {
+    public ItemAdapter(Context context, List<Product> products, HashSet<Integer> hashSet) {
+        chosen = hashSet;
         this.context = context;
         owner = (LifecycleOwner) context;
         productList = products;
@@ -57,6 +63,12 @@ public class ItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = lInflater.inflate(R.layout.item_view, parent, false);
+        } else if (chosen != null) {
+            if (chosen.contains(position)) {
+                convertView.setBackgroundColor(SELECTED_ITEM);
+            } else {
+                convertView.setBackgroundColor(UNSELECTED_ITEM);
+            }
         }
 
         final View view = convertView;
