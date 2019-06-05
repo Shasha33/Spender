@@ -226,8 +226,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         fragmentTransaction.commit();
 
         chartsStateHolder = new ChartsStateHolder();
-        chartsStateHolder.setBeginDateInput(begin);
-        chartsStateHolder.setEndDateInput(end);
+        chartsStateHolder.setBeginDateInput(this, begin);
+        chartsStateHolder.setEndDateInput(this, end);
         chartsStateHolder.setChartFragment(pieFragment);
 
     }

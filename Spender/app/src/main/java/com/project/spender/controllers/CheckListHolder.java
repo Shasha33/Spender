@@ -114,6 +114,7 @@ public class CheckListHolder {
             this.begin = dateConvert(begin);
         } catch (ParseException e) {
             this.begin = DataHelper.DEFAULT_BEGIN;
+            throw new IllegalArgumentException();
         }
         updateState();
     }
@@ -124,6 +125,7 @@ public class CheckListHolder {
             this.end = dateConvert(end);
         } catch (ParseException e) {
             this.end = DataHelper.DEFAULT_END;
+            throw new IllegalArgumentException();
         }
         updateState();
     }
