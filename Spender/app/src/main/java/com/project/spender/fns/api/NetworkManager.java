@@ -171,7 +171,7 @@ public class NetworkManager {
                                 liveData.postValue(new CheckJsonWithStatus(response.body(), Status.SUCCESS, null));
                             } else {
                                 liveData.postValue(new CheckJsonWithStatus(
-                                        null, Status.ERROR,
+                                        null, Status.WRONG_RESPONSE_ERROR,
                                         new NetworkException("Check exists, but getCheck return code " + response.code() + " " + response.message() , response)));
                             }
                         }
@@ -179,17 +179,21 @@ public class NetworkManager {
                         @Override
                         public void onFailure(Call<CheckJson> call, Throwable t) {
                             liveData.postValue(new CheckJsonWithStatus(
-                                    null, Status.ERROR,
+                                    null, Status.NETWORK_ERROR,
                                     new NetworkException(t)));
                         }
                     });
+                } else {
+                    liveData.postValue(new CheckJsonWithStatus(
+                            null, Status.WRONG_RESPONSE_ERROR,
+                            new NetworkException("Check doesn't exist. Returned " + response.code() + " " + response.message() , response)));
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 liveData.postValue(new CheckJsonWithStatus(
-                        null, Status.ERROR,
+                        null, Status.NETWORK_ERROR,
                         new NetworkException(t)));
             }
         });

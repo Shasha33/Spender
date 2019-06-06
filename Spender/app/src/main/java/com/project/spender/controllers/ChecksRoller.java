@@ -28,7 +28,6 @@ import com.project.spender.fns.api.exception.NetworkException;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -221,7 +220,7 @@ public class ChecksRoller {
         liveData.observeForever(checkJsonWithStatus -> {
             historyListHolder.update();
             if (checkJsonWithStatus != null) {
-                if (checkJsonWithStatus.getStatus() == Status.ERROR) {
+                if (checkJsonWithStatus.getStatus() == Status.WRONG_RESPONSE_ERROR) {
                     NetworkException e = checkJsonWithStatus.getException();
                     status.settStatus(e.getMessage());
                     e.printStackTrace();
