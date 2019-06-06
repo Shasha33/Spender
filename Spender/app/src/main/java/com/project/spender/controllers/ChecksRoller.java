@@ -226,8 +226,8 @@ public class ChecksRoller {
                     status.settStatus(e.getMessage());
                     e.printStackTrace();
                     Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
-                            + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause() + " " + e.getSuppressed());
-                    if (EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
+                            + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause());
+                    if (e.getCause() != null && EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
                         status.incCounter();
                         tryCheck(result, status);
                     }
