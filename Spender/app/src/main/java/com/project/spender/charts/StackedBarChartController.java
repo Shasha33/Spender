@@ -93,6 +93,15 @@ public class StackedBarChartController extends UpdatableChartController<List<Tag
             return;
         }
 
+        if (whiteIdList != null) {
+            List<TagWithSumAndDate> clearData = new ArrayList<>();
+            for (TagWithSumAndDate tagWithSumAndDate : data) {
+                if (whiteIdList.contains(tagWithSumAndDate.tag.getId())) {
+                    clearData.add(tagWithSumAndDate);
+                }
+            }
+            data = clearData;
+        }
         List<IBarDataSet> dataSets = new ArrayList<>();
         dates = new ArrayList<>();
 

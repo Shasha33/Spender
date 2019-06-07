@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.fragmentHolder, lineFragment);
                 fragmentTransaction.commit();
                 chartsStateHolder.setChartFragment(lineFragment);
-                lineFragment.invalidate();
                 break;
             case R.id.bar_graph_item:
                 Log.i(ChecksRoller.LOG_TAG, "bar graph");
