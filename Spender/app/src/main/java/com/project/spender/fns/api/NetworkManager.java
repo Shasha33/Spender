@@ -173,7 +173,7 @@ public class NetworkManager {
         fns.isCheckExist(fn, fd, fiscalSign, date, sum).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 204) {
+                if (response.code() == OK_WITHOUT_CONTENT) {
                     liveData.postValue(
                             new CheckJsonWithStatus(null, Status.EXIST, null));
 
@@ -181,7 +181,7 @@ public class NetworkManager {
                             fn, fd, fiscalSign, "no").enqueue(new Callback<CheckJson>() {
                         @Override
                         public void onResponse(Call<CheckJson> call, Response<CheckJson> response) {
-                            if (response.code() == 200) {
+                            if (response.code() == OK) {
                                 liveData.postValue(new CheckJsonWithStatus(response.body(), Status.SUCCESS, null));
                             } else {
                                 liveData.postValue(new CheckJsonWithStatus(
@@ -246,7 +246,7 @@ public class NetworkManager {
         fns.signup(newUser).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 204) {
+                if (response.code() == OK_WITHOUT_CONTENT) {
                     liveData.postValue(new StatusWithResponse(Status.SUCCESS, null));
                 } else {
                     liveData.postValue(new StatusWithResponse(Status.WRONG_RESPONSE_ERROR,
@@ -283,7 +283,7 @@ public class NetworkManager {
         fns.restore(new Phone(phone)).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 204) {
+                if (response.code() == OK_WITHOUT_CONTENT) {
                     liveData.postValue(new StatusWithResponse(Status.SUCCESS, null));
                 } else {
                     liveData.postValue(new StatusWithResponse(Status.WRONG_RESPONSE_ERROR,
@@ -321,7 +321,7 @@ public class NetworkManager {
         fns.login(Credentials.basic(phone, password)).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 200) {
+                if (response.code() == OK) {
                     liveData.postValue(new StatusWithResponse(Status.SUCCESS, null));
                 } else {
                     liveData.postValue(new StatusWithResponse(Status.WRONG_RESPONSE_ERROR,
