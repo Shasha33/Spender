@@ -9,6 +9,7 @@ import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.NewUser;
 import com.project.spender.fns.api.data.Phone;
 import com.project.spender.fns.api.data.Status;
+import com.project.spender.fns.api.data.StatusWithResponse;
 import com.project.spender.fns.api.exception.NetworkException;
 
 import java.io.IOException;
@@ -28,8 +29,15 @@ public class NetworkManager {
     private FnsApi fns;
     public static final String DEFAULT_LOGIN = "+79112813247";
     public static final String DEFAULT_PASSWORD = "583066";
-    public final static int CHECK_EXISTS = 204;
+
+    public final static int OK_WITHOUT_CONTENT = 204;
+    public final static int OK = 200;
     public final static int CHECK_NOT_FOUND = 406;
+    public final static int USER_ALREADY_EXISTS = 409;
+    public final static int UNCORRECTED_EMAIL = 400;
+    public final static int UNCORRECTED_PHONE = 500;
+    public final static int UNKNOWN_PHONE = 404;
+    public final static int UNCORRECTED_PHONE_OR_PASSWORD = 403;
 
     private NetworkManager() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -151,7 +159,7 @@ public class NetworkManager {
     public LiveData<CheckJsonWithStatus> getCheckAsync(final String phone, final String password, final String fn, final String fd,
                                                        final String fiscalSign, String date, String sum) {
 
-        final MutableLiveData<CheckJsonWithStatus> liveData = new MutableLiveData<>();
+        MutableLiveData<CheckJsonWithStatus> liveData = new MutableLiveData<>();
         liveData.postValue(new CheckJsonWithStatus(null, Status.SENDING, null));
 
         String loginPassword = Credentials.basic(phone, password);
@@ -186,7 +194,7 @@ public class NetworkManager {
                 } else {
                     liveData.postValue(new CheckJsonWithStatus(
                             null, Status.WRONG_RESPONSE_ERROR,
-                            new NetworkException("Check doesn't exist. Returned " + response.code() + " " + response.message() , response)));
+                            new NetworkException("Check doesn't exist. Response: " + response.code() + " " + response.message() , response)));
                 }
             }
 
@@ -217,13 +225,36 @@ public class NetworkManager {
      * @return код ответа:
      * 204 -- OK,
      * 409 -- пользователь уже существует,
-     * 500 -- номер телефона не корректный,
+     * 500 -- номер телефона некорректный,
      * 400 -- адрес электронной почты некорректный.
      * остальное хз.
      * @throws IOException кидается при проблемах соединения с сервером.
      */
     public int registrationSync(NewUser newUser) throws IOException {
         return fns.signup(newUser).execute().code();
+    }
+
+    public LiveData<StatusWithResponse> registrationAsync(NewUser newUser) {
+        MutableLiveData<StatusWithResponse> liveData = new MutableLiveData<>();
+        liveData.postValue(new StatusWithResponse(Status.SENDING, null));
+        fns.signup(newUser).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 204) {
+                    liveData.postValue(new StatusWithResponse(Status.SUCCESS, null));
+                } else {
+                    liveData.postValue(new StatusWithResponse(Status.WRONG_RESPONSE_ERROR,
+                            new NetworkException("Wrong response: " + response.code() + " " + response.message(), response )));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                liveData.postValue(new StatusWithResponse(Status.NETWORK_ERROR, new NetworkException(t)));
+            }
+        });
+
+        return liveData;
     }
 
     /**
@@ -240,6 +271,29 @@ public class NetworkManager {
         return fns.restore(new Phone(phone)).execute().code();
     }
 
+    public LiveData<StatusWithResponse> restorePasswordAsync(String phone) {
+        MutableLiveData<StatusWithResponse> liveData = new MutableLiveData<>();
+        liveData.postValue(new StatusWithResponse(Status.SENDING, null));
+        fns.restore(new Phone(phone)).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 204) {
+                    liveData.postValue(new StatusWithResponse(Status.SUCCESS, null));
+                } else {
+                    liveData.postValue(new StatusWithResponse(Status.WRONG_RESPONSE_ERROR,
+                            new NetworkException("Wrong response: " + response.code() + " " + response.message(), response )));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                liveData.postValue(new StatusWithResponse(Status.NETWORK_ERROR, new NetworkException(t)));
+            }
+        });
+
+        return liveData;
+    }
+
     /**
      * Проверка корректности телефона и пароля.
      *
@@ -253,5 +307,28 @@ public class NetworkManager {
      */
     public int checkUserSync(String phone, String password) throws IOException {
         return fns.login(Credentials.basic(phone, password)).execute().code();
+    }
+
+    public LiveData<StatusWithResponse> checkUserAsync(String phone, String password) {
+        MutableLiveData<StatusWithResponse> liveData = new MutableLiveData<>();
+        liveData.postValue(new StatusWithResponse(Status.SENDING, null));
+        fns.login(Credentials.basic(phone, password)).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    liveData.postValue(new StatusWithResponse(Status.SUCCESS, null));
+                } else {
+                    liveData.postValue(new StatusWithResponse(Status.WRONG_RESPONSE_ERROR,
+                            new NetworkException("Wrong response: " + response.code() + " " + response.message(), response )));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                liveData.postValue(new StatusWithResponse(Status.NETWORK_ERROR, new NetworkException(t)));
+            }
+        });
+
+        return liveData;
     }
 }
