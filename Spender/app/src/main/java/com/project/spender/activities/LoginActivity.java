@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
@@ -41,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
             String newEmail = email.getText().toString();
             String newNumber = number.getText().toString();
             String newName = name.getText().toString();
-            LiveData<StatusWithResponse> result = ChecksRoller.getInstance().registeration(newName, newEmail, newNumber);
+            LiveData<StatusWithResponse> result = ChecksRoller.getInstance().registration(newName, newEmail, newNumber);
             result.observeForever(status -> {
                 Toast.makeText(LoginActivity.this, status.getUserReadableMassage(), Toast.LENGTH_LONG).show();
                 if (status.getStatus().equals(Status.SUCCESS)) {

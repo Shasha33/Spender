@@ -134,7 +134,7 @@ public class ChecksRoller {
         return networkManager.restorePasswordAsync(number);
     }
 
-    public LiveData<StatusWithResponse> registeration(String name, String email, String number) {
+    public LiveData<StatusWithResponse> registration(String name, String email, String number) {
         NewUser user = new NewUser(name, email, number);
         return networkManager.registrationAsync(user);
     }
@@ -168,7 +168,6 @@ public class ChecksRoller {
         historyListHolder.add(status);
         tryCheck(result, status);
 
-
         return 0;
     }
 
@@ -179,10 +178,9 @@ public class ChecksRoller {
         liveData.observeForever(checkJsonWithStatus -> {
             historyListHolder.update();
             if (checkJsonWithStatus != null) {
+                status.settStatus(checkJsonWithStatus.getUserReadableMassage());
                 if (checkJsonWithStatus.getStatus() == Status.WRONG_RESPONSE_ERROR) {
                     NetworkException e = checkJsonWithStatus.getException();
-                    status.settStatus(e.getMessage());
-                    e.printStackTrace();
                     Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
                             + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause());
                     if (e.getCause() != null && EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
@@ -192,11 +190,6 @@ public class ChecksRoller {
                 } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
                     Log.i(ChecksRoller.LOG_TAG, "Check received");
                     putCheck(checkJsonWithStatus.getCheckJson());
-                    status.settStatus("Check received");
-                } else if (checkJsonWithStatus.getStatus() == Status.EXIST) {
-                    status.settStatus("Exists, but not received yet");
-                } else {
-                    status.settStatus("Waiting for existence check");
                 }
             } else {
                 status.settStatus("Not received yet");

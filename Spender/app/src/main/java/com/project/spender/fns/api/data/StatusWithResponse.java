@@ -32,7 +32,7 @@ public class StatusWithResponse {
             case SUCCESS:
                 return "Success";
             case EXIST:
-                return "Check is exists";
+                return "Check exists";
             case SENDING:
                 return "Sending";
             case NETWORK_ERROR:
@@ -44,13 +44,13 @@ public class StatusWithResponse {
                     case USER_ALREADY_EXISTS:
                         return "User already exists";
                     case UNCORRECTED_EMAIL :
-                        return "Uncorrected email address";
+                        return "Incorrect email address";
                     case UNCORRECTED_PHONE:
-                        return "Uncorrected phone number";
+                        return "Incorrect phone number";
                     case UNKNOWN_PHONE:
                         return "Phone number not found";
                     case UNCORRECTED_PHONE_OR_PASSWORD:
-                        return "Uncorrected Phone number or password";
+                        return "Incorrect phone number or password";
                 }
         }
         return "Unknown error";
