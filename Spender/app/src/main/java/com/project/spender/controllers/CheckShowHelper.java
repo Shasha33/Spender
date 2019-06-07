@@ -40,7 +40,6 @@ public class CheckShowHelper {
         owner = (LifecycleOwner) context;
         this.listView = listView;
 
-//        products = intent.getParcelableArrayListExtra("products");
         products = new ArrayList<>();
         checkId = intent.getLongExtra("check id", -1);
         substring = "%%";
@@ -50,11 +49,9 @@ public class CheckShowHelper {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (productsForAction.contains(position)) {
                 productsForAction.remove(position);
-//                getItemView(position).setBackgroundColor(UNSELECTED_ITEM);
                 view.setBackgroundColor(UNSELECTED_ITEM);
             } else {
                 productsForAction.add(position);
-//                getItemView(position).setBackgroundColor(SELECTED_ITEM);
                 view.setBackgroundColor(SELECTED_ITEM);
             }
         });
@@ -108,7 +105,6 @@ public class CheckShowHelper {
     }
 
     private void clearSelected() {
-
         unColorSelected();
         clearSelectedSet();
     }
@@ -119,8 +115,6 @@ public class CheckShowHelper {
                 ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertExistingTagForProduct(j, products.get(i).getId());
             }
         }
-        //(todo) make sure about auto updating
-        Log.i(ChecksRoller.LOG_TAG, "jere");
         clearSelected();
     }
 

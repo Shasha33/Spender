@@ -59,7 +59,6 @@ public class CheckShowActivity extends AppCompatActivity implements LifecycleOwn
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ADDING_CODE) {
-                Log.i(ChecksRoller.LOG_TAG, "here");
                 controller.addTags(tags);
             } else if (requestCode == REMOVING_CODE) {
                 controller.removeTags(tags);

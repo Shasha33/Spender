@@ -25,7 +25,7 @@ public class TagListHelper {
         this.listView = listView;
         info = textView;
         tags = new ArrayList<>();
-        listView.setAdapter(new TagChoiceAdapter(context, tags));
+        listView.setAdapter(new TagChoiceAdapter(context, tags, null));
         update((LifecycleOwner) context);
     }
 

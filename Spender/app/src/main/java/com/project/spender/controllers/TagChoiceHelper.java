@@ -2,6 +2,7 @@ package com.project.spender.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.ListView;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -24,6 +25,7 @@ public class TagChoiceHelper {
 
     public static final String TAG_ID_LIST = "vlad molodec";
 
+
     public TagChoiceHelper(Context context, ListView listView) {
         this.listView = listView;
         clickedTags = new ArrayList<>();
@@ -42,7 +44,7 @@ public class TagChoiceHelper {
                 view.setBackgroundColor(SELECTED_ITEM);
             }
         });
-        listView.setAdapter(new TagChoiceAdapter(context, tags));
+        listView.setAdapter(new TagChoiceAdapter(context, tags, clickedTags));
 
 
     }
