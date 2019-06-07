@@ -7,11 +7,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.StackedValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.project.spender.data.entities.TagWithSumAndDate;
 
@@ -36,6 +39,8 @@ public class StackedBarChartController {
     private final int speed = 1400;
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss", Locale.ROOT);
 
+    private List<Calendar> dates;
+
     private Set<Long> whiteIdList;
 
     public StackedBarChartController(LifecycleOwner owner, BarChart barChart) {
@@ -56,6 +61,21 @@ public class StackedBarChartController {
         barChart.setDrawValueAboveBar(false);
         barChart.setHighlightFullBarEnabled(false);
         barChart.getAxisRight().setEnabled(false);
+
+        ValueFormatter valueFormatter = new ValueFormatter() {
+
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM", Locale.ROOT);
+
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                int i = (int) value;
+                return mFormat.format(dates.get(i).getTime());
+            }
+        };
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(valueFormatter);
 
         Legend legend = barChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -91,6 +111,8 @@ public class StackedBarChartController {
         }
 
         List<IBarDataSet> dataSets = new ArrayList<>();
+        dates = new ArrayList<>();
+
         int num = 0;
         for (ListIterator<TagWithSumAndDate> iter = data.listIterator(); iter.hasNext();) {
             Calendar time = Calendar.getInstance();
@@ -100,6 +122,7 @@ public class StackedBarChartController {
             } catch (ParseException e) {
                 Log.e("PARSER", "Parser error", e);
             }
+            dates.add(time);
             List<Float> values = new ArrayList<>();
             List<Integer> colors = new ArrayList<>();
             values.add(currTagWSD.sum/100f);
