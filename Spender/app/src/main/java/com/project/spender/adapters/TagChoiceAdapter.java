@@ -48,6 +48,9 @@ public class TagChoiceAdapter extends BaseAdapter {
         Tag tag = tagList.get(position);
 
         ((TextView) convertView.findViewById(R.id.tag_in_list_name)).setText(tag.getName());
+        if (tag.getSubstring() != null) {
+            ((TextView) convertView.findViewById(R.id.tag_in_list_substring)).setText("auto adding by " + tag.getSubstring());
+        }
         convertView.findViewById(R.id.tag_in_list_color).setBackgroundColor(tag.getColor());
 
 
