@@ -167,6 +167,20 @@
                 android:textSize="15dp"
                 android:text="После добавление тега с регулярным выражением, он не добавлятся автоматически к уже полученным товарам"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="Чтобы добавить тег, который будет добавляться ко всем товарам,
+                 используйте любое непустое подходящее регулярное выражение, так как пустая строка в этом поле считается отстутвием строки для добавления"/>
+
 
             <TextView
                 android:layout_width="wrap_content"

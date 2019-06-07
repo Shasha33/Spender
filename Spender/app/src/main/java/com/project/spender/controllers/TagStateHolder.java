@@ -73,7 +73,9 @@ public class TagStateHolder {
      */
     public void setRegEx(String regEx) {
         Log.i(ChecksRoller.LOG_TAG, "TRYING TO ADD NEW TAG " + regEx);
-        this.regEx = regEx;
+        if (!regEx.equals("")) {
+            this.regEx = regEx;
+        }
     }
 
     /**
