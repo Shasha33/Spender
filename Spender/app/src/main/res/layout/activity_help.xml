@@ -129,32 +129,6 @@
 
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-
-                android:layout_marginTop="10dp"
-                android:layout_gravity="left"
-
-                android:textColor="@color/black"
-                android:fontFamily="monospace"
-                android:textSize="15dp"
-                android:text="К сожалению, если пароль или логин неверный,то об этом никак не сообщается, и чек скорее всего не будет получен по причине истечения времени"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-
-                android:layout_marginTop="10dp"
-                android:layout_gravity="left"
-
-                android:textColor="@color/black"
-                android:fontFamily="monospace"
-                android:textSize="15dp"
-                android:text="Иногда чеки могут не быть получены по причине, не описанной кодами возврата, в таком случае с большой вероятностью, чек можно будет получить позже"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -178,21 +152,7 @@
 
                 android:textColor="@color/black"
                 android:textSize="15dp"
-                android:text="История запросов изменит свой вид на более прияный, не переживайте"/>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-
-                android:layout_marginTop="10dp"
-                android:layout_gravity="left"
-                android:fontFamily="monospace"
-
-                android:textColor="@color/black"
-                android:textSize="15dp"
-                android:text="Формат даты - DD.MM.YYYY"/>
+                android:text="Формат дат - DD.MM.YYYY"/>
 
             <TextView
                 android:layout_width="wrap_content"
