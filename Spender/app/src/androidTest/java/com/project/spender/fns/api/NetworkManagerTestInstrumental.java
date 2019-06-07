@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData;
 import com.jraska.livedata.TestObserver;
 import com.project.spender.data.ScanResult;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
+import com.project.spender.fns.api.data.NewUser;
 import com.project.spender.fns.api.data.Status;
+import com.project.spender.fns.api.data.StatusWithResponse;
+import com.project.spender.fns.api.exception.NetworkException;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -51,5 +54,37 @@ public class NetworkManagerTestInstrumental {
                 .awaitNextValue().assertValue(value -> value.getStatus() == Status.SUCCESS);
 
         assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", liveData.getValue().getCheckJson().getData().items.get(0).name);
+    }
+
+    @Test
+    public void registrationAsyncSimpleTest() throws InterruptedException, NetworkException {
+        LiveData<StatusWithResponse> liveData = NetworkManager.getInstance()
+                .registrationAsync(new NewUser("mishockk", "qwerty@gmail.ru", "+79112813247"));
+        TestObserver.test(liveData)
+                .awaitValue().assertValue(value -> value.getStatus() == Status.SENDING)
+                .awaitNextValue().assertValue(value -> value.getStatus() == Status.WRONG_RESPONSE_ERROR);
+
+        assertEquals(NetworkManager.USER_ALREADY_EXISTS, liveData.getValue().getException().getCode());
+    }
+
+    @Test
+    public void restorePasswordAsyncSimpleTes() throws InterruptedException {
+        LiveData<StatusWithResponse> liveData = NetworkManager.getInstance()
+                .restorePasswordAsync("+777");
+        TestObserver.test(liveData)
+                .awaitValue().assertValue(value -> value.getStatus() == Status.SENDING)
+                .awaitNextValue().assertValue(value -> value.getStatus() == Status.WRONG_RESPONSE_ERROR);
+
+        assertEquals(NetworkManager.UNCORRECTED_PHONE, liveData.getValue().getException().getCode());
+    }
+
+    @Test
+    public void checkUserAsyncSimpleTes() throws InterruptedException {
+        LiveData<StatusWithResponse> liveData = NetworkManager.getInstance()
+                .checkUserAsync(defaultLogin, defaultPassword);
+        TestObserver.test(liveData)
+                .awaitValue().assertValue(value -> value.getStatus() == Status.SENDING)
+                .awaitNextValue().assertValue(value -> value.getStatus() == Status.SUCCESS);
+
     }
 }
