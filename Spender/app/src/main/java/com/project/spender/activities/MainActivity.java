@@ -15,23 +15,22 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.R;
 import com.project.spender.charts.ChartsStateHolder;
+import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.data.ScanResult;
 import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
-import com.project.spender.R;
-import com.project.spender.data.ScanResult;
+import com.project.spender.fragments.StackedBarChartFragment;
 
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     private FragmentManager fragmentManager;
     private PieChartFragment pieFragment;
     private LineChartFragment lineFragment;
+    private StackedBarChartFragment barFragment;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -149,7 +149,12 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 fragmentTransaction.replace(R.id.fragmentHolder, lineFragment);
                 fragmentTransaction.commit();
                 chartsStateHolder.setChartFragment(lineFragment);
-                lineFragment.invalidate();
+                break;
+            case R.id.bar_graph_item:
+                Log.i(ChecksRoller.LOG_TAG, "bar graph");
+                fragmentTransaction.replace(R.id.fragmentHolder, barFragment);
+                fragmentTransaction.commit();
+                chartsStateHolder.setChartFragment(barFragment);
                 break;
             case R.id.tags_for_chart:
                 startActivityForResult(new Intent(this, TagChoiceActivity.class), CHART_TAGS_CODE);
@@ -220,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         fragmentManager = getSupportFragmentManager();
         pieFragment = PieChartFragment.newInstance();
         lineFragment = LineChartFragment.newInstance();
+        barFragment = StackedBarChartFragment.newInstance();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
