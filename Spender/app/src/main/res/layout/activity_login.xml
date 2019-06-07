@@ -29,7 +29,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="10dp"
         android:ems="10"
-        android:hint="phone number"
+        android:hint="phone number (+7**********)"
         android:inputType="phone" />
 
     <EditText

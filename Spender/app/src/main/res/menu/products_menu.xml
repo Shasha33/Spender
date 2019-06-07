@@ -5,22 +5,19 @@
     <item
         android:id="@+id/add_tag"
         android:title="add tag for selected"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/remove"
-        android:title="remove selected"
-        app:showAsAction="never"/>
-    <!--  todo maybe it should be represented as big plus on the appBar -->
-
-    <item
-        android:id="@+id/new_tag"
-        android:title="new tag"
-        app:showAsAction="never"/>
+        android:icon="@drawable/tag_add"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/remove_tag"
         android:title="remove tag from selected"
-        app:showAsAction="never"/>
+        android:icon="@drawable/tag_remove"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/remove"
+        android:title="remove selected"
+        android:icon="@drawable/delete"
+        app:showAsAction="always"/>
 
 </menu>

@@ -2,6 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/receiving_history"
+        android:title="history"
+        android:visible="true"
+        app:showAsAction="never"/>
+
+
+    <item
         android:id="@+id/action_cheese"
         android:icon="@drawable/cheese"
         android:title="cheese"
@@ -11,19 +18,19 @@
     <item android:id="@+id/action_delete"
         android:title="@string/delete_all_purchases"
         android:icon="@drawable/delete"
-        app:showAsAction="always"/>
+        android:visible="false"
+        app:showAsAction="never"/>
 
     <item android:id="@+id/action_tag_list"
-        android:title="view tags"
-        app:showAsAction="never"
-        android:icon="@drawable/tag">
+        android:title="show all tags"
+        app:showAsAction="never">
     </item>
 
     <item
         android:title="tags"
         app:showAsAction="always"
         android:id="@+id/tags_for_chart"
-        android:icon="@android:drawable/ic_menu_edit">
+        android:icon="@drawable/tag">
     </item>
 
     <item
@@ -42,8 +49,9 @@
         android:title="chart type"
         app:showAsAction="always"
         android:id="@+id/chart_type"
-        android:icon="@drawable/stats">
-        <menu>
+        android:icon="@drawable/browser">
+        <menu
+            xmlns:android="http://schemas.android.com/apk/res/android">
 
             <item android:id="@+id/pie_chart_item"
                 android:title="pie chart" />
@@ -61,5 +69,10 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/help"
+        android:title="help"
+        android:visible="true"
+        app:showAsAction="never"/>
 
 </menu>

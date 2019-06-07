@@ -14,37 +14,42 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
-import com.project.spender.ChecksRoller;
+import com.project.spender.R;
 import com.project.spender.charts.ChartsStateHolder;
+import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.data.ScanResult;
 import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
-import com.project.spender.R;
-import com.project.spender.ScanResult;
 import com.project.spender.fragments.StackedBarChartFragment;
 
-public class MainActivity extends AppCompatActivity {
+import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
+
+public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ImageButton scan;
     private ImageButton list;
     private ImageButton statistics;
-    private ImageButton secret;
-    private int clickCounter;
     private EditText begin;
     private EditText end;
 
+    private LifecycleRegistry lifecycleRegistry;
+
     private ChartsStateHolder chartsStateHolder;
 
-    private final static int MAGIC_CONST = 30;
     private final static int CAMERA_REQUEST = 1;
     private final static int CHART_TAGS_CODE = 15325;
     private final static int CHECK_REQUEST = 42;
+    private final static int LOGIN_CODE = 12400;
 
     private FragmentManager fragmentManager;
     private PieChartFragment pieFragment;
@@ -54,23 +59,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHECK_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "Scanned", Toast.LENGTH_SHORT).show();
-            } else if (requestCode == ScanResult.NOT_ENOUGH_DATA) {
-                Toast.makeText(this, "Authorization required", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Check not received", Toast.LENGTH_SHORT).show();
-            }
+
+            Toast.makeText(this, ScanResult.explain(resultCode), Toast.LENGTH_LONG).show();
+
         } else if (requestCode == CHART_TAGS_CODE) {
-            //tags for chart
-            long[] ids = data.getLongArrayExtra("tag ids");
+
+            if (data == null) {
+                return;
+            }
+            long[] ids = data.getLongArrayExtra(TAG_ID_LIST);
+            if (ids == null) {
+                return;
+            }
             chartsStateHolder.setIds(ids);
+        } else if (requestCode == LOGIN_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_REQUEST) {
             if (grantResults.length == 0
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -100,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_delete:
                 ChecksRoller.getInstance().onRemoveAllClicked();
                 return true;
+            case R.id.help:
+                startActivity(new Intent(this, HelpActivity.class));
+                return true;
+
+            case R.id.receiving_history:
+                startActivity(new Intent(this, HistoryActivity.class));
+                return true;
 
             case R.id.action_tag_list:
                 Intent intent = new Intent(this, TagListActivity.class);
@@ -107,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.putin:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_CODE);
                 break;
             case R.id.putout:
                 ChecksRoller.getInstance().clearAccountInfo();
@@ -147,11 +165,27 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        lifecycleRegistry.markState(Lifecycle.State.STARTED);
+    }
+
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        lifecycleRegistry = new LifecycleRegistry(this);
+        lifecycleRegistry.markState(Lifecycle.State.CREATED);
+
 
         ChecksRoller.getInstance().init(this);
 
@@ -170,17 +204,6 @@ public class MainActivity extends AppCompatActivity {
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);
-
-        secret = findViewById(R.id.secret);
-        secret.setOnClickListener(view -> {
-            clickCounter++;
-            if (clickCounter > MAGIC_CONST) {
-                secret.setBackgroundResource(R.drawable.clevercat);
-                clickCounter = 0;
-            } else {
-                secret.setImageResource(R.drawable.cat);
-            }
-        });
 
         statistics.setImageResource(R.drawable.piechart_chosen);
 
@@ -208,11 +231,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.fragmentHolder, pieFragment);
         fragmentTransaction.commit();
 
-        //it is not necessary, probably
-        //but wont delete yet
         chartsStateHolder = new ChartsStateHolder();
-        chartsStateHolder.setBeginDateInput(begin);
-        chartsStateHolder.setEndDateInput(end);
+        chartsStateHolder.setBeginDateInput(this, begin);
+        chartsStateHolder.setEndDateInput(this, end);
         chartsStateHolder.setChartFragment(pieFragment);
 
     }

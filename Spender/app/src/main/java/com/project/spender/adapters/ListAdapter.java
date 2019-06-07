@@ -1,4 +1,4 @@
-package com.project.spender.activities;
+package com.project.spender.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.project.spender.ChecksRoller;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+
+import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
+import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Tag;
@@ -21,10 +25,13 @@ public class ListAdapter extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     List<CheckWithProducts> checkList;
+    LinearLayout layout;
+    LifecycleOwner owner;
 
     public ListAdapter(Context context, List<CheckWithProducts> list) {
         this.context = context;
         checkList = list;
+        owner = (LifecycleOwner) context;
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -55,24 +62,18 @@ public class ListAdapter extends BaseAdapter {
         Check check = getCheck(position);
 
 
-        List<Tag> tags = ChecksRoller.getInstance().getAppDatabase()
+        LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase()
                 .getCheckDao().getTagsByCheckId(check.getId());
-        LinearLayout layout = view.findViewById(R.id.check_tag_list);
-        Adapter adapter = new TagAdapter(context, tags);
-        layout.removeAllViews();
-        for (int i = 0; i < tags.size(); i++) {
-            View child = adapter.getView(i, null, null);
-            child.setBackgroundColor(tags.get(i).getColor());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(50, 30);
-            params.setMargins(5, 0, 5, 0);
-            layout.addView(child, params);
-        }
+        layout = view.findViewById(R.id.check_tag_list);
+        final LinearLayout linearLayout = layout;
+        tags.observe(owner, tags1 -> updateTags(tags1, linearLayout));
 
 
-        ((TextView) view.findViewById(R.id.name)).setText(check.getName() + " from " + check.getShop());
+        ((TextView) view.findViewById(R.id.name)).setText(check.getName());
         ((TextView) view.findViewById(R.id.sum)).setText("Total: "  +
                 String.format("%.2f", check.getTotalSum() / 100.0));
-        ((TextView) view.findViewById(R.id.data)).setText("Time: " + check.getDate());
+        ((TextView) view.findViewById(R.id.data)).setText("Time: " + check.getDate().replace("T", " "));
+        ((TextView) view.findViewById(R.id.shop)).setText("Shop: " + check.getShop());
 
         return view;
     }
@@ -81,5 +82,16 @@ public class ListAdapter extends BaseAdapter {
         return ((CheckWithProducts) getItem(position)).getCheck()   ;
     }
 
+    private void updateTags(List<Tag> tags, LinearLayout layout1) {
+        Adapter adapter = new TagAdapter(context, tags);
+        layout1.removeAllViews();
+        for (int i = 0; i < tags.size(); i++) {
+            View child = adapter.getView(i, null, null);
+            child.setBackgroundColor(tags.get(i).getColor());
+
+            layout1.addView(child, TagListHelper.tagParams());
+        }
+        layout1.invalidate();
+    }
 }
 

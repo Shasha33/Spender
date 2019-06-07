@@ -7,15 +7,22 @@ import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.project.spender.activities.MainActivity;
 import com.project.spender.charts.PieChartController;
 import com.project.spender.R;
+import com.project.spender.controllers.ChecksRoller;
 
 import java.util.Set;
 
 
 public class PieChartFragment extends ChartFragment {
+
+    private ImageButton secret;
+    private int clickCounter;
+    private final static int MAGIC_CONST = 30;
 
     private PieChartController pieChartController;
 
@@ -38,6 +45,19 @@ public class PieChartFragment extends ChartFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pie_chart, container, false);
 
+        secret = view.findViewById(R.id.secret);
+        secret.setOnClickListener(v -> {
+            clickCounter++;
+            if (clickCounter > MAGIC_CONST) {
+                secret.setImageResource(R.drawable.clevercat);
+//                clickCounter = 0;
+            } else {
+                secret.setImageResource(R.drawable.cat);
+            }
+
+            ChecksRoller.getInstance().setCatMode();
+        });
+
         //Pie
         pieChartController = new PieChartController(getViewLifecycleOwner(), view.findViewById(R.id.pieChart));
         pieChartController.setWhiteIdList(whiteIdList);
@@ -56,6 +76,11 @@ public class PieChartFragment extends ChartFragment {
     }
 
     public void drawHole(boolean status) {
+        if (status) {
+            secret.setVisibility(View.VISIBLE);
+        } else {
+            secret.setVisibility(View.GONE);
+        }
         pieChartController.drawHole(status);
         pieChartController.invalidate();
     }

@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -18,63 +18,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
+            android:gravity="left"
+            android:layout_gravity="left"
             android:text=""
+            android:fontFamily="monospace"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:fontFamily="monospace"
             android:textSize="15sp">
-
         </TextView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_gravity="left"
-            android:id="@+id/check_tag_list"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
         <TextView
-            android:id="@+id/sum"
+            android:id="@+id/time"
             android:layout_width="wrap_content"
-            android:fontFamily="monospace"
-
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginEnd="10dp"
-
+            android:fontFamily="monospace"
             android:textColor="@color/black"
+            android:layout_marginEnd="10dp"
             android:text="">
 
         </TextView>
 
         <TextView
-            android:id="@+id/data"
+            android:id="@+id/count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginEnd="10dp"
+            android:text=""
+            android:visibility="gone"
+            android:layout_marginRight="10dp"
             android:fontFamily="monospace"
-
-            android:textColor="@color/black"
-            android:text="">
+            android:textColor="@color/black">
 
         </TextView>
-
-        <TextView
-            android:id="@+id/shop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginEnd="10dp"
-            android:fontFamily="monospace"
-            android:textColor="@color/black"
-            android:text="">
-
-        </TextView>
-
-
     </LinearLayout>
 </LinearLayout>

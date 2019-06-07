@@ -1,6 +1,6 @@
 package com.project.spender.fns.api;
 
-import com.project.spender.ScanResult;
+import com.project.spender.data.ScanResult;
 import com.project.spender.fns.api.exception.NetworkException;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
@@ -20,7 +20,7 @@ public class NetworkManagerTest {
 
     // все сломается если я поменяю пароль
     private String defaultLogin = "+79112813247";
-    private String defaultPassword = "882107";
+    private String defaultPassword = "583066";
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();

@@ -12,5 +12,5 @@
         android:id="@+id/set_tags_for_list"
         android:title="tags"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_edit" />
+        android:icon="@drawable/tag" />
 </menu>

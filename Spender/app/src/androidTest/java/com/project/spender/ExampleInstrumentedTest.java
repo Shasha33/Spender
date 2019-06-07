@@ -1,11 +1,15 @@
 package com.project.spender;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.filters.SmallTest;
 
+import com.jraska.livedata.TestObserver;
+
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -20,6 +24,10 @@ import static org.junit.Assert.assertEquals;
 
 @SmallTest
 public class ExampleInstrumentedTest {
+
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -30,13 +38,9 @@ public class ExampleInstrumentedTest {
     @Test
     public void getLiveDataTest() throws InterruptedException {
 
-        final CountDownLatch latch = new CountDownLatch(1);
         MutableLiveData<Integer> liveData = new MutableLiveData<>();
-
-
+        
         liveData.postValue(1);
-        liveData.observeForever((i) -> latch.countDown());
-
-        latch.await();
+        TestObserver.test(liveData).awaitValue().assertValue(i -> i == 1);
     }
 }

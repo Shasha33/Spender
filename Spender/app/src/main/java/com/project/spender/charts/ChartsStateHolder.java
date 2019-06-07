@@ -4,20 +4,15 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.common.util.ArrayUtils;
-import com.project.spender.DataHelper;
+import com.project.spender.controllers.DataHelper;
 import com.project.spender.fragments.ChartFragment;
 
-import java.security.InvalidParameterException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 public class ChartsStateHolder {
 
@@ -27,13 +22,13 @@ public class ChartsStateHolder {
 
     private ChartFragment chartFragment;
 
-    public void setBeginDateInput(@NonNull EditText editText) {
+    public void setBeginDateInput(Context context, @NonNull EditText editText) {
         editText.setOnEditorActionListener((textView, i, keyEvent) -> {
             try {
                 beginDate = DataHelper.dateConvert(textView.getText().toString());
-            } catch (InvalidParameterException e) {
+            } catch (Exception e) {
                 beginDate = DataHelper.DEFAULT_BEGIN;
-                return false;
+                Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
             }
             hideKeyboard(textView);
             updateFragment();
@@ -41,13 +36,13 @@ public class ChartsStateHolder {
         });
     }
 
-    public void setEndDateInput(@NonNull EditText editText) {
+    public void setEndDateInput(Context context, @NonNull EditText editText) {
         editText.setOnEditorActionListener((textView, i, keyEvent) -> {
             try {
                 endDate = DataHelper.dateConvert(textView.getText().toString());
-            } catch (InvalidParameterException e) {
+            } catch (Exception e) {
                 endDate = DataHelper.DEFAULT_END;
-                return false;
+                Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
             }
             hideKeyboard(textView);
             updateFragment();
@@ -84,5 +79,4 @@ public class ChartsStateHolder {
         chartFragment.setWhiteIdList(whiteList);
         chartFragment.resetData();
     }
-    //(todo) your code here
 }

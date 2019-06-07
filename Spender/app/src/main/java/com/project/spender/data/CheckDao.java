@@ -98,10 +98,8 @@ public abstract class CheckDao {
     /**
      * Adds tag for product by id
      */
-    @Transaction
-    public long insertExistingTagForProduct(long tagId, long productId) {
+    public void insertExistingTagForProduct(long tagId, long productId) {
         insertProductTagJoin(new ProductTagJoin(productId, tagId));
-        return tagId;
     }
 
     /**
@@ -137,17 +135,17 @@ public abstract class CheckDao {
      * @return все товары
      */
     @Query("SELECT * FROM Product")
-    public abstract List<Product> getAllProducts();
+    public abstract LiveData<List<Product>> getAllProducts();
 
     /**
      * Returns list of all tags
      */
     @Query("SELECT * FROM Tag")
-    public abstract List<Tag> getAllTags();
+    public abstract LiveData<List<Tag>> getAllTags();
 
     @Transaction
     @Query("SELECT * FROM `Check` WHERE name LIKE :exp")
-    public abstract List<CheckWithProducts> getCheckByRegEx(String exp);
+    public abstract LiveData<List<CheckWithProducts>> getCheckByRegEx(String exp);
 
 
 
@@ -157,7 +155,7 @@ public abstract class CheckDao {
      * @return все чеки
      */
     @Query("SELECT * FROM `Check`")
-    public abstract List<Check> getAllChecks();
+    public abstract LiveData<List<Check>> getAllChecks();
 
     /**
      * Метод получает все чеки вместе со всеми товарами в них.
@@ -166,7 +164,7 @@ public abstract class CheckDao {
      */
     @Transaction
     @Query("SELECT * FROM `Check`")
-    public abstract List<CheckWithProducts> getAll();
+    public abstract LiveData<List<CheckWithProducts>> getAll();
 
     /**
      * Возвращает id тега по имени.
@@ -179,11 +177,11 @@ public abstract class CheckDao {
 
     @Transaction
     @Query("SELECT tag.id, tag.name, tag.color, tag.substring FROM tag INNER JOIN product_tag_join ON tag.id = tag_id WHERE product_id == :productId")
-    public abstract List<Tag> getTagsByProductId(long productId);
+    public abstract LiveData<List<Tag>> getTagsByProductId(long productId);
 
     @Transaction
     @Query("SELECT DISTINCT tag.id, tag.name, tag.color, tag.substring FROM tag, product_tag_join, product WHERE tag.id = tag_id AND product_id == product.id AND check_id = :checkId")
-    public abstract List<Tag> getTagsByCheckId(long checkId);
+    public abstract LiveData<List<Tag>> getTagsByCheckId(long checkId);
 
     @Transaction
     @Query("SELECT tag.id, tag.name, tag.color, tag.substring, SUM(product.sum) as sum " +
@@ -257,7 +255,7 @@ public abstract class CheckDao {
 
     @Transaction
     @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
-    public abstract List<CheckWithProducts> getChecksWithProductsByDate(String start, String finish);
+    public abstract LiveData<List<CheckWithProducts>> getChecksWithProductsByDate(String start, String finish);
 
 
 
@@ -268,13 +266,13 @@ public abstract class CheckDao {
 
     @Transaction
     @Query("SELECT * FROM `Check` WHERE  name LIKE :regEx AND datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
-    public abstract List<CheckWithProducts> getChecksWithProductsByDateAndRegEx(String regEx, String start, String finish);
+    public abstract LiveData<List<CheckWithProducts>> getChecksWithProductsByDateAndRegEx(String regEx, String start, String finish);
 
     @Query("SELECT * FROM `Product` WHERE  name LIKE :regEx ")
-    public abstract List<Product> getProductsByRegEx(String regEx);
+    public abstract LiveData<List<Product>> getProductsByRegEx(String regEx);
 
     @Query("SELECT * FROM Product WHERE name LIKE :exp AND check_id = :checkId")
-    public abstract List<Product> getProductByRegEx(String exp, long checkId);
+    public abstract LiveData<List<Product>> getProductByRegEx(String exp, long checkId);
 
     // DELETE. Все зависимые объекты удаляются автоматически. Например все товары из чека.
     // Теги являются независимыми, поэтому их иногда нужно чистить вручную.
