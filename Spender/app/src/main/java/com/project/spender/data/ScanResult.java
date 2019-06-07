@@ -40,6 +40,9 @@ public class ScanResult {
         return res;
     }
 
+    /**
+     * Returns text representation of given result code
+     */
     public static String explain(int code) {
         switch (code) {
             case Activity.RESULT_OK:
@@ -73,7 +76,11 @@ public class ScanResult {
         return sum;
     }
 
-    public ScanResult(String result) {
+    /**
+     * Parses given string and creates new instance.
+     * If string can not be parsed as check info throws exception
+     */
+    public ScanResult(String result) throws InvalidParameterException{
         List<String> resultNumbers = parseNumbers(result);
         for (String i : resultNumbers) {
             Log.i(ChecksRoller.LOG_TAG, i);
