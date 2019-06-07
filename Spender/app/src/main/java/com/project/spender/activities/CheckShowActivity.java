@@ -23,6 +23,9 @@ import com.project.spender.controllers.CheckShowHelper;
 
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
+/**
+ * Activity for showing products in the check
+ */
 public class CheckShowActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ListView listView;

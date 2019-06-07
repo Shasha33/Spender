@@ -21,6 +21,9 @@ import com.project.spender.data.entities.Tag;
 
 import java.util.List;
 
+/**
+ * Adapter for checks list
+ */
 public class ListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;

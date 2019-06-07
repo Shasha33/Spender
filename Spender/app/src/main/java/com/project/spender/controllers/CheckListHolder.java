@@ -15,7 +15,6 @@ import androidx.lifecycle.LiveData;
 import com.project.spender.activities.CheckShowActivity;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.adapters.ListAdapter;
-import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.ProductTagJoin;
@@ -25,7 +24,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.project.spender.controllers.DataHelper.dateConvert;
+import static com.project.spender.controllers.DateHelper.dateConvert;
 
 public class CheckListHolder {
 
@@ -46,8 +45,8 @@ public class CheckListHolder {
 
 
     public CheckListHolder(ListView listView, Context context, TextView textView) {
-        begin = DataHelper.DEFAULT_BEGIN;
-        end = DataHelper.DEFAULT_END;
+        begin = DateHelper.DEFAULT_BEGIN;
+        end = DateHelper.DEFAULT_END;
         regEx = "%%";
         list = new ArrayList<>();
         productList = new ArrayList<>();
@@ -113,7 +112,7 @@ public class CheckListHolder {
         try {
             this.begin = dateConvert(begin);
         } catch (ParseException e) {
-            this.begin = DataHelper.DEFAULT_BEGIN;
+            this.begin = DateHelper.DEFAULT_BEGIN;
             throw new IllegalArgumentException();
         }
         updateState();
@@ -124,7 +123,7 @@ public class CheckListHolder {
 
             this.end = dateConvert(end);
         } catch (ParseException e) {
-            this.end = DataHelper.DEFAULT_END;
+            this.end = DateHelper.DEFAULT_END;
             throw new IllegalArgumentException();
         }
         updateState();

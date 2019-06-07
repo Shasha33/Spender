@@ -34,6 +34,9 @@ import com.project.spender.fragments.StackedBarChartFragment;
 
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
+/**
+ * Activity with diagram and main menu
+ */
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ImageButton scan;

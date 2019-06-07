@@ -15,6 +15,9 @@ import com.project.spender.data.entities.CheckWithProducts;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for storage check requests statuses
+ */
 public class HistoryListHolder {
 
     private ListView listView;
@@ -25,6 +28,9 @@ public class HistoryListHolder {
         list = new ArrayList<>();
     }
 
+    /**
+     * Adds list view for statuses list
+     */
     public void setListView(Context context, ListView listView, TextView textView) {
         this.listView = listView;
         info = textView;
@@ -32,11 +38,17 @@ public class HistoryListHolder {
         infoSet();
     }
 
+    /**
+     * Ads new checks status
+     */
     public void add(CheckStatus checkStatus) {
         list.add(checkStatus);
         upgrade();
     }
 
+    /**
+     * Updates list view if it not null
+     */
     public void update() {
         if (listView != null) {
             listView.invalidateViews();
@@ -51,7 +63,7 @@ public class HistoryListHolder {
         }
     }
 
-    public void upgrade() {
+    private void upgrade() {
         if (listView != null) {
             infoSet();
             listView.invalidate();

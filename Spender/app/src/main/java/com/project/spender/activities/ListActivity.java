@@ -32,6 +32,9 @@ import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
 
+/**
+ * Activity for showing list of checks or products
+ */
 public class ListActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ListView listView;

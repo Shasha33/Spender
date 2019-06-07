@@ -11,6 +11,9 @@ import com.project.spender.data.entities.Tag;
 
 import java.util.List;
 
+/**
+ * Adapter for products list
+ */
 public class TagAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater lInflater;

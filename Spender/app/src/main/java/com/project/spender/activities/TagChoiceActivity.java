@@ -18,6 +18,9 @@ import androidx.lifecycle.LifecycleRegistry;
 import com.project.spender.R;
 import com.project.spender.controllers.TagChoiceHelper;
 
+/**
+ * Activity for choosing list of tags for action
+ */
 public class TagChoiceActivity extends AppCompatActivity implements LifecycleOwner {
 
     private TagChoiceHelper controller;

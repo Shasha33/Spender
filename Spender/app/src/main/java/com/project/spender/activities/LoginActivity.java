@@ -17,6 +17,9 @@ import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.data.StatusWithResponse;
 
+/**
+ * Activity for login, register and password restore actions
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText password;

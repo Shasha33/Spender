@@ -19,7 +19,9 @@ import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.controllers.HistoryListHolder;
 import com.project.spender.data.entities.CheckWithProducts;
 
-
+/**
+ * Activity for showing list of check requests and its statuses in current session
+ */
 public class HistoryActivity extends AppCompatActivity {
 
     private ListView listView;

@@ -5,8 +5,10 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public abstract class DataHelper {
-
+/**
+ * Class for generalizing dates usage
+ */
+public abstract class DateHelper {
 
     public static final String DEFAULT_BEGIN = "1999-03-22";
     public static final String DEFAULT_END = "now";

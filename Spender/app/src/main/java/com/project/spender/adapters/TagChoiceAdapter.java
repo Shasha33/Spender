@@ -18,6 +18,9 @@ import java.util.List;
 import static com.project.spender.controllers.CheckShowHelper.SELECTED_ITEM;
 import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
 
+/**
+ * Adapter for tags available to choose list
+ */
 public class TagChoiceAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;

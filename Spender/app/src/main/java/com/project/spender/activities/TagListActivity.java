@@ -26,6 +26,9 @@ import com.project.spender.data.entities.Tag;
 
 import java.util.List;
 
+/**
+ * Activity for showing all tags
+ */
 public class TagListActivity extends AppCompatActivity implements LifecycleOwner {
 
     private ListView listView;

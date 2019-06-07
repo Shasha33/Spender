@@ -17,6 +17,9 @@ import java.util.List;
 import static com.project.spender.controllers.CheckShowHelper.SELECTED_ITEM;
 import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
 
+/**
+ * Class to control tag choice process
+ */
 public class TagChoiceHelper {
 
     private List<Tag> clickedTags;
@@ -25,7 +28,9 @@ public class TagChoiceHelper {
 
     public static final String TAG_ID_LIST = "vlad molodec";
 
-
+    /**
+     * Creates new instance with given list view for all tags list, using context as owner
+     */
     public TagChoiceHelper(Context context, ListView listView) {
         this.listView = listView;
         clickedTags = new ArrayList<>();
@@ -56,6 +61,9 @@ public class TagChoiceHelper {
 
     }
 
+    /**
+     * Created return intent with extra tags list in it
+     */
     public Intent resultIntent() {
         Intent intent = new Intent();
         long[] ids = new long[clickedTags.size()];

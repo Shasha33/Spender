@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class for storage new tag and creating
+ */
 public class TagStateHolder {
 
     private static final List<Integer> DEFAULT_COLOR = new ArrayList<>();
@@ -52,6 +55,10 @@ public class TagStateHolder {
         this.name = name;
     }
 
+    /**
+     * Trying to parse color from given string.
+     * If its possible saves it
+     */
     public void setColor(String color) {
         Log.i(ChecksRoller.LOG_TAG, color + "");
         try {
@@ -61,11 +68,18 @@ public class TagStateHolder {
         }
     }
 
+    /**
+     * Saves given string as regular expression for auto add to products
+     */
     public void setRegEx(String regEx) {
-        Log.i(ChecksRoller.LOG_TAG, "TRYING TO ADD NEW TAF " + regEx);
+        Log.i(ChecksRoller.LOG_TAG, "TRYING TO ADD NEW TAG " + regEx);
         this.regEx = regEx;
     }
 
+    /**
+     * Creates new tag with saved parameters
+     * If where no saved color, uses random one
+     */
     public void createTag() {
         if (color == null) {
             Random random = new Random();

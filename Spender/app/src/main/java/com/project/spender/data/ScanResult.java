@@ -10,6 +10,9 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for store result of code scanning
+ */
 public class ScanResult {
 
     //(todo) come up with natural clear name

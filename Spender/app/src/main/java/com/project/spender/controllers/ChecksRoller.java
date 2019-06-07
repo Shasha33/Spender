@@ -28,11 +28,14 @@ import com.project.spender.fns.api.data.StatusWithResponse;
 import com.project.spender.fns.api.exception.NetworkException;
 
 import java.io.EOFException;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+
+/**
+ * Singleton class to control interaction of ui and ui helpers with database and network
+ */
 public class ChecksRoller {
 
     private static class CheckRollerHolder {
@@ -48,7 +51,7 @@ public class ChecksRoller {
     private static final String ACCOUNT_LOGIN = "login";
     private static final String ACCOUNT_PASSWORD = "password";
     private static SharedPreferences accountInfo;
-    private boolean supercatMode = false;
+    private boolean superCatMode = false;
     private LifecycleOwner owner;
 
     private HistoryListHolder historyListHolder = new HistoryListHolder();
@@ -56,21 +59,29 @@ public class ChecksRoller {
     private String number;
     private String password;
 
+    /**
+     * Set super user mod with awesome car image and ability to use Misha's login and password
+     */
     public void setCatMode() {
-        supercatMode = true;
+        superCatMode = true;
     }
 
+    /**
+     * Tells if cat mode on
+     */
     public boolean getCatMode() {
-        return supercatMode;
+        return superCatMode;
     }
 
-
+    /**
+     * Returns class that contains check requests history
+     */
     public HistoryListHolder getHistoryListHolder() {
         return historyListHolder;
     }
 
     /**
-     * Saves new number and password.
+     * Saves new number and password to local settings.
      * If parameter did not change put null to it
      */
     public void saveAccountInfo(@Nullable String name, @Nullable String password) {
@@ -84,22 +95,34 @@ public class ChecksRoller {
         editor.apply();
     }
 
+    /**
+     * Removes number and password from local settings
+     */
     public void clearAccountInfo() {
         SharedPreferences.Editor editor = accountInfo.edit();
         editor.clear();
         editor.apply();
     }
 
-
+    /**
+     * Updates local variables in accordance with saved settings
+     */
     private void updateLoginInfo() {
         number = accountInfo.getString(ACCOUNT_LOGIN, null);
         password = accountInfo.getString(ACCOUNT_PASSWORD, null);
     }
 
+    /**
+     * Returns class for interaction with database
+     */
     public AppDatabase getAppDatabase() {
         return appDatabase;
     }
 
+    /**
+     * Initializes all private fields
+     * @param context owner of database and network controllers
+     */
     public void init(Context context) {
         owner = (LifecycleOwner) context;
         accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
@@ -115,10 +138,16 @@ public class ChecksRoller {
         }
     }
 
+    /**
+     * Returns instance
+     */
     public static ChecksRoller getInstance() {
         return CheckRollerHolder.checksRoller;
     }
 
+    /**
+     * Adds check with the most delicious cheese to check list
+     */
     public void cheese() {
         Check check = new Check(0, "Typical",300000, "Auchan", "2007-05-18T22:05:00");
         Product product1 = new Product("Lambert", 100000, 150000, 100, 0);
@@ -130,10 +159,18 @@ public class ChecksRoller {
 
     }
 
+    /**
+     * Sends restore password request
+     * @return livedata with request status
+     */
     public LiveData<StatusWithResponse> restore(String number) {
         return networkManager.restorePasswordAsync(number);
     }
 
+    /**
+     * Sends registration request
+     * @return livedata with request status
+     */
     public LiveData<StatusWithResponse> registration(String name, String email, String number) {
         NewUser user = new NewUser(name, email, number);
         return networkManager.registrationAsync(user);
@@ -147,7 +184,7 @@ public class ChecksRoller {
         }
     }
 
-    public synchronized void putCheck(CheckJson check) {
+    private synchronized void putCheck(CheckJson check) {
         CheckWithProducts newCheck = new CheckWithProducts(check);
         appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
         for (Product i : newCheck.getProducts()) {
@@ -156,6 +193,10 @@ public class ChecksRoller {
         }
     }
 
+    /**
+     * Requests for check with parameters
+     * @return if parameters correct (0) or not (-1)
+     */
     public synchronized int requestCheck(ScanResult result){
         updateLoginInfo();
         Log.i(ChecksRoller.LOG_TAG, number + " " + password);
@@ -197,29 +238,16 @@ public class ChecksRoller {
         });
     }
 
-    public LiveData<List<CheckWithProducts>> findCheckBySubstring(String regEx) {
-        return appDatabase.getCheckDao().getCheckByRegEx("%" + regEx + "%");
-    }
-
-    public LiveData<List<CheckWithProducts>> findCheckByTimePeriod(String begin, String end) {
-
-        List<Check> list = appDatabase.getCheckDao().getChecksByDate(begin, end);
-        for (Check c : list) {
-            Log.i(LOG_TAG, c.getName() + " " + c.getDate());
-        }
-
-        return appDatabase.getCheckDao().getChecksWithProductsByDate(begin, end);
-    }
-
-
+    /**
+     * Returns all checks in given interval matches given regular expression
+     */
     public LiveData<List<CheckWithProducts>> findChecksByTimePeriodAndRegEx(String begin, String end, String regEx) {
         return appDatabase.getCheckDao().getChecksWithProductsByDateAndRegEx(regEx, begin, end);
     }
 
-    public LiveData<List<Product>> findProductsInCheckBySubstring(long checkId, String substring) {
-        return appDatabase.getCheckDao().getProductByRegEx("%" + substring + "%", checkId);
-    }
-
+    /**
+     * Removes all checks from database
+     */
     public void onRemoveAllClicked() {
         appDatabase.getCheckDao().deleteAll();
         Log.i(LOG_TAG, "All items removed");

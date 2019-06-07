@@ -1,30 +1,25 @@
 package com.project.spender.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 
 import com.project.spender.R;
-import com.project.spender.controllers.ChecksRoller;
-import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.CheckStatus;
-import com.project.spender.data.entities.CheckWithProducts;
-import com.project.spender.data.entities.Product;
-import com.project.spender.data.entities.Tag;
 
 import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
+/**
+ * Adapter for check requests status list
+ */
 public class HistoryItemAdapter extends BaseAdapter {
 
     private Context context;

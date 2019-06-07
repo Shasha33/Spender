@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Class to control CheckShow activity view
+ */
 public class CheckShowHelper {
 
     private List<Product> products;
@@ -29,11 +32,10 @@ public class CheckShowHelper {
     private String substring;
     private long checkId;
 
-    LifecycleOwner owner;
+    private LifecycleOwner owner;
 
     public static final int SELECTED_ITEM = Colour.pastelGreenColor();
     public static final int UNSELECTED_ITEM = Color.WHITE;
-
 
     public CheckShowHelper(Context context, ListView listView, Intent intent) {
         productsForAction = new HashSet<>();
@@ -56,10 +58,12 @@ public class CheckShowHelper {
             }
         });
 
-
         update();
     }
 
+    /**
+     * Set up listener for given EditText to save its content to search parameter
+     */
     public void setInput(EditText editText) {
         editText.setOnEditorActionListener((v, actionId, event) -> {
             substring = "%" + editText.getText().toString() + "%";
@@ -109,15 +113,22 @@ public class CheckShowHelper {
         clearSelectedSet();
     }
 
+    /**
+     * Adds tags for selected products
+     */
     public void addTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertExistingTagForProduct(j, products.get(i).getId());
+                ChecksRoller.getInstance().getAppDatabase()
+                        .getCheckDao().insertExistingTagForProduct(j, products.get(i).getId());
             }
         }
         clearSelected();
     }
 
+    /**
+     * Remove tags for selected products
+     */
     public void removeTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
@@ -127,6 +138,9 @@ public class CheckShowHelper {
         clearSelected();
     }
 
+    /**
+     * Removes selected products
+     */
     public void removeProducts() {
         unColorSelected();
         for (int i : productsForAction) {

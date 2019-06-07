@@ -27,6 +27,9 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.project.spender.controllers.CheckShowHelper.SELECTED_ITEM;
 import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
 
+/**
+ * Adapter for products list
+ */
 public class ItemAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater lInflater;

@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.project.spender.controllers.DataHelper;
+import com.project.spender.controllers.DateHelper;
 import com.project.spender.fragments.ChartFragment;
 
 import java.util.HashSet;
@@ -16,8 +16,8 @@ import java.util.Set;
 
 public class ChartsStateHolder {
 
-    private String beginDate = DataHelper.DEFAULT_BEGIN;
-    private String endDate = DataHelper.DEFAULT_END;
+    private String beginDate = DateHelper.DEFAULT_BEGIN;
+    private String endDate = DateHelper.DEFAULT_END;
     private long[] ids;
 
     private ChartFragment chartFragment;
@@ -25,9 +25,9 @@ public class ChartsStateHolder {
     public void setBeginDateInput(Context context, @NonNull EditText editText) {
         editText.setOnEditorActionListener((textView, i, keyEvent) -> {
             try {
-                beginDate = DataHelper.dateConvert(textView.getText().toString());
+                beginDate = DateHelper.dateConvert(textView.getText().toString());
             } catch (Exception e) {
-                beginDate = DataHelper.DEFAULT_BEGIN;
+                beginDate = DateHelper.DEFAULT_BEGIN;
                 Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
             }
             hideKeyboard(textView);
@@ -39,9 +39,9 @@ public class ChartsStateHolder {
     public void setEndDateInput(Context context, @NonNull EditText editText) {
         editText.setOnEditorActionListener((textView, i, keyEvent) -> {
             try {
-                endDate = DataHelper.dateConvert(textView.getText().toString());
+                endDate = DateHelper.dateConvert(textView.getText().toString());
             } catch (Exception e) {
-                endDate = DataHelper.DEFAULT_END;
+                endDate = DateHelper.DEFAULT_END;
                 Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
             }
             hideKeyboard(textView);

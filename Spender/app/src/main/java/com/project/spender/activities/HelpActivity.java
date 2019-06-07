@@ -10,6 +10,9 @@ import android.widget.Button;
 import com.project.spender.R;
 import com.project.spender.controllers.ChecksRoller;
 
+/**
+ * Activity for showing helpful information
+ */
 public class HelpActivity extends AppCompatActivity {
 
     @Override

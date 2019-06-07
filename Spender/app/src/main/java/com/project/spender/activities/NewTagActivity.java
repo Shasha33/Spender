@@ -15,6 +15,9 @@ import com.project.spender.controllers.TagStateHolder;
 
 import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 
+/**
+ * Activity for adding new tag
+ */
 public class NewTagActivity extends AppCompatActivity {
 
     @Override

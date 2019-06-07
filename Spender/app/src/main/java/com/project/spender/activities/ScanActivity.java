@@ -12,6 +12,9 @@ import com.project.spender.data.ScanResult;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+/**
+ * Activity for scanning qr-code
+ */
 public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
     private ZXingScannerView scannerView;
