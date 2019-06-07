@@ -13,11 +13,8 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.android.gms.vision.L;
 import com.project.spender.data.entities.Tag;
 import com.project.spender.data.entities.TagWithSumAndDate;
 
@@ -25,21 +22,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-public class LineChartController {
+public class LineChartController extends UpdatableChartController<List<TagWithSumAndDate>> {
+
     private final LineChart lineChart;
-
-    private LiveData<List<TagWithSumAndDate>> dataSource;
-    private Observer<List<TagWithSumAndDate>> observer = this::setData;
-    private LifecycleOwner owner;
-
-    private Set<Long> whiteIdList;
 
     public LineChartController(LifecycleOwner owner, LineChart lineChart) {
         this.lineChart = lineChart;
@@ -53,6 +43,7 @@ public class LineChartController {
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
+        lineChart.setDrawGridBackground(false);
 
         Legend legend = lineChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -61,34 +52,36 @@ public class LineChartController {
         legend.setDrawInside(false);
 
         ValueFormatter valueFormatter = new ValueFormatter() {
+
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM", Locale.ROOT);
+
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis((long) value);
-                long year = calendar.get(Calendar.YEAR);
-                long month = calendar.get(Calendar.MONTH);
-                long day = calendar.get(Calendar.DAY_OF_MONTH);
-                return day + "." + month + "." + year ;
+                long millis = TimeUnit.HOURS.toMillis((long)value);
+                return mFormat.format(millis);
             }
         };
 
-        lineChart.getXAxis().setValueFormatter(valueFormatter);
-        lineChart.setDrawGridBackground(true);
-        lineChart.getXAxis().setDrawAxisLine(true);
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.getAxisRight().setDrawGridLines(true);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM) ;
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setGranularity(24f);
+        xAxis.setValueFormatter(valueFormatter);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setTextSize(10f);
+        xAxis.setDrawGridLines(true);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        lineChart.getAxisRight().setEnabled(false);
     }
 
-    public void setDataSource(LiveData<List<TagWithSumAndDate>> data) {
-        if (dataSource != null) {
-            dataSource.removeObserver(observer);
+    /**
+     * @param tagsWithSum список отсортированный по tag.id
+     */
+    @Override
+    protected void setData(List<TagWithSumAndDate> tagsWithSum) {
+        if (tagsWithSum.isEmpty()) {
+            return;
         }
-        dataSource = data;
-        dataSource.observe(owner, observer);
-    }
-
-    private void setData(List<TagWithSumAndDate> tagsWithSum) {
 
         List<ILineDataSet> dataSets = new ArrayList<>();
 
@@ -130,16 +123,12 @@ public class LineChartController {
                 Log.wtf("PARSER", "Cannot parse date from string. Exception: " + e.getMessage());
             }
 
-            entries.add(new Entry(calendar.getTimeInMillis(), tagWithSumAndDate.sum/100f));
+            entries.add(new Entry(TimeUnit.MILLISECONDS.toHours(calendar.getTimeInMillis()), tagWithSumAndDate.sum/100f));
         }
 
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
         lineChart.invalidate();
-    }
-
-    public void setWhiteIdList(Set<Long> whiteIdList) {
-        this.whiteIdList = whiteIdList;
     }
 
     public void invalidate() {

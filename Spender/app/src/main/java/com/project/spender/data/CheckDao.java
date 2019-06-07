@@ -245,6 +245,15 @@ public abstract class CheckDao {
     public abstract LiveData<List<TagWithSumAndDate>> getTagsWithSumAndDateByDate(String start, String finish);
 
     @Transaction
+    @Query("SELECT tag.id, tag.name, tag.color, tag.substring, SUM(product.sum) as sum, date " +
+            "FROM tag, product_tag_join, product, `check` " +
+            "WHERE tag.id = tag_id AND product_id == product.id AND product.check_id == `check`.id " +
+            "AND datetime(`check`.date) BETWEEN datetime(:start) AND datetime(:finish)" +
+            "GROUP BY tag.id, date " +
+            "ORDER BY date")
+    public abstract LiveData<List<TagWithSumAndDate>> getTagsWithSumAndDateByDateOderedByDate(String start, String finish);
+
+    @Transaction
     @Query("SELECT * FROM `Check` WHERE datetime(date) BETWEEN datetime(:start) AND datetime(:finish)")
     public abstract LiveData<List<CheckWithProducts>> getChecksWithProductsByDate(String start, String finish);
 

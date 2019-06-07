@@ -62,6 +62,10 @@
             <item android:id="@+id/line_graph_item"
                 android:title="line graph" />
 
+            <item
+                android:id="@+id/bar_graph_item"
+                android:title="bar graph" />
+
         </menu>
     </item>
 

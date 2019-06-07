@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.project.spender.activities.MainActivity;
 import com.project.spender.charts.PieChartController;
 import com.project.spender.R;
