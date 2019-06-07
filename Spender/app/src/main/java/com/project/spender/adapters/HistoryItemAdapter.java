@@ -27,11 +27,11 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class HistoryItemAdapter extends BaseAdapter {
 
-    Context context;
-    LayoutInflater lInflater;
-    List<CheckStatus> list;
-    LinearLayout layout;
-    LifecycleOwner owner;
+    private Context context;
+    private LayoutInflater lInflater;
+    private List<CheckStatus> list;
+    private LinearLayout layout;
+    private LifecycleOwner owner;
 
     public HistoryItemAdapter(Context context, List<CheckStatus> list) {
         this.context = context;

@@ -12,9 +12,9 @@ import com.project.spender.data.entities.Tag;
 import java.util.List;
 
 public class TagAdapter extends BaseAdapter {
-    Context context;
-    LayoutInflater lInflater;
-    List<Tag> tagsList;
+    private Context context;
+    private LayoutInflater lInflater;
+    private List<Tag> tagsList;
 
     TagAdapter(Context context, List<Tag> tags) {
         this.context = context;

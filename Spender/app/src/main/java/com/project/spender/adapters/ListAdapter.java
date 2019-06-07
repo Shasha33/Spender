@@ -22,11 +22,11 @@ import com.project.spender.data.entities.Tag;
 import java.util.List;
 
 public class ListAdapter extends BaseAdapter {
-    Context context;
-    LayoutInflater layoutInflater;
-    List<CheckWithProducts> checkList;
-    LinearLayout layout;
-    LifecycleOwner owner;
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private List<CheckWithProducts> checkList;
+    private LinearLayout layout;
+    private LifecycleOwner owner;
 
     public ListAdapter(Context context, List<CheckWithProducts> list) {
         this.context = context;
