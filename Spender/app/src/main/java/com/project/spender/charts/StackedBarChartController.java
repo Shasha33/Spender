@@ -62,7 +62,11 @@ public class StackedBarChartController extends UpdatableChartController<List<Tag
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
                 int i = (int) value;
-                return mFormat.format(dates.get(i).getTime());
+                String val = "";
+                if (dates.size() > i) {
+                    val = mFormat.format(dates.get(i).getTime());
+                }
+                return val;
             }
         };
 
