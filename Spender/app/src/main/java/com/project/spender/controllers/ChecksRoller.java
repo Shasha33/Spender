@@ -24,6 +24,7 @@ import com.project.spender.fns.api.data.CheckJsonWithStatus;
 import com.project.spender.fns.api.data.Json.CheckJson;
 import com.project.spender.fns.api.data.NewUser;
 import com.project.spender.fns.api.data.Status;
+import com.project.spender.fns.api.data.StatusWithResponse;
 import com.project.spender.fns.api.exception.NetworkException;
 
 import java.io.EOFException;
@@ -129,55 +130,13 @@ public class ChecksRoller {
 
     }
 
-    public String restore(String number) {
-        if (number == null) {
-            return "Empty number field";
-        }
-        int res = 0;
-
-        try {
-            res = networkManager.restorePasswordSync(number);
-        } catch (IOException e) {
-            return "Failed to connect server";
-        }
-
-        Log.i(ChecksRoller.LOG_TAG, "Trying to restore password, answer is" + res);
-        switch (res) {
-            case 204:
-                return "Success\nWait for sms";
-            case 404:
-                return  "Unknown or incorrect number";
-            default:
-                return "Unknown error";
-        }
+    public LiveData<StatusWithResponse> restore(String number) {
+        return networkManager.restorePasswordAsync(number);
     }
 
-    public String register(String name, String email, String number) {
-
-        Log.i(ChecksRoller.LOG_TAG, name + " " + email + " " + number);
-
-        int result;
-        try {
-            result = networkManager.registrationSync(new NewUser(name, email, number));
-        } catch (IOException e) {
-            return  "Failed connect to server";
-        }
-
-        //(todo) introduce constants
-
-        Log.i(ChecksRoller.LOG_TAG, "Try to register, answer is" + result);
-        switch (result) {
-            case 204:
-                return  "Success";
-            case 409:
-                return  "Such a user already exist";
-            case 500:
-                return "Incorrect number";
-            case 400:
-                return "Incorrect email";
-            default:
-                return "Unknown error\nTry again later";
-        }
+    public LiveData<StatusWithResponse> registeration(String name, String email, String number) {
+        NewUser user = new NewUser(name, email, number);
+        return networkManager.registrationAsync(user);
     }
 
     private void addTagsIfMatch(Product product, List<Tag> tags) {

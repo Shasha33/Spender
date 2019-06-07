@@ -9,10 +9,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.fns.api.NetworkManager;
+import com.project.spender.fns.api.data.Status;
+import com.project.spender.fns.api.data.StatusWithResponse;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,11 +41,13 @@ public class LoginActivity extends AppCompatActivity {
             String newEmail = email.getText().toString();
             String newNumber = number.getText().toString();
             String newName = name.getText().toString();
-            String result = ChecksRoller.getInstance().register(newName, newEmail, newNumber);
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-            if (result.equals("Success")) {
-                setLoginMode();
-            }
+            LiveData<StatusWithResponse> result = ChecksRoller.getInstance().registeration(newName, newEmail, newNumber);
+            result.observeForever(status -> {
+                Toast.makeText(LoginActivity.this, status.getUserReadableMassage(), Toast.LENGTH_LONG).show();
+                if (status.getStatus().equals(Status.SUCCESS)) {
+                    setLoginMode();
+                }
+            });
         });
     }
 
@@ -74,7 +80,10 @@ public class LoginActivity extends AppCompatActivity {
 
         restore.setOnClickListener(v -> {
             String num = number.getText().toString();
-            Toast.makeText(this, ChecksRoller.getInstance().restore(num), Toast.LENGTH_SHORT).show();
+            LiveData<StatusWithResponse> result = ChecksRoller.getInstance().restore(num);
+            result.observeForever(status -> Toast.makeText(LoginActivity.this,
+                    status.getUserReadableMassage(), Toast.LENGTH_SHORT).show());
+
         });
     }
 
