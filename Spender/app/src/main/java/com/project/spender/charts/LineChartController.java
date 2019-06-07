@@ -27,14 +27,9 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class LineChartController {
+public class LineChartController extends UpdatableChartController<List<TagWithSumAndDate>> {
+
     private final LineChart lineChart;
-
-    private LiveData<List<TagWithSumAndDate>> dataSource;
-    private Observer<List<TagWithSumAndDate>> observer = this::setData;
-    private LifecycleOwner owner;
-
-    private Set<Long> whiteIdList;
 
     public LineChartController(LifecycleOwner owner, LineChart lineChart) {
         this.lineChart = lineChart;
@@ -79,18 +74,11 @@ public class LineChartController {
         lineChart.getAxisRight().setEnabled(false);
     }
 
-    public void setDataSource(LiveData<List<TagWithSumAndDate>> data) {
-        if (dataSource != null) {
-            dataSource.removeObserver(observer);
-        }
-        dataSource = data;
-        dataSource.observe(owner, observer);
-    }
-
     /**
      * @param tagsWithSum список отсортированный по tag.id
      */
-    private void setData(List<TagWithSumAndDate> tagsWithSum) {
+    @Override
+    protected void setData(List<TagWithSumAndDate> tagsWithSum) {
         if (tagsWithSum.isEmpty()) {
             return;
         }
@@ -141,10 +129,6 @@ public class LineChartController {
         LineData data = new LineData(dataSets);
         lineChart.setData(data);
         lineChart.invalidate();
-    }
-
-    public void setWhiteIdList(Set<Long> whiteIdList) {
-        this.whiteIdList = whiteIdList;
     }
 
     public void invalidate() {

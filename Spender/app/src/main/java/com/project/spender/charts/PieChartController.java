@@ -17,16 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class PieChartController {
+public class PieChartController extends UpdatableChartController<List<TagWithSum>> {
     private final PieChart pieChart;
 
-    private LiveData<List<TagWithSum>> dataSource;
-    private Observer<List<TagWithSum>> observer = this::setData;
-    private LifecycleOwner owner;
-
     private final int speed = 1400;
-
-    private Set<Long> whiteIdList;
 
     public PieChartController(LifecycleOwner owner, PieChart pieChart) {
         this.pieChart = pieChart;
@@ -38,15 +32,8 @@ public class PieChartController {
         pieChart.getLegend().setEnabled(false);
     }
 
-    public void setDataSource(LiveData<List<TagWithSum>> data) {
-        if (dataSource != null) {
-            dataSource.removeObserver(observer);
-        }
-        dataSource = data;
-        dataSource.observe(owner, observer);
-    }
-
-    private void setData(List<TagWithSum> tagsWithSum) {
+    @Override
+    protected void setData(List<TagWithSum> tagsWithSum) {
         List<PieEntry> entries = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
 
@@ -80,9 +67,5 @@ public class PieChartController {
 
     public void invalidate() {
         pieChart.invalidate();
-    }
-
-    public void setWhiteIdList(Set<Long> whiteIdList) {
-        this.whiteIdList = whiteIdList;
     }
 }

@@ -29,19 +29,12 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class StackedBarChartController {
+public class StackedBarChartController extends UpdatableChartController<List<TagWithSumAndDate>> {
     private final BarChart barChart;
 
-    private LiveData<List<TagWithSumAndDate>> dataSource;
-    private Observer<List<TagWithSumAndDate>> observer = this::setData;
-    private LifecycleOwner owner;
-
     private final int speed = 1400;
-    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss", Locale.ROOT);
 
     private List<Calendar> dates;
-
-    private Set<Long> whiteIdList;
 
     public StackedBarChartController(LifecycleOwner owner, BarChart barChart) {
         this.barChart = barChart;
@@ -82,19 +75,8 @@ public class StackedBarChartController {
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         legend.setDrawInside(false);
-//        legend.setFormSize(8f);
-//        legend.setFormToTextSpace(4f);
-//        legend.setXEntrySpace(6f);
-
     }
 
-    public void setDataSource(LiveData<List<TagWithSumAndDate>> data) {
-        if (dataSource != null) {
-            dataSource.removeObserver(observer);
-        }
-        dataSource = data;
-        dataSource.observe(owner, observer);
-    }
 
     private Calendar getTagDate(TagWithSumAndDate tagWSD) throws ParseException {
         Calendar tagTime = Calendar.getInstance();
@@ -105,7 +87,8 @@ public class StackedBarChartController {
     /**
      * @param data отсортирован по дате
      */
-    private void setData(List<TagWithSumAndDate> data) {
+    @Override
+    protected void setData(List<TagWithSumAndDate> data) {
         if (data.isEmpty()) {
             return;
         }
@@ -165,9 +148,5 @@ public class StackedBarChartController {
 
     public void invalidate() {
         barChart.invalidate();
-    }
-
-    public void setWhiteIdList(Set<Long> whiteIdList) {
-        this.whiteIdList = whiteIdList;
     }
 }
