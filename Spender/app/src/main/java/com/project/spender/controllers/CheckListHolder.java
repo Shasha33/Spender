@@ -113,18 +113,21 @@ public class CheckListHolder {
             this.begin = dateConvert(begin);
         } catch (ParseException e) {
             this.begin = DateHelper.DEFAULT_BEGIN;
-            throw new IllegalArgumentException();
+            if (!begin.equals("")) {
+                throw new IllegalArgumentException();
+            }
         }
         updateState();
     }
 
     public void setEnd(@NonNull String end) {
         try {
-
             this.end = dateConvert(end);
         } catch (ParseException e) {
             this.end = DateHelper.DEFAULT_END;
-            throw new IllegalArgumentException();
+            if (!end.equals("")) {
+                throw new IllegalArgumentException();
+            }
         }
         updateState();
     }

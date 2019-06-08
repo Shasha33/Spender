@@ -28,7 +28,9 @@ public class ChartsStateHolder {
                 beginDate = DateHelper.dateConvert(textView.getText().toString());
             } catch (Exception e) {
                 beginDate = DateHelper.DEFAULT_BEGIN;
-                Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
+                if (!editText.getText().toString().equals("")) {
+                    Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
+                }
             }
             hideKeyboard(textView);
             updateFragment();
@@ -42,7 +44,9 @@ public class ChartsStateHolder {
                 endDate = DateHelper.dateConvert(textView.getText().toString());
             } catch (Exception e) {
                 endDate = DateHelper.DEFAULT_END;
-                Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
+                if (!textView.getText().toString().equals("")) {
+                    Toast.makeText(context, "Invalid data format", Toast.LENGTH_SHORT).show();
+                }
             }
             hideKeyboard(textView);
             updateFragment();
