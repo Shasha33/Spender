@@ -21,6 +21,13 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            def appName = "Spender"
+            outputFileName = appName+"-${variant.versionName}.apk"
+        }
+    }
 }
 
 dependencies {
