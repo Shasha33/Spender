@@ -42,7 +42,7 @@ public class TagListHelper {
      * Removes element with given index
      */
     public void remove(int i) {
-        ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteTagById(tags.get(i).getId());
+        ChecksRoller.getInstance().deleteTag(tags.get(i).getId());
     }
 
     /**

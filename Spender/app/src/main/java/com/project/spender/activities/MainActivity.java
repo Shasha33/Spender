@@ -200,10 +200,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
         setContentView(R.layout.activity_main);
 
-        StrictMode.ThreadPolicy policy =
-                new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         scan = findViewById(R.id.scan);
         list = findViewById(R.id.list);
         statistics = findViewById(R.id.statistics);

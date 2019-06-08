@@ -89,7 +89,6 @@ public class TagStateHolder {
             color = DEFAULT_COLOR.get(index);
         }
 
-        ChecksRoller.getInstance().getAppDatabase()
-                .getCheckDao().insertTag(new Tag(name, color, regEx));
+        ChecksRoller.getInstance().addTag(name, regEx, color);
     }
 }
