@@ -119,8 +119,7 @@ public class CheckShowHelper {
     public void addTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
-                ChecksRoller.getInstance().getAppDatabase()
-                        .getCheckDao().insertExistingTagForProduct(j, products.get(i).getId());
+                ChecksRoller.getInstance().insertTagForProductById(j, products.get(i).getId());
             }
         }
         clearSelected();
@@ -132,7 +131,7 @@ public class CheckShowHelper {
     public void removeTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteTagProductRelation(new ProductTagJoin(products.get(i).getId(), j));
+                ChecksRoller.getInstance().deleteTagForProduct(j, products.get(i).getId());
             }
         }
         clearSelected();
@@ -144,7 +143,7 @@ public class CheckShowHelper {
     public void removeProducts() {
         unColorSelected();
         for (int i : productsForAction) {
-            ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(products.get(i).getId());
+            ChecksRoller.getInstance().deleteProduct(products.get(i).getId());
             products.remove(i);
         }
         clearSelectedSet();

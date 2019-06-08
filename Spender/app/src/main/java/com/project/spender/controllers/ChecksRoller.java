@@ -3,6 +3,7 @@ package com.project.spender.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.project.spender.data.ScanResult;
 import com.project.spender.data.entities.Check;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
+import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.Tag;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.CheckJsonWithStatus;
@@ -127,8 +129,7 @@ public class ChecksRoller {
         owner = (LifecycleOwner) context;
         accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
         networkManager = NetworkManager.getInstance();
-        appDatabase = Room.databaseBuilder(context,
-                AppDatabase.class, DATABASE).allowMainThreadQueries().fallbackToDestructiveMigration().build();
+        appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE).fallbackToDestructiveMigration().build();
         updateLoginInfo();
         if (number == null || password == null) {
             Intent intent = new Intent(context, LoginActivity.class);
@@ -137,6 +138,49 @@ public class ChecksRoller {
             context.startActivity(intent);
         }
     }
+
+    /**
+     * Inserts existing tag for given product
+     */
+    public void insertTagForProductById(long tagId, long productId) {
+        new Thread(() -> appDatabase.getCheckDao().insertExistingTagForProduct(tagId, productId)).start();
+    }
+
+    /**
+     * Removes tag for the product
+     */
+    public void deleteTagForProduct(long tagId, long productId) {
+            new Thread(() -> appDatabase.getCheckDao()
+                    .deleteTagProductRelation(new ProductTagJoin(productId, tagId))).start();
+    }
+
+    /**
+     * Removes product by id
+     */
+    public void deleteProduct(long productId) {
+        new Thread(() -> appDatabase.getCheckDao().deleteProductById(productId)).start();
+    }
+
+    /**
+     * Removes check by id
+     */
+    public void deleteCheck(long checkId) {
+        new Thread(() -> appDatabase.getCheckDao().deleteCheckById(checkId)).start();
+    }
+    /**
+     * Removes tag by id
+     */
+    public void deleteTag(long tagId) {
+        new Thread(() -> appDatabase.getCheckDao().deleteTagById(tagId)).start();
+    }
+
+    /**
+     * Removes check by id
+     */
+    public void addTag(String name, String regEx, int color) {
+        new Thread(() -> getAppDatabase().getCheckDao().insertTag(new Tag(name, color, regEx))).start();
+    }
+
 
     /**
      * Returns instance
@@ -154,8 +198,8 @@ public class ChecksRoller {
         Product product2 = new Product("Oltermanni", 100000, 100000, 100, 0);
         Product product3 = new Product("Larec", 100000, 70000, 100, 0);
 
-        appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(check,
-                Arrays.asList(product1, product2, product3)));
+        new Thread(() -> appDatabase.getCheckDao().insertCheckWithProducts(new CheckWithProducts(check,
+                Arrays.asList(product1, product2, product3)))).start();
 
     }
 
@@ -179,14 +223,14 @@ public class ChecksRoller {
     private void addTagsIfMatch(Product product, List<Tag> tags) {
         for (Tag j : tags) {
             if (j.getSubstring() != null && product.getName().matches(".*" + j.getSubstring() + ".*")) {
-                appDatabase.getCheckDao().insertTagForProduct(j, product.getId());
+                new Thread(() -> appDatabase.getCheckDao().insertTagForProduct(j, product.getId())).start();
             }
         }
     }
 
     private synchronized void putCheck(CheckJson check) {
         CheckWithProducts newCheck = new CheckWithProducts(check);
-        appDatabase.getCheckDao().insertCheckWithProducts(newCheck);
+        new Thread(() -> appDatabase.getCheckDao().insertCheckWithProducts(newCheck)).start();
         for (Product i : newCheck.getProducts()) {
             LiveData<List<Tag>> tags = appDatabase.getCheckDao().getAllTags();
             tags.observe(owner, tags1 -> addTagsIfMatch(i, tags1));
@@ -249,7 +293,7 @@ public class ChecksRoller {
      * Removes all checks from database
      */
     public void onRemoveAllClicked() {
-        appDatabase.getCheckDao().deleteAll();
+        new Thread(() -> appDatabase.getCheckDao().deleteAll());
         Log.i(LOG_TAG, "All items removed");
     }
 

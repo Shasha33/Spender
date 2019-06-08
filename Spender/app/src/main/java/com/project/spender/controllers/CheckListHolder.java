@@ -176,7 +176,7 @@ public class CheckListHolder {
         if (isProductMode) {
             Product product = productList.get(chosenPos);
             for (long i : ids) {
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().insertExistingTagForProduct(i, product.getId());
+                ChecksRoller.getInstance().insertTagForProductById(i, product.getId());
             }
         } else {
             addTagsForCheck(ids);
@@ -193,7 +193,7 @@ public class CheckListHolder {
         if (isProductMode) {
             Product product = productList.get(chosenPos);
             for (long i : ids) {
-                ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteTagProductRelation(new ProductTagJoin(product.getId(), i));
+                ChecksRoller.getInstance().deleteTagForProduct(i, product.getId());
             }
         } else {
             removeTagsForCheck(ids);
@@ -202,12 +202,12 @@ public class CheckListHolder {
     }
 
     private void removeCheck(int i) {
-        ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteCheckById(list.get(i).getCheck().getId());
+        ChecksRoller.getInstance().deleteCheck(list.get(i).getCheck().getId());
         list.remove(i);
     }
 
     private void removeProduct(int i) {
-        ChecksRoller.getInstance().getAppDatabase().getCheckDao().deleteProductById(productList.get(i).getId());
+        ChecksRoller.getInstance().deleteProduct(productList.get(i).getId());
         productList.remove(i);
     }
 
@@ -285,14 +285,12 @@ public class CheckListHolder {
 
     public void addTagForCheck(int position, long tagId) {
         for (Product product : list.get(position).getProducts()) {
-            ChecksRoller.getInstance().getAppDatabase()
-                        .getCheckDao().insertExistingTagForProduct(tagId, product.getId());
+            ChecksRoller.getInstance().insertTagForProductById(tagId, product.getId());
         }
     }
 
     public void addTagForProduct(int position, long tagId) {
-        ChecksRoller.getInstance().getAppDatabase()
-                    .getCheckDao().insertExistingTagForProduct(tagId, productList.get(position).getId());
+        ChecksRoller.getInstance().insertTagForProductById(tagId, productList.get(position).getId());
     }
 
     private void removeTags(int position, long[] tagIds) {
@@ -303,8 +301,7 @@ public class CheckListHolder {
 
     public void removeTag(int position, long tagId) {
         for (Product product : list.get(position).getProducts()) {
-            ChecksRoller.getInstance().getAppDatabase()
-                        .getCheckDao().deleteTagProductRelation(new ProductTagJoin(product.getId(), tagId));
+            ChecksRoller.getInstance().deleteTagForProduct(tagId, product.getId());
         }
     }
 
