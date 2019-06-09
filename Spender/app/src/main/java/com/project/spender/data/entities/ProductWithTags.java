@@ -2,6 +2,9 @@ package com.project.spender.data.entities;
 
 import java.util.List;
 
+/**
+ * Structure for product with its tags list
+ */
 public class ProductWithTags {
 
     private Product product;

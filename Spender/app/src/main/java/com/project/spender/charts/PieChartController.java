@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * View controller for pie and donut charts
+ */
 public class PieChartController extends UpdatableChartController<List<TagWithSum>> {
     private final PieChart pieChart;
 

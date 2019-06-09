@@ -29,6 +29,9 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * View controller for bar chart
+ */
 public class StackedBarChartController extends UpdatableChartController<List<TagWithSumAndDate>> {
     private final BarChart barChart;
 

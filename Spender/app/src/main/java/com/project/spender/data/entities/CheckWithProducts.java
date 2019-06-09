@@ -23,7 +23,7 @@ public class CheckWithProducts {
     private List<Product> products;
 
     public CheckWithProducts(Check check) {
-        this(check, new ArrayList<Product>());
+        this(check, new ArrayList<>());
     }
 
     @Ignore
@@ -56,6 +56,9 @@ public class CheckWithProducts {
         this.products = products;
     }
 
+    /**
+     * Sets new id for check and new check id for its products
+     */
     public void updateCheckId (long newId) {
         check.setId(newId);
         for (Product product : products) {

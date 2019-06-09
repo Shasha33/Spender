@@ -15,6 +15,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+/**
+ *
+ */
 public interface FnsApi {
 //    fn -- Номер ФН (Фискальный Номер) — 16-значный номер. Например 8710000100518392
 //    operations -- Вид кассового чека. В чеке помечается как n=1 (приход) и n=2 (возврат прихода) (всегда 1)

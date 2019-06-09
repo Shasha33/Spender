@@ -14,6 +14,9 @@ import com.project.spender.fragments.ChartFragment;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class to store time period and list of tags for chart and its fragment.
+ */
 public class ChartsStateHolder {
 
     private String beginDate = DateHelper.DEFAULT_BEGIN;
