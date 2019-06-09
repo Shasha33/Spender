@@ -10,6 +10,9 @@ import static com.project.spender.fns.api.NetworkManager.UNCORRECTED_PHONE_OR_PA
 import static com.project.spender.fns.api.NetworkManager.UNKNOWN_PHONE;
 import static com.project.spender.fns.api.NetworkManager.USER_ALREADY_EXISTS;
 
+/**
+ * Status with possible exception
+ */
 public class StatusWithResponse {
     private Status status;
     private NetworkException exception;
@@ -27,6 +30,9 @@ public class StatusWithResponse {
         return exception;
     }
 
+    /**
+     * Returns text representation on the status
+     */
     public String getUserReadableMassage() {
         switch (status) {
             case SUCCESS:

@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * Abstract class for view controller for updatable charts
+ */
 public abstract class UpdatableChartController <T> {
     protected final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss", Locale.ROOT);
     protected LiveData<T> dataSource;

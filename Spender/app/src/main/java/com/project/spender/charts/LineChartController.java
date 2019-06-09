@@ -27,6 +27,9 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * View controller for line chart
+ */
 public class LineChartController extends UpdatableChartController<List<TagWithSumAndDate>> {
 
     private final LineChart lineChart;
