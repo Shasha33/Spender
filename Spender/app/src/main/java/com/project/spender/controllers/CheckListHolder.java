@@ -17,16 +17,20 @@ import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.adapters.ListAdapter;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
-import com.project.spender.data.entities.ProductTagJoin;
 import com.project.spender.data.entities.Tag;
+import com.project.spender.roller.ChecksRoller;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import static com.project.spender.controllers.DateHelper.dateConvert;
 
 public class CheckListHolder {
+
+    @Inject private ChecksRoller checksRoller;
 
     @NonNull private String regEx;
     @NonNull private String begin;
@@ -169,7 +173,7 @@ public class CheckListHolder {
         if (isProductMode) {
             Product product = productList.get(chosenPos);
             for (long i : ids) {
-                ChecksRoller.getInstance().insertTagForProductById(i, product.getId());
+                checksRoller.insertTagForProductById(i, product.getId());
             }
         } else {
             addTagsForCheck(ids);
@@ -186,7 +190,7 @@ public class CheckListHolder {
         if (isProductMode) {
             Product product = productList.get(chosenPos);
             for (long i : ids) {
-                ChecksRoller.getInstance().deleteTagForProduct(i, product.getId());
+                checksRoller.deleteTagForProduct(i, product.getId());
             }
         } else {
             removeTagsForCheck(ids);
@@ -195,12 +199,12 @@ public class CheckListHolder {
     }
 
     private void removeCheck(int i) {
-        ChecksRoller.getInstance().deleteCheck(list.get(i).getCheck().getId());
+        checksRoller.deleteCheck(list.get(i).getCheck().getId());
         list.remove(i);
     }
 
     private void removeProduct(int i) {
-        ChecksRoller.getInstance().deleteProduct(productList.get(i).getId());
+        checksRoller.deleteProduct(productList.get(i).getId());
         productList.remove(i);
     }
 
@@ -235,7 +239,7 @@ public class CheckListHolder {
             return;
         }
         for (CheckWithProducts check : list1) {
-            LiveData<List<Tag>> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByCheckId(check.getCheck().getId());
+            LiveData<List<Tag>> tagList = checksRoller.getAppDatabase().getCheckDao().getTagsByCheckId(check.getCheck().getId());
 //            Log.i(ChecksRoller.LogG_TAG, );
             tagList.observe(owner, tags -> addIfContain(list, tags, check));
         }
@@ -249,20 +253,20 @@ public class CheckListHolder {
             return;
         }
         for (Product product: list1) {
-            LiveData<List<Tag>> tagList = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
+            LiveData<List<Tag>> tagList = checksRoller.getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
             tagList.observe(owner, tags -> addIfContain(productList, tags, product));
         }
     }
 
     private void updateStateCheck() {
         list.clear();
-        LiveData<List<CheckWithProducts>> list1 = ChecksRoller.getInstance().findChecksByTimePeriodAndRegEx(begin, end, regEx);
+        LiveData<List<CheckWithProducts>> list1 = checksRoller.findChecksByTimePeriodAndRegEx(begin, end, regEx);
         list1.observe(owner, this::updateStateCheckByList);
     }
 
     private void updateStateProduct() {
         productList.clear();
-        LiveData<List<Product>> list1 = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
+        LiveData<List<Product>> list1 = checksRoller.getAppDatabase().getCheckDao().getProductsByRegEx(regEx);
         list1.observe(owner, this::updateStateProductByList);
     }
 
@@ -278,12 +282,12 @@ public class CheckListHolder {
 
     private void addTagForCheck(int position, long tagId) {
         for (Product product : list.get(position).getProducts()) {
-            ChecksRoller.getInstance().insertTagForProductById(tagId, product.getId());
+            checksRoller.insertTagForProductById(tagId, product.getId());
         }
     }
 
     private void addTagForProduct(int position, long tagId) {
-        ChecksRoller.getInstance().insertTagForProductById(tagId, productList.get(position).getId());
+        checksRoller.insertTagForProductById(tagId, productList.get(position).getId());
     }
 
     private void removeTags(int position, long[] tagIds) {
@@ -294,7 +298,7 @@ public class CheckListHolder {
 
     private void removeTag(int position, long tagId) {
         for (Product product : list.get(position).getProducts()) {
-            ChecksRoller.getInstance().deleteTagForProduct(tagId, product.getId());
+            checksRoller.deleteTagForProduct(tagId, product.getId());
         }
     }
 

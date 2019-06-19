@@ -9,17 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.project.spender.activities.MainActivity;
 import com.project.spender.charts.PieChartController;
 import com.project.spender.R;
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.ChecksRoller;
 
 import java.util.Set;
+
+import javax.inject.Inject;
 
 
 public class PieChartFragment extends ChartFragment {
 
+    @Inject private ChecksRoller checksRoller;
     private ImageButton secret;
     private int clickCounter;
     private final static int MAGIC_CONST = 30;
@@ -55,7 +56,7 @@ public class PieChartFragment extends ChartFragment {
                 secret.setImageResource(R.drawable.cat);
             }
 
-            ChecksRoller.getInstance().setCatMode();
+            checksRoller.setCatMode();
         });
 
         //Pie

@@ -1,9 +1,8 @@
-package com.project.spender.controllers;
+package com.project.spender.roller;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
 import com.project.spender.activities.LoginActivity;
+import com.project.spender.controllers.HistoryListHolder;
 import com.project.spender.data.AppDatabase;
 import com.project.spender.data.CheckStatus;
 import com.project.spender.data.ScanResult;
@@ -33,7 +33,6 @@ import java.io.EOFException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,10 +41,6 @@ import java.util.concurrent.Executors;
  * Singleton class to control interaction of ui and ui helpers with database and network
  */
 public class ChecksRoller {
-
-    private static class CheckRollerHolder {
-        private static ChecksRoller checksRoller = new ChecksRoller();
-    }
 
     private NetworkManager networkManager;
     private AppDatabase appDatabase;
@@ -129,7 +124,7 @@ public class ChecksRoller {
      * Initializes all private fields
      * @param context owner of database and network controllers
      */
-    public void init(Context context) {
+    public ChecksRoller(Context context) {
         executor = Executors.newSingleThreadExecutor();
         owner = (LifecycleOwner) context;
         accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
@@ -184,14 +179,6 @@ public class ChecksRoller {
      */
     public void addTag(String name, String regEx, int color) {
         executor.submit(() -> getAppDatabase().getCheckDao().insertTag(new Tag(name, color, regEx)));
-    }
-
-
-    /**
-     * Returns instance
-     */
-    public static ChecksRoller getInstance() {
-        return CheckRollerHolder.checksRoller;
     }
 
     /**

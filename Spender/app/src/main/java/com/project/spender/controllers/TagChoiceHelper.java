@@ -2,7 +2,6 @@ package com.project.spender.controllers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 import android.widget.ListView;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -10,9 +9,12 @@ import androidx.lifecycle.LiveData;
 
 import com.project.spender.adapters.TagChoiceAdapter;
 import com.project.spender.data.entities.Tag;
+import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static com.project.spender.controllers.CheckShowHelper.SELECTED_ITEM;
 import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
@@ -21,6 +23,8 @@ import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
  * Class to control tag choice process
  */
 public class TagChoiceHelper {
+
+    @Inject private ChecksRoller checksRoller;
 
     private List<Tag> clickedTags;
     private List<Tag> tags;
@@ -36,7 +40,7 @@ public class TagChoiceHelper {
         clickedTags = new ArrayList<>();
         tags = new ArrayList<>();
 
-        LiveData<List<Tag>> ts = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
+        LiveData<List<Tag>> ts = checksRoller.getAppDatabase().getCheckDao().getAllTags();
         ts.observe((LifecycleOwner) context, this::setTags);
 
         listView.setOnItemClickListener((parent, view, position, id) -> {

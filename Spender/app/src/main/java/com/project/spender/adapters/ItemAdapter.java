@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Product;
@@ -22,6 +22,8 @@ import com.project.spender.data.entities.Tag;
 
 import java.util.HashSet;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.project.spender.controllers.CheckShowHelper.SELECTED_ITEM;
@@ -31,6 +33,9 @@ import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
  * Adapter for products list
  */
 public class ItemAdapter extends BaseAdapter {
+
+    @Inject ChecksRoller checksRoller;
+
     private Context context;
     private LayoutInflater lInflater;
     private List<Product> productList;
@@ -84,7 +89,7 @@ public class ItemAdapter extends BaseAdapter {
 
         LinearLayout layout = view.findViewById(R.id.linear_layout);
 
-        LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
+        LiveData<List<Tag>> tags = checksRoller.getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
         final LinearLayout linearLayout = layout;
         tags.observe(owner, tags1 -> {
             updateTags(tags1, linearLayout);

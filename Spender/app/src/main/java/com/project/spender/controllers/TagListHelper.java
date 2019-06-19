@@ -11,14 +11,19 @@ import androidx.lifecycle.LiveData;
 
 import com.project.spender.adapters.TagChoiceAdapter;
 import com.project.spender.data.entities.Tag;
+import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Class to control all tags showing activity
  */
 public class TagListHelper {
+
+    @Inject private ChecksRoller checksRoller;
 
     private ListView listView;
     private List<Tag> tags;
@@ -42,14 +47,14 @@ public class TagListHelper {
      * Removes element with given index
      */
     public void remove(int i) {
-        ChecksRoller.getInstance().deleteTag(tags.get(i).getId());
+        checksRoller.deleteTag(tags.get(i).getId());
     }
 
     /**
      * Updates all tags list
      */
     public void update(LifecycleOwner owner) {
-        LiveData<List<Tag>> list = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getAllTags();
+        LiveData<List<Tag>> list = checksRoller.getAppDatabase().getCheckDao().getAllTags();
         list.observe(owner, this::updateList);
     }
 

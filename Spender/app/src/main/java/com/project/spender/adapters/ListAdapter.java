@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Check;
@@ -20,6 +20,8 @@ import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Tag;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Adapter for checks list
@@ -29,6 +31,7 @@ public class ListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private List<CheckWithProducts> checkList;
     private LifecycleOwner owner;
+    @Inject private ChecksRoller checksRoller;
 
     public ListAdapter(Context context, List<CheckWithProducts> list) {
         this.context = context;
@@ -64,7 +67,7 @@ public class ListAdapter extends BaseAdapter {
         Check check = getCheck(position);
 
 
-        LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase()
+        LiveData<List<Tag>> tags = checksRoller.getAppDatabase()
                 .getCheckDao().getTagsByCheckId(check.getId());
         final LinearLayout linearLayout = view.findViewById(R.id.check_tag_list);
         tags.observe(owner, tags1 -> updateTags(tags1, linearLayout));

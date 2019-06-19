@@ -2,17 +2,21 @@ package com.project.spender.fragments;
 
 import androidx.fragment.app.Fragment;
 
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.data.CheckDao;
 
 import java.util.Set;
 
+import javax.inject.Inject;
+
 public abstract class ChartFragment extends Fragment {
+
+    @Inject ChecksRoller checksRoller;
 
     protected String leftDate = "1999-01-25";
     protected String rightDate = "now";
     protected Set<Long> whiteIdList;
-    protected CheckDao checkDao = ChecksRoller.getInstance().getAppDatabase().getCheckDao();
+    protected CheckDao checkDao = checksRoller.getAppDatabase().getCheckDao();
 
     public void setWhiteIdList(Set<Long> whiteIdList) {
         this.whiteIdList = whiteIdList;

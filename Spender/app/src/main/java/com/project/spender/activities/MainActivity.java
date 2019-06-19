@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,11 +25,13 @@ import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.R;
 import com.project.spender.charts.ChartsStateHolder;
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.data.ScanResult;
 import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.fragments.StackedBarChartFragment;
+
+import javax.inject.Inject;
 
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
@@ -38,6 +39,8 @@ import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
  * Activity with diagram and main menu
  */
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
+
+    @Inject private ChecksRoller checksRoller;
 
     private LifecycleRegistry lifecycleRegistry;
     private ChartsStateHolder chartsStateHolder;
@@ -101,11 +104,11 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         switch (item.getItemId()) {
             case R.id.action_cheese:
-                ChecksRoller.getInstance().cheese();
+                checksRoller.cheese();
                 return true;
 
             case R.id.action_delete:
-                ChecksRoller.getInstance().onRemoveAllClicked();
+                checksRoller.onRemoveAllClicked();
                 return true;
             case R.id.help:
                 startActivity(new Intent(this, HelpActivity.class));
@@ -124,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_CODE);
                 break;
             case R.id.putout:
-                ChecksRoller.getInstance().clearAccountInfo();
+                checksRoller.clearAccountInfo();
                 break;
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
 
-        ChecksRoller.getInstance().init(this);
+//        checksRoller.init(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {

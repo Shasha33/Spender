@@ -11,11 +11,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.fns.api.NetworkManager;
 import com.project.spender.fns.api.data.Status;
 import com.project.spender.fns.api.data.StatusWithResponse;
+
+import javax.inject.Inject;
 
 /**
  * Activity for login, register and password restore actions
@@ -30,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button enter;
     private Button register;
     private Button restore;
+    @Inject ChecksRoller checksRoller;
+
 
     private void setRegisterMode() {
         catButton.setVisibility(View.GONE);
@@ -43,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             String newEmail = email.getText().toString();
             String newNumber = number.getText().toString();
             String newName = name.getText().toString();
-            LiveData<StatusWithResponse> result = ChecksRoller.getInstance().registration(newName, newEmail, newNumber);
+            LiveData<StatusWithResponse> result = checksRoller.registration(newName, newEmail, newNumber);
             result.observeForever(status -> {
                 Toast.makeText(LoginActivity.this, status.getUserReadableMassage(), Toast.LENGTH_LONG).show();
                 if (status.getStatus().equals(Status.SUCCESS)) {
@@ -55,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setLoginMode() {
-        if (ChecksRoller.getInstance().getCatMode()) {
+        if (checksRoller.getCatMode()) {
             catButton.setVisibility(View.VISIBLE);
         } else {
             catButton.setVisibility(View.GONE);
@@ -74,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             } else if (!newPassword.matches("\\d{6}")) {
                 Toast.makeText(LoginActivity.this, "invalid password format", Toast.LENGTH_SHORT).show();
             } else {
-                ChecksRoller.getInstance().saveAccountInfo(newNumber, newPassword);
+                checksRoller.saveAccountInfo(newNumber, newPassword);
                 setResult(Activity.RESULT_OK);
                 finish();
             }
@@ -82,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
         restore.setOnClickListener(v -> {
             String num = number.getText().toString();
-            LiveData<StatusWithResponse> result = ChecksRoller.getInstance().restore(num);
+            LiveData<StatusWithResponse> result = checksRoller.restore(num);
             result.observeForever(status -> Toast.makeText(LoginActivity.this,
                     status.getUserReadableMassage(), Toast.LENGTH_SHORT).show());
 
@@ -100,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         number = findViewById(R.id.number);
         catButton = findViewById(R.id.im_cat);
         catButton.setOnClickListener(v -> {
-            ChecksRoller.getInstance().saveAccountInfo(NetworkManager.DEFAULT_LOGIN, NetworkManager.DEFAULT_PASSWORD);
+            checksRoller.saveAccountInfo(NetworkManager.DEFAULT_LOGIN, NetworkManager.DEFAULT_PASSWORD);
             finish();
         });
 
