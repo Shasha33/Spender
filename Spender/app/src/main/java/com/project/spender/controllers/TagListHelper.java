@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 
 import com.project.spender.adapters.TagChoiceAdapter;
 import com.project.spender.data.entities.Tag;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class TagListHelper {
         tags = new ArrayList<>();
         listView.setAdapter(new TagChoiceAdapter(context, tags, null));
         update((LifecycleOwner) context);
+        App.getComponent().inject(this);
     }
 
     /**

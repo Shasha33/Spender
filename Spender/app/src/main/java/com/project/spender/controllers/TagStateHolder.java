@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
@@ -53,6 +54,10 @@ public class TagStateHolder {
     private String name;
     @Nullable private String regEx;
     private Integer color;
+
+    public TagStateHolder() {
+        App.getComponent().inject(this);
+    }
 
     public void setName(String name) {
         this.name = name;

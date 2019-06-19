@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.controllers.TagListHelper;
@@ -39,6 +40,7 @@ public class ListAdapter extends BaseAdapter {
         owner = (LifecycleOwner) context;
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        App.getComponent().inject(this);
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.project.spender.adapters.ListAdapter;
 import com.project.spender.data.entities.CheckWithProducts;
 import com.project.spender.data.entities.Product;
 import com.project.spender.data.entities.Tag;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 
 import java.text.ParseException;
@@ -72,6 +73,7 @@ public class CheckListHolder {
         listView.setOnItemClickListener(checkListener);
 
         updateState();
+        App.getComponent().inject(this);
     }
 
     public void chooseItem(int index) {

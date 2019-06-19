@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.Result;
 import com.project.spender.data.entities.Check;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 import com.project.spender.data.ScanResult;
 
@@ -27,6 +28,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     public void onCreate(Bundle state) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(state);
+        App.getComponent().inject(this);
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
     }

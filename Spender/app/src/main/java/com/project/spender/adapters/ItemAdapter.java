@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.controllers.TagListHelper;
@@ -49,6 +50,7 @@ public class ItemAdapter extends BaseAdapter {
         productList = products;
         lInflater = (LayoutInflater) context
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
+        App.getComponent().inject(this);
     }
 
     @Override

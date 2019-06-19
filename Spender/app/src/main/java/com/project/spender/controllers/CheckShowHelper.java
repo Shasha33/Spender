@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData;
 import com.mattyork.colours.Colour;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.data.entities.Product;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class CheckShowHelper {
         });
 
         update();
+        App.getComponent().inject(this);
     }
 
     /**

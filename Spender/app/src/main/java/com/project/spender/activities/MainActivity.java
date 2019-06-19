@@ -25,6 +25,7 @@ import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.R;
 import com.project.spender.charts.ChartsStateHolder;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 import com.project.spender.data.ScanResult;
 import com.project.spender.fragments.LineChartFragment;
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        App.getComponent().inject(this);
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 

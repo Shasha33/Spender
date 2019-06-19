@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 
 import com.project.spender.adapters.TagChoiceAdapter;
 import com.project.spender.data.entities.Tag;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class TagChoiceHelper {
         });
         listView.setAdapter(new TagChoiceAdapter(context, tags, clickedTags));
 
-
+        App.getComponent().inject(this);
     }
 
     private void setTags(List<Tag> list) {

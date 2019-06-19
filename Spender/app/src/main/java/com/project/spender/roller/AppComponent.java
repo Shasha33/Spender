@@ -5,6 +5,7 @@ import com.project.spender.activities.LoginActivity;
 import com.project.spender.activities.MainActivity;
 import com.project.spender.activities.ScanActivity;
 import com.project.spender.adapters.ItemAdapter;
+import com.project.spender.adapters.ListAdapter;
 import com.project.spender.controllers.CheckListHolder;
 import com.project.spender.controllers.CheckShowHelper;
 import com.project.spender.controllers.TagChoiceHelper;
@@ -32,4 +33,5 @@ public interface AppComponent {
     void inject(ScanActivity activity);
     void inject(ItemAdapter adapter);
     void inject(TagStateHolder holder);
+    void inject(ListAdapter adapter);
 }

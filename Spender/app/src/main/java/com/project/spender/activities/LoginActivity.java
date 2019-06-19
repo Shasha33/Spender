@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.fns.api.NetworkManager;
@@ -24,6 +25,8 @@ import javax.inject.Inject;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    @Inject ChecksRoller checksRoller;
+
     private EditText password;
     private EditText number;
     private EditText name;
@@ -32,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button enter;
     private Button register;
     private Button restore;
-    @Inject ChecksRoller checksRoller;
 
 
     private void setRegisterMode() {
@@ -97,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        App.getComponent().inject(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         password = findViewById(R.id.password);
