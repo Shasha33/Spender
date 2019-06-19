@@ -34,11 +34,10 @@ public class ItemAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater lInflater;
     private List<Product> productList;
-    private LinearLayout layout;
     private LifecycleOwner owner;
     @Nullable private HashSet<Integer> chosen;
 
-    public ItemAdapter(Context context, List<Product> products, HashSet<Integer> hashSet) {
+    public ItemAdapter(Context context, List<Product> products, @Nullable HashSet<Integer> hashSet) {
         chosen = hashSet;
         this.context = context;
         owner = (LifecycleOwner) context;
@@ -83,10 +82,9 @@ public class ItemAdapter extends BaseAdapter {
                 String.format("%.2f", product.getPrice() / 100.0));
         ((TextView) view.findViewById(R.id.count)).setText("Quantity: " + product.getQuantity());
 
-        layout = view.findViewById(R.id.linear_layout);
+        LinearLayout layout = view.findViewById(R.id.linear_layout);
 
         LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getTagsByProductId(product.getId());
-//        Log.i(ChecksRoller.LOG_TAG, product.getName());
         final LinearLayout linearLayout = layout;
         tags.observe(owner, tags1 -> {
             updateTags(tags1, linearLayout);
@@ -100,7 +98,7 @@ public class ItemAdapter extends BaseAdapter {
         return view;
     }
 
-    Product getProduct(int position) {
+    private Product getProduct(int position) {
         return (Product) getItem(position);
     }
 
@@ -111,7 +109,6 @@ public class ItemAdapter extends BaseAdapter {
         for (int i = 0; i < tags.size(); i++) {
             View child = adapter.getView(i, null, null);
             child.setBackgroundColor(tags.get(i).getColor());
-//            Log.i(ChecksRoller.LOG_TAG, "" + tags.get(i));
             layout1.addView(child, TagListHelper.tagParams());
         }
         layout1.invalidate();

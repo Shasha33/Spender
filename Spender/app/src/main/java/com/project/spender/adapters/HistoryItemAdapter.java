@@ -22,15 +22,10 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
  */
 public class HistoryItemAdapter extends BaseAdapter {
 
-    private Context context;
     private LayoutInflater lInflater;
     private List<CheckStatus> list;
-    private LinearLayout layout;
-    private LifecycleOwner owner;
 
     public HistoryItemAdapter(Context context, List<CheckStatus> list) {
-        this.context = context;
-        owner = (LifecycleOwner) context;
         this.list = list;
         lInflater = (LayoutInflater) context
                 .getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -68,7 +63,7 @@ public class HistoryItemAdapter extends BaseAdapter {
         return view;
     }
 
-    CheckStatus getCheckStatus(int position) {
+    private CheckStatus getCheckStatus(int position) {
         return (CheckStatus) getItem(position);
     }
 
