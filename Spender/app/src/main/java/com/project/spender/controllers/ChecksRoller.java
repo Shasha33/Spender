@@ -133,7 +133,7 @@ public class ChecksRoller {
         executor = Executors.newSingleThreadExecutor();
         owner = (LifecycleOwner) context;
         accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
-        networkManager = NetworkManager.getInstance();
+        networkManager = new NetworkManager();
         appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE).fallbackToDestructiveMigration().build();
         updateLoginInfo();
         if (number == null || password == null) {

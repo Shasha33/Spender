@@ -69,24 +69,11 @@ public class NetworkManager {
     public final static int UNKNOWN_PHONE = 404;
     public final static int UNCORRECTED_PHONE_OR_PASSWORD = 403;
 
-    private NetworkManager() {
+    public NetworkManager() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://proverkacheka.nalog.ru:9999") //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()).build(); //Конвертер, необходимый для преобразования JSON'а в объекты
         fns = retrofit.create(FnsApi.class);
-    }
-
-    private static class NetworkManagerHolder {
-        private static NetworkManager instance = new NetworkManager();
-    }
-
-    /**
-     * Возвращает синглтон. Создает его, если это первый вызов.
-     *
-     * @return инстанс синглтона.
-     */
-    public static NetworkManager getInstance() {
-        return NetworkManagerHolder.instance;
     }
 
     /**

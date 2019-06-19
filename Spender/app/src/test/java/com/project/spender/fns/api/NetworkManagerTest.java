@@ -17,7 +17,8 @@ public class NetworkManagerTest {
     private ScanResult scanResult1;
     private ScanResult scanResult2;
     private ScanResult wrongResult;
-
+    private NetworkManager networkManager = new NetworkManager();
+    
     // все сломается если я поменяю пароль
     private String defaultLogin = "+79112813247";
     private String defaultPassword = "583066";
@@ -48,41 +49,41 @@ public class NetworkManagerTest {
 
     @Test
     public void isCheckExistTrue1() throws IOException {
-        assertEquals(204, NetworkManager.getInstance()
+        assertEquals(204, networkManager
                 .isCheckExistCodeSync(scanResult1));
     }
 
     @Test
     public void isCheckExistTrue2() throws IOException {
-        assertEquals(204, NetworkManager.getInstance()
+        assertEquals(204, networkManager
                 .isCheckExistCodeSync(scanResult2));
     }
 
     @Test
     public void isCheckExistFalse() throws IOException {
-        assertNotEquals(204, NetworkManager.getInstance()
+        assertNotEquals(204, networkManager
                 .isCheckExistCodeSync(wrongResult));
     }
 
     @Test
     public void checkLoginTrue() throws IOException {
-        assertEquals(200, NetworkManager.getInstance().checkUserSync(defaultLogin, defaultPassword));
+        assertEquals(200, networkManager.checkUserSync(defaultLogin, defaultPassword));
     }
 
     @Test
     public void checkLoginFalse() throws IOException {
-        assertNotEquals(200, NetworkManager.getInstance().checkUserSync(defaultLogin, "1111"));
+        assertNotEquals(200, networkManager.checkUserSync(defaultLogin, "1111"));
     }
 
     @Test
     public void getCheck1() throws IOException, NetworkException {
-        assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", NetworkManager.getInstance()
+        assertEquals("ЧИК.МАКНАГГ. 9 БКОМБО", networkManager
                 .getCheckSync(defaultLogin, defaultPassword, scanResult1).getData().items.get(0).name);
     }
 
     @Test
     public void getCheck2() throws IOException, NetworkException {
-        assertEquals("1:3305976 Пакет ПЕРЕКРЕСТОК майка 65х40см", NetworkManager.getInstance()
+        assertEquals("1:3305976 Пакет ПЕРЕКРЕСТОК майка 65х40см", networkManager
                 .getCheckSync(defaultLogin, defaultPassword, scanResult2).getData().items.get(0).name);
     }
 

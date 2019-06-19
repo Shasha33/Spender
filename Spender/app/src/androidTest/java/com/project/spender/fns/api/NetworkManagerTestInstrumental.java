@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 public class NetworkManagerTestInstrumental {
 
     private ScanResult scanResult1;
-
+    private NetworkManager networkManager = new NetworkManager();
     // все сломается если я поменяю пароль
     private String defaultLogin = "+79112813247";
     private String defaultPassword = "583066";
@@ -44,8 +44,7 @@ public class NetworkManagerTestInstrumental {
 
     @Test
     public void getCheckAsyncSimpleTest() throws InterruptedException {
-        LiveData<CheckJsonWithStatus> liveData = NetworkManager.getInstance()
-                .getCheckAsync(defaultLogin, defaultPassword, scanResult1);
+        LiveData<CheckJsonWithStatus> liveData = networkManager.getCheckAsync(defaultLogin, defaultPassword, scanResult1);
 
 
         TestObserver.test(liveData)
@@ -58,7 +57,7 @@ public class NetworkManagerTestInstrumental {
 
     @Test
     public void registrationAsyncSimpleTest() throws InterruptedException, NetworkException {
-        LiveData<StatusWithResponse> liveData = NetworkManager.getInstance()
+        LiveData<StatusWithResponse> liveData = networkManager
                 .registrationAsync(new NewUser("mishockk", "qwerty@gmail.ru", "+79112813247"));
         TestObserver.test(liveData)
                 .awaitValue().assertValue(value -> value.getStatus() == Status.SENDING)
@@ -69,7 +68,7 @@ public class NetworkManagerTestInstrumental {
 
     @Test
     public void restorePasswordAsyncSimpleTes() throws InterruptedException {
-        LiveData<StatusWithResponse> liveData = NetworkManager.getInstance()
+        LiveData<StatusWithResponse> liveData = networkManager
                 .restorePasswordAsync("+777");
         TestObserver.test(liveData)
                 .awaitValue().assertValue(value -> value.getStatus() == Status.SENDING)
@@ -80,7 +79,7 @@ public class NetworkManagerTestInstrumental {
 
     @Test
     public void checkUserAsyncSimpleTes() throws InterruptedException {
-        LiveData<StatusWithResponse> liveData = NetworkManager.getInstance()
+        LiveData<StatusWithResponse> liveData = networkManager
                 .checkUserAsync(defaultLogin, defaultPassword);
         TestObserver.test(liveData)
                 .awaitValue().assertValue(value -> value.getStatus() == Status.SENDING)
