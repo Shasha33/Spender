@@ -39,9 +39,8 @@ public class CheckListHolder {
     private int chosenPos;
     private ListAdapter checksAdapter;
     private ItemAdapter productsAdapter;
-    private TextView info;
     private AdapterView.OnItemClickListener checkListener;
-    LifecycleOwner owner;
+    private LifecycleOwner owner;
 
 
     public CheckListHolder(ListView listView, Context context, TextView textView) {
@@ -51,8 +50,7 @@ public class CheckListHolder {
         list = new ArrayList<>();
         productList = new ArrayList<>();
 
-        info = textView;
-        info.setVisibility(View.INVISIBLE);
+        textView.setVisibility(View.INVISIBLE);
         owner = (LifecycleOwner) context;
 
         this.listView = listView;
@@ -76,14 +74,14 @@ public class CheckListHolder {
         chosenPos = index;
     }
 
-    public void addTagsForCheck(long[] ids) {
+    private void addTagsForCheck(long[] ids) {
         if (chosenPos == -1) {
             return;
         }
         addTags(chosenPos, ids);
     }
 
-    public void removeTagsForCheck(long[] ids) {
+    private void removeTagsForCheck(long[] ids) {
         if (chosenPos == -1) {
             return;
         }
@@ -100,11 +98,6 @@ public class CheckListHolder {
             listView.setAdapter(checksAdapter);
             listView.setOnItemClickListener(checkListener);
         }
-        updateState();
-    }
-
-    public void setNullTags() {
-        tags = null;
         updateState();
     }
 
@@ -283,13 +276,13 @@ public class CheckListHolder {
         }
     }
 
-    public void addTagForCheck(int position, long tagId) {
+    private void addTagForCheck(int position, long tagId) {
         for (Product product : list.get(position).getProducts()) {
             ChecksRoller.getInstance().insertTagForProductById(tagId, product.getId());
         }
     }
 
-    public void addTagForProduct(int position, long tagId) {
+    private void addTagForProduct(int position, long tagId) {
         ChecksRoller.getInstance().insertTagForProductById(tagId, productList.get(position).getId());
     }
 
@@ -299,7 +292,7 @@ public class CheckListHolder {
         }
     }
 
-    public void removeTag(int position, long tagId) {
+    private void removeTag(int position, long tagId) {
         for (Product product : list.get(position).getProducts()) {
             ChecksRoller.getInstance().deleteTagForProduct(tagId, product.getId());
         }

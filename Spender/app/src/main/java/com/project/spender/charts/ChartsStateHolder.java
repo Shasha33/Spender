@@ -70,7 +70,7 @@ public class ChartsStateHolder {
         updateFragment();
     }
 
-    public void updateFragment() {
+    private void updateFragment() {
         chartFragment.setPeriod(beginDate, endDate);
         Set<Long> whiteList = null;
         if (ids != null) {

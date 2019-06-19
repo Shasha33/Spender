@@ -54,7 +54,7 @@ public class TagAdapter extends BaseAdapter {
         return view;
     }
 
-    Tag getProduct(int position) {
+    private Tag getProduct(int position) {
         return (Tag) getItem(position);
     }
 

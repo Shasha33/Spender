@@ -39,14 +39,7 @@ import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
  */
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
-    private ImageButton scan;
-    private ImageButton list;
-    private ImageButton statistics;
-    private EditText begin;
-    private EditText end;
-
     private LifecycleRegistry lifecycleRegistry;
-
     private ChartsStateHolder chartsStateHolder;
 
     private final static int CAMERA_REQUEST = 1;
@@ -200,9 +193,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
         setContentView(R.layout.activity_main);
 
-        scan = findViewById(R.id.scan);
-        list = findViewById(R.id.list);
-        statistics = findViewById(R.id.statistics);
+        ImageButton scan = findViewById(R.id.scan);
+        ImageButton list = findViewById(R.id.list);
+        ImageButton statistics = findViewById(R.id.statistics);
 
         statistics.setImageResource(R.drawable.piechart_chosen);
 
@@ -218,8 +211,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
             startActivityForResult(intent, CHECK_REQUEST);
         });
 
-        begin = findViewById(R.id.begin_date_for_chart);
-        end = findViewById(R.id.end_date_for_chart);
+        EditText begin = findViewById(R.id.begin_date_for_chart);
+        EditText end = findViewById(R.id.end_date_for_chart);
 
         fragmentManager = getSupportFragmentManager();
         pieFragment = PieChartFragment.newInstance();

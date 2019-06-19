@@ -24,8 +24,6 @@ import com.project.spender.controllers.TagChoiceHelper;
 public class TagChoiceActivity extends AppCompatActivity implements LifecycleOwner {
 
     private TagChoiceHelper controller;
-    private ListView listView;
-    private Button enter;
     private LifecycleRegistry lifecycleRegistry;
 
     @Override
@@ -68,10 +66,10 @@ public class TagChoiceActivity extends AppCompatActivity implements LifecycleOwn
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
-        listView = findViewById(R.id.tag_list);
+        ListView listView = findViewById(R.id.tag_list);
         controller = new TagChoiceHelper(this, listView);
 
-        enter = findViewById(R.id.enter_tag_set);
+        Button enter = findViewById(R.id.enter_tag_set);
         enter.setOnClickListener(view -> {
             setResult(Activity.RESULT_OK, controller.resultIntent());
             finish();

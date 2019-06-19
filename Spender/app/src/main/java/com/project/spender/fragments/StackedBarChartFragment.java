@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class StackedBarChartFragment extends ChartFragment {
 
-    StackedBarChartController stackedBarChartController;
+    private StackedBarChartController stackedBarChartController;
 
     public StackedBarChartFragment() {
         // Required empty public constructor

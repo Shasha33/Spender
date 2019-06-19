@@ -66,8 +66,7 @@ public class ListAdapter extends BaseAdapter {
 
         LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase()
                 .getCheckDao().getTagsByCheckId(check.getId());
-        LinearLayout layout = view.findViewById(R.id.check_tag_list);
-        final LinearLayout linearLayout = layout;
+        final LinearLayout linearLayout = view.findViewById(R.id.check_tag_list);
         tags.observe(owner, tags1 -> updateTags(tags1, linearLayout));
 
 

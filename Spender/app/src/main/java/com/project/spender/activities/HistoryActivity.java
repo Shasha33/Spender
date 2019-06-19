@@ -24,17 +24,14 @@ import com.project.spender.data.entities.CheckWithProducts;
  */
 public class HistoryActivity extends AppCompatActivity {
 
-    private ListView listView;
-    private TextView textView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        textView = findViewById(R.id.info_about_history);
-        listView = findViewById(R.id.history_list);
+        TextView textView = findViewById(R.id.info_about_history);
+        ListView listView = findViewById(R.id.history_list);
         ChecksRoller.getInstance().getHistoryListHolder().setListView(this, listView, textView);
     }
 }

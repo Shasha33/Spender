@@ -28,8 +28,6 @@ import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
  */
 public class CheckShowActivity extends AppCompatActivity implements LifecycleOwner {
 
-    private ListView listView;
-    private EditText search;
     private CheckShowHelper controller;
     private LifecycleRegistry lifecycleRegistry;
 
@@ -109,8 +107,8 @@ public class CheckShowActivity extends AppCompatActivity implements LifecycleOwn
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        listView = findViewById(R.id.productsList);
-        search = findViewById(R.id.search_in_check);
+        ListView listView = findViewById(R.id.productsList);
+        EditText search = findViewById(R.id.search_in_check);
 
         controller = new CheckShowHelper(this, listView, getIntent());
         controller.setInput(search);
