@@ -267,22 +267,27 @@ public class ChecksRoller {
 
         liveData.observeForever(checkJsonWithStatus -> {
             historyListHolder.update();
-            if (checkJsonWithStatus != null) {
-                status.settStatus(checkJsonWithStatus.getUserReadableMassage());
-                if (checkJsonWithStatus.getStatus() == Status.WRONG_RESPONSE_ERROR) {
-                    NetworkException e = checkJsonWithStatus.getException();
-                    Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
-                            + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause());
-                    if (e.getCause() != null && EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
-                        status.incCounter();
-                        tryCheck(result, status);
-                    }
-                } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
-                    Log.i(ChecksRoller.LOG_TAG, "Check received");
-                    putCheck(checkJsonWithStatus.getCheckJson());
-                }
-            } else {
+            if (checkJsonWithStatus == null) {
                 status.settStatus("Not received yet");
+                return;
+            }
+
+            status.settStatus(checkJsonWithStatus.getUserReadableMassage());
+
+            if (checkJsonWithStatus.getStatus() == Status.WRONG_RESPONSE_ERROR) {
+                NetworkException e = checkJsonWithStatus.getException();
+                Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
+                        + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause());
+                if (e.getCause() != null && EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
+                    status.incCounter();
+                    tryCheck(result, status);
+                }
+                return;
+            }
+
+            if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
+                Log.i(ChecksRoller.LOG_TAG, "Check received");
+                putCheck(checkJsonWithStatus.getCheckJson());
             }
         });
     }
