@@ -2,13 +2,6 @@ package com.project.spender.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -20,19 +13,19 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
+
 import com.project.spender.R;
 import com.project.spender.controllers.TagListHelper;
-import com.project.spender.data.entities.Tag;
-
-import java.util.List;
 
 /**
  * Activity for showing all tags
  */
 public class TagListActivity extends AppCompatActivity implements LifecycleOwner {
-
-    private ListView listView;
-    private List<Tag> tags;
 
     TagListHelper controller;
 
@@ -112,7 +105,7 @@ public class TagListActivity extends AppCompatActivity implements LifecycleOwner
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
-        listView = findViewById(R.id.tag_list_menu);
+        ListView listView = findViewById(R.id.tag_list_menu);
         registerForContextMenu(listView);
 
         TextView textView = findViewById(R.id.info_about_tags);

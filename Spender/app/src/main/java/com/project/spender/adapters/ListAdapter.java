@@ -12,7 +12,8 @@ import android.widget.TextView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.App;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.controllers.TagListHelper;
 import com.project.spender.data.entities.Check;
@@ -21,6 +22,8 @@ import com.project.spender.data.entities.Tag;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Adapter for checks list
  */
@@ -28,8 +31,8 @@ public class ListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private List<CheckWithProducts> checkList;
-    private LinearLayout layout;
     private LifecycleOwner owner;
+    @Inject protected ChecksRoller checksRoller;
 
     public ListAdapter(Context context, List<CheckWithProducts> list) {
         this.context = context;
@@ -37,6 +40,7 @@ public class ListAdapter extends BaseAdapter {
         owner = (LifecycleOwner) context;
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        App.getComponent().inject(this);
     }
 
     @Override
@@ -65,10 +69,9 @@ public class ListAdapter extends BaseAdapter {
         Check check = getCheck(position);
 
 
-        LiveData<List<Tag>> tags = ChecksRoller.getInstance().getAppDatabase()
+        LiveData<List<Tag>> tags = checksRoller.getAppDatabase()
                 .getCheckDao().getTagsByCheckId(check.getId());
-        layout = view.findViewById(R.id.check_tag_list);
-        final LinearLayout linearLayout = layout;
+        final LinearLayout linearLayout = view.findViewById(R.id.check_tag_list);
         tags.observe(owner, tags1 -> updateTags(tags1, linearLayout));
 
 
@@ -81,7 +84,7 @@ public class ListAdapter extends BaseAdapter {
         return view;
     }
 
-    Check getCheck(int position) {
+    private Check getCheck(int position) {
         return ((CheckWithProducts) getItem(position)).getCheck()   ;
     }
 

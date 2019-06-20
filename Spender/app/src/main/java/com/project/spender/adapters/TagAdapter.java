@@ -15,12 +15,10 @@ import java.util.List;
  * Adapter for products list
  */
 public class TagAdapter extends BaseAdapter {
-    private Context context;
     private LayoutInflater lInflater;
     private List<Tag> tagsList;
 
     TagAdapter(Context context, List<Tag> tags) {
-        this.context = context;
         tagsList = tags;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -56,7 +54,7 @@ public class TagAdapter extends BaseAdapter {
         return view;
     }
 
-    Tag getProduct(int position) {
+    private Tag getProduct(int position) {
         return (Tag) getItem(position);
     }
 

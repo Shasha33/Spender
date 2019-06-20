@@ -23,10 +23,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.controllers.CheckListHolder;
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.data.ScanResult;
-import com.project.spender.data.entities.CheckWithProducts;
 
 import static com.project.spender.charts.ChartsStateHolder.hideKeyboard;
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
@@ -37,16 +36,12 @@ import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
  */
 public class ListActivity extends AppCompatActivity implements LifecycleOwner {
 
-    private ListView listView;
     private EditText request;
 
     private LifecycleRegistry lifecycleRegistry;
 
     private CheckListHolder holder;
 
-    private ImageButton scan;
-    private ImageButton list;
-    private ImageButton statistics;
     private EditText beginDate;
     private EditText endDate;
 
@@ -166,9 +161,9 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
 
-        scan = findViewById(R.id.scan);
-        statistics = findViewById(R.id.statistics);
-        list = findViewById(R.id.list);
+        ImageButton scan = findViewById(R.id.scan);
+        ImageButton statistics = findViewById(R.id.statistics);
+        ImageButton list = findViewById(R.id.list);
         list.setImageResource(R.drawable.history_chosen);
 
         statistics.setOnClickListener(v -> {
@@ -182,7 +177,7 @@ public class ListActivity extends AppCompatActivity implements LifecycleOwner {
             startActivityForResult(intent, SCAN_CODE);
         });
 
-        listView = findViewById(R.id.productsList);
+        ListView listView = findViewById(R.id.productsList);
         registerForContextMenu(listView);
 
         holder = new CheckListHolder(listView, this, info);

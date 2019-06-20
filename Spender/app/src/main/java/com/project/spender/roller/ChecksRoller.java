@@ -1,9 +1,8 @@
-package com.project.spender.controllers;
+package com.project.spender.roller;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
 import com.project.spender.activities.LoginActivity;
+import com.project.spender.controllers.HistoryListHolder;
 import com.project.spender.data.AppDatabase;
 import com.project.spender.data.CheckStatus;
 import com.project.spender.data.ScanResult;
@@ -33,7 +33,6 @@ import java.io.EOFException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -43,12 +42,9 @@ import java.util.concurrent.Executors;
  */
 public class ChecksRoller {
 
-    private static class CheckRollerHolder {
-        private static ChecksRoller checksRoller = new ChecksRoller();
-    }
-
     private NetworkManager networkManager;
     private AppDatabase appDatabase;
+    private LifecycleOwner owner;
 
     public static final String LOG_TAG = "KITPRIVIT";
     private static final String DATABASE = "DataBase";
@@ -57,7 +53,6 @@ public class ChecksRoller {
     private static final String ACCOUNT_PASSWORD = "password";
     private static SharedPreferences accountInfo;
     private boolean superCatMode = false;
-    private LifecycleOwner owner;
 
     private HistoryListHolder historyListHolder = new HistoryListHolder();
     private ExecutorService executor;
@@ -129,11 +124,10 @@ public class ChecksRoller {
      * Initializes all private fields
      * @param context owner of database and network controllers
      */
-    public void init(Context context) {
+    public ChecksRoller(Context context) {
         executor = Executors.newSingleThreadExecutor();
-        owner = (LifecycleOwner) context;
         accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
-        networkManager = NetworkManager.getInstance();
+        networkManager = new NetworkManager();
         appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE).fallbackToDestructiveMigration().build();
         updateLoginInfo();
         if (number == null || password == null) {
@@ -142,6 +136,13 @@ public class ChecksRoller {
                     "Authorization required to receive checks", Toast.LENGTH_LONG).show();
             context.startActivity(intent);
         }
+    }
+
+    /**
+     * Sets new lifecycle owner for tag adding
+     */
+    public void setOwner(LifecycleOwner owner) {
+        this.owner = owner;
     }
 
     /**
@@ -184,14 +185,6 @@ public class ChecksRoller {
      */
     public void addTag(String name, String regEx, int color) {
         executor.submit(() -> getAppDatabase().getCheckDao().insertTag(new Tag(name, color, regEx)));
-    }
-
-
-    /**
-     * Returns instance
-     */
-    public static ChecksRoller getInstance() {
-        return CheckRollerHolder.checksRoller;
     }
 
     /**
@@ -267,22 +260,27 @@ public class ChecksRoller {
 
         liveData.observeForever(checkJsonWithStatus -> {
             historyListHolder.update();
-            if (checkJsonWithStatus != null) {
-                status.settStatus(checkJsonWithStatus.getUserReadableMassage());
-                if (checkJsonWithStatus.getStatus() == Status.WRONG_RESPONSE_ERROR) {
-                    NetworkException e = checkJsonWithStatus.getException();
-                    Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
-                            + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause());
-                    if (e.getCause() != null && EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
-                        status.incCounter();
-                        tryCheck(result, status);
-                    }
-                } else if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
-                    Log.i(ChecksRoller.LOG_TAG, "Check received");
-                    putCheck(checkJsonWithStatus.getCheckJson());
-                }
-            } else {
+            if (checkJsonWithStatus == null) {
                 status.settStatus("Not received yet");
+                return;
+            }
+
+            status.settStatus(checkJsonWithStatus.getUserReadableMassage());
+
+            if (checkJsonWithStatus.getStatus() == Status.WRONG_RESPONSE_ERROR) {
+                NetworkException e = checkJsonWithStatus.getException();
+                Log.i(ChecksRoller.LOG_TAG, "Error while loading check " + e + " | "
+                        + e.getMessage() + " | " + e.getCode() + " | "+ e.getCause());
+                if (e.getCause() != null && EOFException.class.isAssignableFrom(e.getCause().getClass()) && status.getCounter() < 3) {
+                    status.incCounter();
+                    tryCheck(result, status);
+                }
+                return;
+            }
+
+            if (checkJsonWithStatus.getStatus() == Status.SUCCESS) {
+                Log.i(ChecksRoller.LOG_TAG, "Check received");
+                putCheck(checkJsonWithStatus.getCheckJson());
             }
         });
     }

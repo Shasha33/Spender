@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,11 +25,14 @@ import androidx.lifecycle.LifecycleRegistry;
 
 import com.project.spender.R;
 import com.project.spender.charts.ChartsStateHolder;
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.roller.App;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.data.ScanResult;
 import com.project.spender.fragments.LineChartFragment;
 import com.project.spender.fragments.PieChartFragment;
 import com.project.spender.fragments.StackedBarChartFragment;
+
+import javax.inject.Inject;
 
 import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
 
@@ -39,14 +41,9 @@ import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
  */
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
-    private ImageButton scan;
-    private ImageButton list;
-    private ImageButton statistics;
-    private EditText begin;
-    private EditText end;
+    @Inject protected ChecksRoller checksRoller;
 
     private LifecycleRegistry lifecycleRegistry;
-
     private ChartsStateHolder chartsStateHolder;
 
     private final static int CAMERA_REQUEST = 1;
@@ -108,11 +105,11 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         switch (item.getItemId()) {
             case R.id.action_cheese:
-                ChecksRoller.getInstance().cheese();
+                checksRoller.cheese();
                 return true;
 
             case R.id.action_delete:
-                ChecksRoller.getInstance().onRemoveAllClicked();
+                checksRoller.onRemoveAllClicked();
                 return true;
             case R.id.help:
                 startActivity(new Intent(this, HelpActivity.class));
@@ -131,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
                 startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_CODE);
                 break;
             case R.id.putout:
-                ChecksRoller.getInstance().clearAccountInfo();
+                checksRoller.clearAccountInfo();
                 break;
             case R.id.pie_chart_item:
                 Log.i(ChecksRoller.LOG_TAG, "pie chart");
@@ -185,12 +182,12 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        App.getComponent().inject(this);
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
 
-        ChecksRoller.getInstance().init(this);
+        checksRoller.setOwner(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -200,9 +197,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
         setContentView(R.layout.activity_main);
 
-        scan = findViewById(R.id.scan);
-        list = findViewById(R.id.list);
-        statistics = findViewById(R.id.statistics);
+        ImageButton scan = findViewById(R.id.scan);
+        ImageButton list = findViewById(R.id.list);
+        ImageButton statistics = findViewById(R.id.statistics);
 
         statistics.setImageResource(R.drawable.piechart_chosen);
 
@@ -218,8 +215,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
             startActivityForResult(intent, CHECK_REQUEST);
         });
 
-        begin = findViewById(R.id.begin_date_for_chart);
-        end = findViewById(R.id.end_date_for_chart);
+        EditText begin = findViewById(R.id.begin_date_for_chart);
+        EditText end = findViewById(R.id.end_date_for_chart);
 
         fragmentManager = getSupportFragmentManager();
         pieFragment = PieChartFragment.newInstance();

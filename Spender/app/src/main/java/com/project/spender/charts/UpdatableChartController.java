@@ -17,8 +17,8 @@ import java.util.Set;
  */
 public abstract class UpdatableChartController <T> {
     protected final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss", Locale.ROOT);
-    protected LiveData<T> dataSource;
-    protected Observer<T> observer = this::setData;
+    private LiveData<T> dataSource;
+    private Observer<T> observer = this::setData;
     protected LifecycleOwner owner;
     protected Set<Long> whiteIdList;
 

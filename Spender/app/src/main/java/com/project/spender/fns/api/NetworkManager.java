@@ -1,5 +1,6 @@
 package com.project.spender.fns.api;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -26,7 +27,36 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  */
 public class NetworkManager {
-    private FnsApi fns;
+
+    private class GetCheckCallBack implements Callback<CheckJson> {
+        private final MutableLiveData<CheckJsonWithStatus> liveData;
+
+        private GetCheckCallBack(@NonNull MutableLiveData<CheckJsonWithStatus> liveData) {
+            this.liveData = liveData;
+        }
+
+        @Override
+        public void onResponse(Call<CheckJson> call, Response<CheckJson> response) {
+            if (response.code() == OK) {
+                liveData.postValue(new CheckJsonWithStatus(response.body(),
+                        Status.SUCCESS, null));
+            } else {
+                liveData.postValue(new CheckJsonWithStatus(
+                        null, Status.WRONG_RESPONSE_ERROR,
+                        new NetworkException("Check exists, but getCheck return code "
+                                + response.code() + " " + response.message(), response)));
+            }
+        }
+
+        @Override
+        public void onFailure(Call<CheckJson> call, Throwable t) {
+            liveData.postValue(new CheckJsonWithStatus(
+                    null, Status.NETWORK_ERROR,
+                    new NetworkException(t)));
+        }
+    }
+
+    private final FnsApi fns;
     public static final String DEFAULT_LOGIN = "+79112813247";
     public static final String DEFAULT_PASSWORD = "583066";
 
@@ -39,24 +69,11 @@ public class NetworkManager {
     public final static int UNKNOWN_PHONE = 404;
     public final static int UNCORRECTED_PHONE_OR_PASSWORD = 403;
 
-    private NetworkManager() {
+    public NetworkManager() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://proverkacheka.nalog.ru:9999") //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()).build(); //Конвертер, необходимый для преобразования JSON'а в объекты
         fns = retrofit.create(FnsApi.class);
-    }
-
-    private static class NetworkManagerHolder {
-        private static NetworkManager instance = new NetworkManager();
-    }
-
-    /**
-     * Возвращает синглтон. Создает его, если это первый вызов.
-     *
-     * @return инстанс синглтона.
-     */
-    public static NetworkManager getInstance() {
-        return NetworkManagerHolder.instance;
     }
 
     /**
@@ -162,14 +179,17 @@ public class NetworkManager {
      * @return Объект типа LiveData<CheckJsonWithStatus>. Позволяет узнать текущее состояние получения.
      * Есть возможность подписки. Также хранит исключение прервавшее работу.
      */
-    public LiveData<CheckJsonWithStatus> getCheckAsync(final String phone, final String password, final String fn, final String fd,
-                                                       final String fiscalSign, String date, String sum) {
+    private LiveData<CheckJsonWithStatus> getCheckAsync(final String phone, final String password, final String fn, final String fd,
+                                                        final String fiscalSign, String date, String sum) {
 
         MutableLiveData<CheckJsonWithStatus> liveData = new MutableLiveData<>();
         liveData.postValue(new CheckJsonWithStatus(null, Status.SENDING, null));
 
         String loginPassword = Credentials.basic(phone, password);
-
+        /*
+        Moved only one to a new class, since the class for checking the existence
+        would have too many constructor parameters in my opinion
+         */
         fns.isCheckExist(fn, fd, fiscalSign, date, sum).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -178,29 +198,12 @@ public class NetworkManager {
                             new CheckJsonWithStatus(null, Status.EXIST, null));
 
                     fns.getCheck(loginPassword, "", "",
-                            fn, fd, fiscalSign, "no").enqueue(new Callback<CheckJson>() {
-                        @Override
-                        public void onResponse(Call<CheckJson> call, Response<CheckJson> response) {
-                            if (response.code() == OK) {
-                                liveData.postValue(new CheckJsonWithStatus(response.body(), Status.SUCCESS, null));
-                            } else {
-                                liveData.postValue(new CheckJsonWithStatus(
-                                        null, Status.WRONG_RESPONSE_ERROR,
-                                        new NetworkException("Check exists, but getCheck return code " + response.code() + " " + response.message() , response)));
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<CheckJson> call, Throwable t) {
-                            liveData.postValue(new CheckJsonWithStatus(
-                                    null, Status.NETWORK_ERROR,
-                                    new NetworkException(t)));
-                        }
-                    });
+                            fn, fd, fiscalSign, "no").enqueue(new GetCheckCallBack(liveData));
                 } else {
                     liveData.postValue(new CheckJsonWithStatus(
                             null, Status.WRONG_RESPONSE_ERROR,
-                            new NetworkException("Check doesn't exist. Response: " + response.code() + " " + response.message() , response)));
+                            new NetworkException("Check doesn't exist. Response: "
+                                    + response.code() + " " + response.message() , response)));
                 }
             }
 

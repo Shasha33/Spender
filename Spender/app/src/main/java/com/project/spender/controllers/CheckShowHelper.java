@@ -3,8 +3,6 @@ package com.project.spender.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.renderscript.ScriptIntrinsicYuvToRGB;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -15,17 +13,21 @@ import androidx.lifecycle.LiveData;
 import com.mattyork.colours.Colour;
 import com.project.spender.adapters.ItemAdapter;
 import com.project.spender.data.entities.Product;
-import com.project.spender.data.entities.ProductTagJoin;
+import com.project.spender.roller.App;
+import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Class to control CheckShow activity view
  */
 public class CheckShowHelper {
 
+    @Inject protected ChecksRoller checksRoller;
     private List<Product> products;
     private HashSet<Integer> productsForAction;
     private ListView listView;
@@ -38,6 +40,8 @@ public class CheckShowHelper {
     public static final int UNSELECTED_ITEM = Color.WHITE;
 
     public CheckShowHelper(Context context, ListView listView, Intent intent) {
+        App.getComponent().inject(this);
+
         productsForAction = new HashSet<>();
         owner = (LifecycleOwner) context;
         this.listView = listView;
@@ -74,7 +78,7 @@ public class CheckShowHelper {
     }
 
     private void update() {
-        LiveData<List<Product>> list = ChecksRoller.getInstance().getAppDatabase().getCheckDao().getProductByRegEx(substring, checkId);
+        LiveData<List<Product>> list = checksRoller.getAppDatabase().getCheckDao().getProductByRegEx(substring, checkId);
         list.observe(owner, this::updateProducts);
     }
 
@@ -119,7 +123,7 @@ public class CheckShowHelper {
     public void addTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
-                ChecksRoller.getInstance().insertTagForProductById(j, products.get(i).getId());
+                checksRoller.insertTagForProductById(j, products.get(i).getId());
             }
         }
         clearSelected();
@@ -131,7 +135,7 @@ public class CheckShowHelper {
     public void removeTags(long[] tags) {
         for (int i : productsForAction) {
             for (long j : tags) {
-                ChecksRoller.getInstance().deleteTagForProduct(j, products.get(i).getId());
+                checksRoller.deleteTagForProduct(j, products.get(i).getId());
             }
         }
         clearSelected();
@@ -143,7 +147,7 @@ public class CheckShowHelper {
     public void removeProducts() {
         unColorSelected();
         for (int i : productsForAction) {
-            ChecksRoller.getInstance().deleteProduct(products.get(i).getId());
+            checksRoller.deleteProduct(products.get(i).getId());
             products.remove(i);
         }
         clearSelectedSet();

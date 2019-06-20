@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +16,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
-import com.project.spender.controllers.ChecksRoller;
 import com.project.spender.R;
 import com.project.spender.controllers.CheckShowHelper;
 
@@ -28,8 +26,6 @@ import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
  */
 public class CheckShowActivity extends AppCompatActivity implements LifecycleOwner {
 
-    private ListView listView;
-    private EditText search;
     private CheckShowHelper controller;
     private LifecycleRegistry lifecycleRegistry;
 
@@ -109,8 +105,8 @@ public class CheckShowActivity extends AppCompatActivity implements LifecycleOwn
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        listView = findViewById(R.id.productsList);
-        search = findViewById(R.id.search_in_check);
+        ListView listView = findViewById(R.id.productsList);
+        EditText search = findViewById(R.id.search_in_check);
 
         controller = new CheckShowHelper(this, listView, getIntent());
         controller.setInput(search);

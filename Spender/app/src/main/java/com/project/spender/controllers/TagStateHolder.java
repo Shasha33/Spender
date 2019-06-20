@@ -6,17 +6,21 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.project.spender.data.entities.Tag;
+import com.project.spender.roller.App;
+import com.project.spender.roller.ChecksRoller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.inject.Inject;
 
 /**
  * Class for storage new tag and creating
  */
 public class TagStateHolder {
 
+    @Inject protected ChecksRoller checksRoller;
     private static final List<Integer> DEFAULT_COLOR = new ArrayList<>();
 
     static {
@@ -50,6 +54,10 @@ public class TagStateHolder {
     private String name;
     @Nullable private String regEx;
     private Integer color;
+
+    public TagStateHolder() {
+        App.getComponent().inject(this);
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -89,6 +97,6 @@ public class TagStateHolder {
             color = DEFAULT_COLOR.get(index);
         }
 
-        ChecksRoller.getInstance().addTag(name, regEx, color);
+        checksRoller.addTag(name, regEx, color);
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.vision.L;
@@ -22,14 +23,12 @@ import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
  * Adapter for tags available to choose list
  */
 public class TagChoiceAdapter extends BaseAdapter {
-    private Context context;
     private LayoutInflater layoutInflater;
-    private @Nullable List<Tag> tagList;
-    private List<Tag> chosenTags;
+    private @NonNull List<Tag> tagList;
+    private @Nullable List<Tag> chosenTags;
 
-    public TagChoiceAdapter(Context context, List<Tag> list, List<Tag> chosen) {
+    public TagChoiceAdapter(Context context, @NonNull List<Tag> list, @Nullable List<Tag> chosen) {
         chosenTags = chosen;
-        this.context = context;
         tagList = list;
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,14 +65,11 @@ public class TagChoiceAdapter extends BaseAdapter {
             }
         }
 
-
-
         ((TextView) convertView.findViewById(R.id.tag_in_list_name)).setText(tag.getName());
         if (tag.getSubstring() != null) {
             ((TextView) convertView.findViewById(R.id.tag_in_list_substring)).setText("auto adding by " + tag.getSubstring());
         }
         convertView.findViewById(R.id.tag_in_list_color).setBackgroundColor(tag.getColor());
-
 
         return convertView;
     }

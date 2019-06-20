@@ -7,8 +7,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.Result;
-import com.project.spender.controllers.ChecksRoller;
+import com.project.spender.data.entities.Check;
+import com.project.spender.roller.App;
+import com.project.spender.roller.ChecksRoller;
 import com.project.spender.data.ScanResult;
+
+import javax.inject.Inject;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -17,12 +21,14 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
+    @Inject protected ChecksRoller checksRoller;
     private ZXingScannerView scannerView;
 
     @Override
     public void onCreate(Bundle state) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(state);
+        App.getComponent().inject(this);
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
     }
@@ -45,7 +51,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
         int putResult;
         try {
             ScanResult scanResult = new ScanResult(result.getText());
-            putResult = ChecksRoller.getInstance().requestCheck(scanResult);
+            putResult = checksRoller.requestCheck(scanResult);
         } catch (Exception e) {
             putResult = -2;
         }
