@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.project.spender.R;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getComponent().inject(this);
         setContentView(R.layout.activity_history);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

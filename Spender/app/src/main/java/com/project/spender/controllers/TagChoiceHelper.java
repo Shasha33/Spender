@@ -37,6 +37,8 @@ public class TagChoiceHelper {
      * Creates new instance with given list view for all tags list, using context as owner
      */
     public TagChoiceHelper(Context context, ListView listView) {
+        App.getComponent().inject(this);
+
         this.listView = listView;
         clickedTags = new ArrayList<>();
         tags = new ArrayList<>();
@@ -56,7 +58,6 @@ public class TagChoiceHelper {
         });
         listView.setAdapter(new TagChoiceAdapter(context, tags, clickedTags));
 
-        App.getComponent().inject(this);
     }
 
     private void setTags(List<Tag> list) {

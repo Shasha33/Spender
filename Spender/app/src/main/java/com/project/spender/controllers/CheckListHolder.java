@@ -49,6 +49,8 @@ public class CheckListHolder {
 
 
     public CheckListHolder(ListView listView, Context context, TextView textView) {
+        App.getComponent().inject(this);
+
         begin = DateHelper.DEFAULT_BEGIN;
         end = DateHelper.DEFAULT_END;
         regEx = "%%";
@@ -73,7 +75,7 @@ public class CheckListHolder {
         listView.setOnItemClickListener(checkListener);
 
         updateState();
-        App.getComponent().inject(this);
+        System.out.println(checksRoller);
     }
 
     public void chooseItem(int index) {

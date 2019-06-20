@@ -52,7 +52,6 @@ public class ChecksRoller {
     private static final String ACCOUNT_PASSWORD = "password";
     private static SharedPreferences accountInfo;
     private boolean superCatMode = false;
-    private LifecycleOwner owner;
 
     private HistoryListHolder historyListHolder = new HistoryListHolder();
     private ExecutorService executor;
@@ -126,7 +125,6 @@ public class ChecksRoller {
      */
     public ChecksRoller(Context context) {
         executor = Executors.newSingleThreadExecutor();
-        owner = (LifecycleOwner) context;
         accountInfo = context.getSharedPreferences(ACCOUNT_INFO, Context.MODE_PRIVATE);
         networkManager = new NetworkManager();
         appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE).fallbackToDestructiveMigration().build();
@@ -225,7 +223,7 @@ public class ChecksRoller {
         executor.submit(() -> appDatabase.getCheckDao().insertCheckWithProducts(newCheck));
         for (Product i : newCheck.getProducts()) {
             LiveData<List<Tag>> tags = appDatabase.getCheckDao().getAllTags();
-            tags.observe(owner, tags1 -> addTagsIfMatch(i, tags1));
+            tags.observeForever(tags1 -> addTagsIfMatch(i, tags1));
         }
     }
 

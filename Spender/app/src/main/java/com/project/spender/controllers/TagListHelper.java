@@ -37,6 +37,8 @@ public class TagListHelper {
      * @param textView info showing in empty list case
      */
     public TagListHelper(Context context, ListView listView, TextView textView) {
+        App.getComponent().inject(this);
+
         this.listView = listView;
         info = textView;
         tags = new ArrayList<>();

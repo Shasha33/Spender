@@ -40,6 +40,8 @@ public class CheckShowHelper {
     public static final int UNSELECTED_ITEM = Color.WHITE;
 
     public CheckShowHelper(Context context, ListView listView, Intent intent) {
+        App.getComponent().inject(this);
+
         productsForAction = new HashSet<>();
         owner = (LifecycleOwner) context;
         this.listView = listView;
@@ -61,7 +63,6 @@ public class CheckShowHelper {
         });
 
         update();
-        App.getComponent().inject(this);
     }
 
     /**
