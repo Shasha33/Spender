@@ -1,0 +1,78 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/receiving_history"
+        android:title="history"
+        android:visible="true"
+        app:showAsAction="never"/>
+
+
+    <item
+        android:id="@+id/action_cheese"
+        android:icon="@drawable/cheese"
+        android:title="cheese"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_delete"
+        android:title="@string/delete_all_purchases"
+        android:icon="@drawable/delete"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_tag_list"
+        android:title="show all tags"
+        app:showAsAction="never">
+    </item>
+
+    <item
+        android:title="tags"
+        app:showAsAction="always"
+        android:id="@+id/tags_for_chart"
+        android:icon="@drawable/tag">
+    </item>
+
+    <item
+        android:title="login"
+        app:showAsAction="never"
+        android:id="@+id/putin">
+    </item>
+
+    <item
+        android:title="logout"
+        app:showAsAction="never"
+        android:id="@+id/putout">
+    </item>
+
+    <item
+        android:title="chart type"
+        app:showAsAction="always"
+        android:id="@+id/chart_type"
+        android:icon="@drawable/browser">
+        <menu
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item android:id="@+id/pie_chart_item"
+                android:title="pie chart" />
+
+            <item android:id="@+id/donut_chart_item"
+                android:title="donut chart" />
+
+            <item android:id="@+id/line_graph_item"
+                android:title="line graph" />
+
+            <item
+                android:id="@+id/bar_graph_item"
+                android:title="bar graph" />
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/help"
+        android:title="help"
+        android:visible="true"
+        app:showAsAction="never"/>
+
+</menu>

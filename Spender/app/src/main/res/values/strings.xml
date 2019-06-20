@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Spender</string>
+    <string name="scan_code">Scan Code</string>
+    <string name="statistic">Statistics</string>
+    <string name="spender">Spender</string>
+    <string name="delete_all_purchases">delete all purchases</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

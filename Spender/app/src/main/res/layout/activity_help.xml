@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.HelpActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:textColor="@color/brickRedColor"
+                android:textSize="20dp"
+                android:text="Спасибо, что запустили наше приложение!"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:textColor="@color/black"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="Тут собранны некоторые моменты, которые могут быть неочевидны"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+
+                android:textColor="@color/black"
+                android:text="Приложени создано для получения чеков по qr-коду, сортировки товаров по категориям и построения графиков по ним"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+
+                android:textColor="@color/black"
+                android:text="На странице с котом вы можете указать дату начала и конца временного интервала, по которому будет построен график затрат по тегам. Теги и тип графика можно выбрать на панели сверху"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="На странице со списком можно указать подстроку названия чека, и временной интервал, будут отображаться только чеки и продукты подходящие под условия. Также на панели сверху можно выбрать теги и переключиться на список всех продуктов"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="При нажатии на чек будет показан список входящих товаров. Можно выбрать группу товаров и применить к ним действие добавления тега, удаления или удаления товара"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+
+                android:textColor="@color/black"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="При долгом нажатии на чек откроется меню, в котором можно удалить чек и добавить/удалить тег для всех продуктов в чеке"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="При долгом нажатии на продукт в списке всех продуктов (не в чеке), откроет меню, в котором можно добавить/удалить тег или удалить продукт"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+
+                android:textColor="@color/black"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:text="К сожалению, не все магазины заполняют необходимые поля в кассовых аппаратах. В таком случае имя и адрес магазина будут заменены на значения по-умолчанию"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="Формат дат - DD.MM.YYYY"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="После добавление тега с регулярным выражением, он не добавлятся автоматически к уже полученным товарам"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="Чтобы добавить тег, который будет добавляться ко всем товарам,
+                 используйте любое непустое подходящее регулярное выражение, так как пустая строка в этом поле считается отстутвием строки для добавления"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="Мы не можем проверить, правда ли введенный вами пароль корректен, поэтому авторизация считается успешной, если номер и пароль удовлетворяют формату"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="При получении кода ошибки 403 (мы пока не поняли, с чем это связано) помогает получить новый пароль"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="Также по неизвестной причине в ответ на запросы существующих чеков, видимо, иногда приходят пустые пакеты, мы приняли некоторые меры, но если так все же случилось, поможет повторное получение чека"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="Цвет для тега может указываться в формате #RRGGBB или #AARRGGBB или в виде названия на английском(ограниченный стандартный набор)"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="Регулярные выражения для тегов будут сопоставляться как подстрока, так как в названии товара часто есть техническая информация, о наличии которой невозможно узнать заранее"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+
+                android:textColor="@color/black"
+                android:textSize="10dp"
+                android:text="Извините за мой английский, я старалась, но это не помогает."/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:fontFamily="monospace"
+                android:textSize="15dp"
+                android:textColor="@color/brickRedColor"
+                android:textStyle="bold"
+                android:text="Слава Арстоцке!!!"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/misha_kot"
+                android:layout_gravity="center"
+                android:fontFamily="monospace"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Миша молодец"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:fontFamily="monospace"
+                android:visibility="gone"
+                android:textSize="10dp"
+                android:textColor="@color/black"
+                android:text="created by mixNIK999 and Shasha33 May 2019"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

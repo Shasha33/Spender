@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/add_tag"
+        android:title="add tag for selected"
+        android:icon="@drawable/tag_add"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/remove_tag"
+        android:title="remove tag from selected"
+        android:icon="@drawable/tag_remove"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/remove"
+        android:title="remove selected"
+        android:icon="@drawable/delete"
+        app:showAsAction="always"/>
+
+</menu>
