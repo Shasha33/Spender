@@ -31,7 +31,7 @@ import static com.project.spender.controllers.DateHelper.dateConvert;
 
 public class CheckListHolder {
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
 
     @NonNull private String regEx;
     @NonNull private String begin;

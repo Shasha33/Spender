@@ -21,7 +21,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
     private ZXingScannerView scannerView;
 
     @Override

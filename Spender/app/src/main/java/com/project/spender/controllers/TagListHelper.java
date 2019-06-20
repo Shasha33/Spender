@@ -24,7 +24,7 @@ import javax.inject.Inject;
  */
 public class TagListHelper {
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
 
     private ListView listView;
     private List<Tag> tags;

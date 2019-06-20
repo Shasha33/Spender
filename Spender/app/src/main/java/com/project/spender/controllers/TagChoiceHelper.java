@@ -25,7 +25,7 @@ import static com.project.spender.controllers.CheckShowHelper.UNSELECTED_ITEM;
  */
 public class TagChoiceHelper {
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
 
     private List<Tag> clickedTags;
     private List<Tag> tags;

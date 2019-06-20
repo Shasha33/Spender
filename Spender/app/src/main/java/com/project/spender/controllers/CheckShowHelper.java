@@ -27,7 +27,7 @@ import javax.inject.Inject;
  */
 public class CheckShowHelper {
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
     private List<Product> products;
     private HashSet<Integer> productsForAction;
     private ListView listView;

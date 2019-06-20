@@ -20,7 +20,7 @@ import javax.inject.Inject;
  */
 public class TagStateHolder {
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
     private static final List<Integer> DEFAULT_COLOR = new ArrayList<>();
 
     static {

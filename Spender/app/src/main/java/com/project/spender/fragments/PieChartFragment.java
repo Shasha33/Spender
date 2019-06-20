@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import com.project.spender.charts.PieChartController;
 import com.project.spender.R;
+import com.project.spender.roller.App;
 import com.project.spender.roller.ChecksRoller;
 
 import java.util.Set;
@@ -20,7 +21,7 @@ import javax.inject.Inject;
 
 public class PieChartFragment extends ChartFragment {
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
     private ImageButton secret;
     private int clickCounter;
     private final static int MAGIC_CONST = 30;
@@ -38,6 +39,7 @@ public class PieChartFragment extends ChartFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getComponent().inject(this);
 
     }
 

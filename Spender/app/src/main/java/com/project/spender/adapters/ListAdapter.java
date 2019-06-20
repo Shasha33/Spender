@@ -32,7 +32,7 @@ public class ListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private List<CheckWithProducts> checkList;
     private LifecycleOwner owner;
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
 
     public ListAdapter(Context context, List<CheckWithProducts> list) {
         this.context = context;

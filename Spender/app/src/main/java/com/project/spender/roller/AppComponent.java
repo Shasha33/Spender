@@ -18,7 +18,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {ChecksRollerModule.class})
+@Component(modules = {ChecksRollerModule.class, AppModule.class})
 @Singleton
 public interface AppComponent {
     void inject(HistoryActivity activity);

@@ -17,7 +17,7 @@ public class App extends Application {
     }
 
     protected AppComponent buildComponent() {
-        return DaggerAppComponent.builder().checksRollerModule(new ChecksRollerModule()).build();
+        return DaggerAppComponent.builder().appModule(new AppModule(this)).checksRollerModule(new ChecksRollerModule()).build();
     }
 
 }

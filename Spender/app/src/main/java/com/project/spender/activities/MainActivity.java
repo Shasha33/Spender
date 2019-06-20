@@ -41,7 +41,7 @@ import static com.project.spender.controllers.TagChoiceHelper.TAG_ID_LIST;
  */
 public class MainActivity extends AppCompatActivity implements LifecycleOwner {
 
-    @Inject private ChecksRoller checksRoller;
+    @Inject protected ChecksRoller checksRoller;
 
     private LifecycleRegistry lifecycleRegistry;
     private ChartsStateHolder chartsStateHolder;
