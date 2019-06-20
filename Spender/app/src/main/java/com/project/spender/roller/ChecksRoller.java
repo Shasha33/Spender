@@ -44,6 +44,7 @@ public class ChecksRoller {
 
     private NetworkManager networkManager;
     private AppDatabase appDatabase;
+    private LifecycleOwner owner;
 
     public static final String LOG_TAG = "KITPRIVIT";
     private static final String DATABASE = "DataBase";
@@ -138,6 +139,13 @@ public class ChecksRoller {
     }
 
     /**
+     * Sets new lifecycle owner for tag adding
+     */
+    public void setOwner(LifecycleOwner owner) {
+        this.owner = owner;
+    }
+
+    /**
      * Inserts existing tag for given product
      */
     public void insertTagForProductById(long tagId, long productId) {
@@ -223,7 +231,7 @@ public class ChecksRoller {
         executor.submit(() -> appDatabase.getCheckDao().insertCheckWithProducts(newCheck));
         for (Product i : newCheck.getProducts()) {
             LiveData<List<Tag>> tags = appDatabase.getCheckDao().getAllTags();
-            tags.observeForever(tags1 -> addTagsIfMatch(i, tags1));
+            tags.observe(owner, tags1 -> addTagsIfMatch(i, tags1));
         }
     }
 

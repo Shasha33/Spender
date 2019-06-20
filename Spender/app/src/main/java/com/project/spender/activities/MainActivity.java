@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner {
         lifecycleRegistry.markState(Lifecycle.State.CREATED);
 
 
-//        checksRoller.init(this);
+        checksRoller.setOwner(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
